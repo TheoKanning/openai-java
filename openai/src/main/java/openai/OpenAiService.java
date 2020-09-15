@@ -42,4 +42,8 @@ public class OpenAiService {
     public List<Engine> getEngines() {
         return api.getEngines().blockingGet().data;
     }
+
+    public Engine getEngine(String engineId) {
+        return api.getEngine(engineId).blockingGet();
+    }
 }

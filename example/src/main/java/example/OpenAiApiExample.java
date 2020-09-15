@@ -9,6 +9,10 @@ class OpenAiApiExample {
         OpenAiService service = new OpenAiService(token);
 
         System.out.println("Getting available engines");
-        service.getEngines().forEach((Engine e) -> System.out.println(e.id));
+        service.getEngines().forEach(System.out::println);
+
+        System.out.println("Getting ada engine");
+        Engine ada = service.getEngine("ada");
+        System.out.println(ada);
     }
 }
