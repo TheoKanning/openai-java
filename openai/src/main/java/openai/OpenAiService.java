@@ -6,6 +6,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import okhttp3.ConnectionPool;
 import okhttp3.OkHttpClient;
+import openai.completion.CompletionRequest;
+import openai.completion.CompletionResult;
 import openai.engine.Engine;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
@@ -45,5 +47,9 @@ public class OpenAiService {
 
     public Engine getEngine(String engineId) {
         return api.getEngine(engineId).blockingGet();
+    }
+
+    public CompletionResult createCompletion(String engineId, CompletionRequest request) {
+        return api.createCompletion(engineId, request).blockingGet();
     }
 }
