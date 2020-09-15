@@ -1,0 +1,4 @@
+```
+export OPENAI_TOKEN="sk-XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
+./gradlew example:run
+```

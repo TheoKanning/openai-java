@@ -1,0 +1,10 @@
+apply plugin: 'java'
+apply plugin: 'application'
+
+application {
+    mainClassName = 'example.OpenAiApiExample'
+}
+
+dependencies {
+    implementation project(":openai")
+}
