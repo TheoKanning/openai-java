@@ -1,5 +1,6 @@
 rootProject.name = 'openai-java'
 
-include ':openai'
-include ':example'
+include 'example'
+include 'openai-api'
+include 'openai-client'
 
