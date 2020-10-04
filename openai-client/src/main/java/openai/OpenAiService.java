@@ -9,6 +9,8 @@ import okhttp3.OkHttpClient;
 import openai.completion.CompletionRequest;
 import openai.completion.CompletionResult;
 import openai.engine.Engine;
+import openai.search.SearchRequest;
+import openai.search.SearchResult;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.jackson.JacksonConverterFactory;
@@ -51,5 +53,9 @@ public class OpenAiService {
 
     public CompletionResult createCompletion(String engineId, CompletionRequest request) {
         return api.createCompletion(engineId, request).blockingGet();
+    }
+
+    public List<SearchResult> search(String engineId, SearchRequest request) {
+        return api.search(engineId, request).blockingGet().data;
     }
 }

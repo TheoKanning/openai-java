@@ -4,6 +4,8 @@ import io.reactivex.Single;
 import openai.completion.CompletionRequest;
 import openai.completion.CompletionResult;
 import openai.engine.Engine;
+import openai.search.SearchRequest;
+import openai.search.SearchResult;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
@@ -19,4 +21,7 @@ public interface OpenAiApi {
 
     @POST("/v1/engines/{engine_id}/completions")
     Single<CompletionResult> createCompletion(@Path("engine_id") String engineId, @Body CompletionRequest request);
+
+    @POST("/v1/engines/{engine_id}/search")
+    Single<OpenAiResponse<SearchResult>> search(@Path("engine_id") String engineId, @Body SearchRequest request);
 }
