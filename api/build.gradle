@@ -1,5 +1,6 @@
 apply plugin: 'java-library'
 apply plugin: 'com.jfrog.bintray'
+apply plugin: 'maven-publish'
 
 dependencies {
     compileOnly 'org.projectlombok:lombok:1.18.12'
@@ -7,23 +8,56 @@ dependencies {
 }
 
 ext {
-    libraryVersion = '0.1.0'
+    libraryVersion = '0.2.0'
 }
 
 version = libraryVersion
 group = 'com.theokanning.openai-gpt3-java'
 
+publishing {
+    publications {
+        ApiPublication(MavenPublication) {
+            from components.java
+            groupId project.group
+            artifactId 'api'
+            version libraryVersion
+            pom {
+                description = 'POJOs for the OpenAI GPT-3 API'
+                name = 'api'
+                url = 'https://github.com/theokanning/openai-java'
+                developers {
+                    developer {
+                        id = "theokanning"
+                        name = "Theo Kanning"
+                        email = "theokanning@gmail.com"
+                    }
+                }
+                scm {
+                    url = "https://github.com/theokanning/openai-java"
+                }
+                licenses {
+                    license {
+                        name = "The MIT License"
+                        url = "https://www.mit.edu/~amini/LICENSE.md"
+                        distribution = "repo"
+                    }
+                }
+            }
+        }
+    }
+}
+
 bintray {
     user = System.getenv("BINTRAY_USER")
     key = System.getenv("BINTRAY_KEY")
 
-    configurations = ['archives']
+    publications = ['ApiPublication']
     pkg {
         repo = 'openai-gpt3-java'
         name = 'api'
         vcsUrl = 'https://github.com/TheoKanning/openai-java.git'
         licenses = ["MIT"]
-        publish = true
+        publish = false
         version {
             name = libraryVersion
         }
