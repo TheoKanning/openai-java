@@ -8,6 +8,7 @@ Includes the following artifacts:
 as well as an example project using the client.
 
 ## Usage
+### Using OpenAiService
 If you're looking for the fastest solution, import the `client` and use [OpenAiService](client/src/main/java/openai/OpenAiService.java).
 ```
 OpenAiService service = new OpenAiService(your_token)
@@ -17,11 +18,14 @@ completionRequest.setEcho(true);
 service.createCompletion("ada", completionRequest).getChoices().forEach(System.out::println);
 ```
 
+### Using OpenAiApi Retrofit client
 If you're using retrofit, you can import the `client` module and use the [OpenAiApi](client/src/main/java/openai/OpenAiApi.java).  
 You'll have to add your auth token as a header (see [AuthenticationInterceptor](client/src/main/java/openai/AuthenticationInterceptor.java))
 and set your converter factory to use snake case and only include non-null fields.
 
-If you want to make your own client, just import the POJOs from the `api` module.
+### Using data classes only
+If you want to make your own client, just import the POJOs from the `api` module.  
+Your client will need to use snake case to work with the OpenAI API.
 
 ## Running the example project
 All the [example](example/src/main/java/example/OpenAiApiExample.java) project requires is your OpenAI api token

@@ -18,7 +18,11 @@ public class CompletionChoice {
      * This index of this completion in the returned list.
      */
     Integer index;
-    // todo add logprobs
+
+    /**
+     * The log probabilities of the chosen tokens and the top {@link CompletionRequest#logprobs} tokens
+     */
+    LogProbResult logprobs;
 
     /**
      * The reason why GPT-3 stopped generating, for example "length".

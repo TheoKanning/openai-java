@@ -74,7 +74,7 @@ public class CompletionRequest {
      * Up to 4 sequences where the API will stop generating further tokens.
      * The returned text will not contain the stop sequence.
      */
-    List<String> stop; //todo test this
+    List<String> stop;
 
     /**
      * Number between 0 and 1 (default 0) that penalizes new tokens based on whether they appear in the text so far.
