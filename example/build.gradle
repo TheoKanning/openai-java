@@ -6,5 +6,5 @@ application {
 }
 
 dependencies {
-    implementation project(":openai-client")
+    implementation project(":client")
 }

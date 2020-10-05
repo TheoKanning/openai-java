@@ -7,8 +7,8 @@ Includes the following artifacts:
 
 as well as an example project using the client.
 
-## How to use this
-If you're looking for the fastest solution, import the `client` and use [OpenAiService](openai-client/src/main/java/openai/OpenAiService.java).
+## Usage
+If you're looking for the fastest solution, import the `client` and use [OpenAiService](client/src/main/java/openai/OpenAiService.java).
 ```
 OpenAiService service = new OpenAiService(your_token)
 CompletionRequest completionRequest = new CompletionRequest();
@@ -17,8 +17,8 @@ completionRequest.setEcho(true);
 service.createCompletion("ada", completionRequest).getChoices().forEach(System.out::println);
 ```
 
-If you're using retrofit, you can import the `client` module and use the [OpenAiApi](openai-client/src/main/java/openai/OpenAiApi.java).  
-You'll have to add your auth token as a header (see [AuthenticationInterceptor](openai-client/src/main/java/openai/AuthenticationInterceptor.java))
+If you're using retrofit, you can import the `client` module and use the [OpenAiApi](client/src/main/java/openai/OpenAiApi.java).  
+You'll have to add your auth token as a header (see [AuthenticationInterceptor](client/src/main/java/openai/AuthenticationInterceptor.java))
 and set your converter factory to use snake case and only include non-null fields.
 
 If you want to make your own client, just import the POJOs from the `api` module.
@@ -29,3 +29,6 @@ All the [example](example/src/main/java/example/OpenAiApiExample.java) project r
 export OPENAI_TOKEN="sk-XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
 ./gradlew example:run
 ```
+
+## License
+Published under the MIT License
