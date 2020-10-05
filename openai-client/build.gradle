@@ -1,8 +1,33 @@
 apply plugin: 'java-library'
+apply plugin: 'com.jfrog.bintray'
 
 dependencies {
     api project(":openai-api")
     api 'com.squareup.retrofit2:retrofit:2.9.0'
     implementation 'com.squareup.retrofit2:adapter-rxjava2:2.9.0'
     implementation 'com.squareup.retrofit2:converter-jackson:2.9.0'
+}
+
+ext {
+    libraryVersion = '0.1.0'
+}
+
+version = libraryVersion
+group = 'com.theokanning.openai-gpt3-java'
+
+bintray {
+    user = System.getenv("BINTRAY_USER")
+    key = System.getenv("BINTRAY_KEY")
+
+    configurations = ['archives']
+    pkg {
+        repo = 'openai-gpt3-java'
+        name = 'client'
+        vcsUrl = 'https://github.com/TheoKanning/openai-java.git'
+        licenses = ["MIT"]
+        publish = true
+        version {
+            name = libraryVersion
+        }
+    }
 }
