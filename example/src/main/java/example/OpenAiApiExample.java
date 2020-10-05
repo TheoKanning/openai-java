@@ -20,15 +20,18 @@ class OpenAiApiExample {
         System.out.println(ada);
 
         System.out.println("\nCreating completion...");
-        CompletionRequest completionRequest = new CompletionRequest();
-        completionRequest.setPrompt("Somebody once told me the world is gonna roll me");
-        completionRequest.setEcho(true);
+
+        CompletionRequest completionRequest = CompletionRequest.builder()
+                .prompt("Somebody once told me the world is gonna roll me")
+                .echo(true)
+                .build();
         service.createCompletion("ada", completionRequest).getChoices().forEach(System.out::println);
 
         System.out.println("\nSearching documents...");
-        SearchRequest searchRequest = new SearchRequest();
-        searchRequest.setDocuments(Arrays.asList("Water", "Earth", "Electricity", "Fire"));
-        searchRequest.setQuery("Pikachu");
+        SearchRequest searchRequest = SearchRequest.builder()
+                .documents(Arrays.asList("Water", "Earth", "Electricity", "Fire"))
+                .query("Pikachu")
+                .build();
         service.search("ada", searchRequest).forEach(System.out::println);
     }
 }

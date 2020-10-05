@@ -1,6 +1,9 @@
 package openai.search;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.List;
 
@@ -11,8 +14,12 @@ import java.util.List;
  *
  * https://beta.openai.com/docs/api-reference/search
  */
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Data
 public class SearchRequest {
+
     /**
      * Documents to search over
      */
