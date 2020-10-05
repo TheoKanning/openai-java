@@ -10,7 +10,7 @@ dependencies {
 }
 
 ext {
-    libraryVersion = '0.2.0'
+    libraryVersion = System.getenv("RELEASE_VERSION")
 }
 
 version = libraryVersion
