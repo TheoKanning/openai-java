@@ -1,4 +1,4 @@
-package openai;
+package com.theokanning.openai;
 
 import lombok.Data;
 

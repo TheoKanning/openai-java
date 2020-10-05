@@ -1,4 +1,4 @@
-package openai;
+package com.theokanning.openai;
 
 import okhttp3.Interceptor;
 import okhttp3.Request;

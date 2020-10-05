@@ -1,4 +1,4 @@
-package openai.search;
+package com.theokanning.openai.search;
 
 import lombok.Data;
 

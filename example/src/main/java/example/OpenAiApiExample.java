@@ -1,9 +1,9 @@
 package example;
 
-import openai.OpenAiService;
-import openai.completion.CompletionRequest;
-import openai.engine.Engine;
-import openai.search.SearchRequest;
+import com.theokanning.openai.OpenAiService;
+import com.theokanning.openai.completion.CompletionRequest;
+import com.theokanning.openai.engine.Engine;
+import com.theokanning.openai.search.SearchRequest;
 
 import java.util.Arrays;
 

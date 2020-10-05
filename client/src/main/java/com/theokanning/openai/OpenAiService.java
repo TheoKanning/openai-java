@@ -1,16 +1,16 @@
-package openai;
+package com.theokanning.openai;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
+import com.theokanning.openai.search.SearchRequest;
 import okhttp3.ConnectionPool;
 import okhttp3.OkHttpClient;
-import openai.completion.CompletionRequest;
-import openai.completion.CompletionResult;
-import openai.engine.Engine;
-import openai.search.SearchRequest;
-import openai.search.SearchResult;
+import com.theokanning.openai.completion.CompletionRequest;
+import com.theokanning.openai.completion.CompletionResult;
+import com.theokanning.openai.engine.Engine;
+import com.theokanning.openai.search.SearchResult;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.jackson.JacksonConverterFactory;
