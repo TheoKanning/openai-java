@@ -16,10 +16,22 @@ ext {
 version = libraryVersion
 group = 'com.theokanning.openai-gpt3-java'
 
+task sourcesJar(type: Jar, dependsOn: classes) {
+    classifier = 'sources'
+    from sourceSets.main.allSource
+}
+
+task javadocJar(type: Jar, dependsOn: javadoc) {
+    classifier = 'javadoc'
+    from javadoc.destinationDir
+}
+
 publishing {
     publications {
         ClientPublication(MavenPublication) {
             from components.java
+            artifact sourcesJar
+            artifact javadocJar
             groupId project.group
             artifactId 'client'
             version libraryVersion
