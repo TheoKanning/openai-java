@@ -18,7 +18,7 @@ jobs:
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
     - name: Publish Artifacts
-      run: ./gradlew api:bintrayUpload client:bintrayUpload -DlibraryVersion=$GITHUB_REF
+      run: ./gradlew api:bintrayUpload client:bintrayUpload -DlibraryVersion=${GITHUB_REF##*/}
       env:
         BINTRAY_USER : ${{ secrets.BINTRAY_USER }}
-        BINTRARY_KEY : ${{ secrets.BINTRAY_KEY }}
+        BINTRAY_KEY : ${{ secrets.BINTRAY_KEY }}
