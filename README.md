@@ -1,13 +1,20 @@
+![version](https://img.shields.io/bintray/v/theokanning/openai-gpt3-java/api)
 # OpenAI-Java
 Java libraries for using OpenAI's GPT-3 api.
 
 Includes the following artifacts:
 - `api` : request/response POJOs for the GPT-3 engine, completion, and search APIs.
-- `client` : a basic retrofit client for the GPT-3 endpoints
+- `client` : a basic retrofit client for the GPT-3 endpoints, includes the `api` module
 
 as well as an example project using the client.
 
 ## Usage
+
+### Importing into a gradle project
+`implementation 'com.theokanning.openai-gpt3-java:app:<version>'`  
+or   
+`implementation 'com.theokanning.openai-gpt3-java:client:<version>'`
+
 ### Using OpenAiService
 If you're looking for the fastest solution, import the `client` and use [OpenAiService](client/src/main/java/openai/OpenAiService.java).
 ```
