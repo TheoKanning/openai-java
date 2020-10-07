@@ -1,4 +1,4 @@
-![version](https://img.shields.io/bintray/v/theokanning/openai-gpt3-java/api)
+![version](https://img.shields.io/bintray/v/theokanning/openai-gpt3-java/api?color=00bb00&style=flat-square)
 # OpenAI-Java
 Java libraries for using OpenAI's GPT-3 api.
 
