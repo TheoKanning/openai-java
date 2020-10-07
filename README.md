@@ -11,7 +11,7 @@ as well as an example project using the client.
 ## Usage
 
 ### Importing into a gradle project
-`implementation 'com.theokanning.openai-gpt3-java:app:<version>'`  
+`implementation 'com.theokanning.openai-gpt3-java:api:<version>'`  
 or   
 `implementation 'com.theokanning.openai-gpt3-java:client:<version>'`
 
