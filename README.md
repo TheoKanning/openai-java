@@ -16,7 +16,7 @@ or
 `implementation 'com.theokanning.openai-gpt3-java:client:<version>'`
 
 ### Using OpenAiService
-If you're looking for the fastest solution, import the `client` and use [OpenAiService](client/src/main/java/openai/OpenAiService.java).
+If you're looking for the fastest solution, import the `client` and use [OpenAiService](client/src/main/java/com/theokanning/openai/OpenAiService.java).
 ```
 OpenAiService service = new OpenAiService(your_token)
 CompletionRequest completionRequest = CompletionRequest.builder()
@@ -27,8 +27,8 @@ service.createCompletion("ada", completionRequest).getChoices().forEach(System.o
 ```
 
 ### Using OpenAiApi Retrofit client
-If you're using retrofit, you can import the `client` module and use the [OpenAiApi](client/src/main/java/openai/OpenAiApi.java).  
-You'll have to add your auth token as a header (see [AuthenticationInterceptor](client/src/main/java/openai/AuthenticationInterceptor.java))
+If you're using retrofit, you can import the `client` module and use the [OpenAiApi](client/src/main/java/com/theokanning/openai/OpenAiApi.java).  
+You'll have to add your auth token as a header (see [AuthenticationInterceptor](client/src/main/java/com/theokanning/openai/AuthenticationInterceptor.java))
 and set your converter factory to use snake case and only include non-null fields.
 
 ### Using data classes only
