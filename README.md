@@ -1,4 +1,4 @@
-![version](https://img.shields.io/bintray/v/theokanning/openai-gpt3-java/api?color=00bb00&style=flat-square)
+![Maven Central](https://img.shields.io/maven-central/v/com.theokanning.openai-gpt3-java/client?color=blue)
 # OpenAI-Java
 Java libraries for using OpenAI's GPT-3 api.
 
