@@ -11,6 +11,8 @@ dependencies {
 
 ext {
     libraryVersion = System.getProperty("libraryVersion")
+    ossrhUsername = System.getProperty("ossrhUsername")
+    ossrhPassword = System.getProperty("ossrhPassword")
 }
 
 version = libraryVersion
