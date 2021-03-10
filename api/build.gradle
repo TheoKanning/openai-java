@@ -1,6 +1,6 @@
 apply plugin: 'java-library'
-apply plugin: 'com.jfrog.bintray'
-apply plugin: 'maven-publish'
+apply plugin: 'maven'
+apply plugin: 'signing'
 
 dependencies {
     compileOnly 'org.projectlombok:lombok:1.18.12'
@@ -13,6 +13,7 @@ ext {
 
 version = libraryVersion
 group = 'com.theokanning.openai-gpt3-java'
+archivesBaseName = "api"
 
 task sourcesJar(type: Jar, dependsOn: classes) {
     classifier = 'sources'
@@ -24,18 +25,32 @@ task javadocJar(type: Jar, dependsOn: javadoc) {
     from javadoc.destinationDir
 }
 
-publishing {
-    publications {
-        ApiPublication(MavenPublication) {
-            from components.java
-            artifact sourcesJar
-            artifact javadocJar
-            groupId project.group
-            artifactId 'api'
-            version libraryVersion
-            pom {
-                description = 'POJOs for the OpenAI GPT-3 API'
+artifacts {
+    archives javadocJar, sourcesJar
+}
+
+signing {
+    sign configurations.archives
+}
+
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
+
+            repository(url: "https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/") {
+                authentication(userName: ossrhUsername, password: ossrhPassword)
+            }
+
+            snapshotRepository(url: "https://s01.oss.sonatype.org/content/repositories/snapshots/") {
+                authentication(userName: ossrhUsername, password: ossrhPassword)
+            }
+
+            pom.project {
                 name = 'api'
+                packaging 'jar'
+
+                description = 'POJOs for the OpenAI GPT-3 API'
                 url = 'https://github.com/theokanning/openai-java'
                 developers {
                     developer {
@@ -45,6 +60,8 @@ publishing {
                     }
                 }
                 scm {
+                    connection "https://github.com/theokanning/openai-java.git"
+                    developerConnection "https://github.com/theokanning/openai-java.git"
                     url = "https://github.com/theokanning/openai-java"
                 }
                 licenses {
@@ -55,23 +72,6 @@ publishing {
                     }
                 }
             }
-        }
-    }
-}
-
-bintray {
-    user = System.getenv("BINTRAY_USER")
-    key = System.getenv("BINTRAY_KEY")
-
-    publications = ['ApiPublication']
-    pkg {
-        repo = 'openai-gpt3-java'
-        name = 'api'
-        vcsUrl = 'https://github.com/TheoKanning/openai-java.git'
-        licenses = ["MIT"]
-        publish = false
-        version {
-            name = libraryVersion
         }
     }
 }
