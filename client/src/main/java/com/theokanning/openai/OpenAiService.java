@@ -10,6 +10,8 @@ import com.theokanning.openai.classification.ClassificationRequest;
 import com.theokanning.openai.classification.ClassificationResult;
 import com.theokanning.openai.completion.CompletionRequest;
 import com.theokanning.openai.completion.CompletionResult;
+import com.theokanning.openai.edit.EditRequest;
+import com.theokanning.openai.edit.EditResult;
 import com.theokanning.openai.embedding.EmbeddingRequest;
 import com.theokanning.openai.embedding.EmbeddingResult;
 import com.theokanning.openai.engine.Engine;
@@ -62,6 +64,10 @@ public class OpenAiService {
 
     public CompletionResult createCompletion(String engineId, CompletionRequest request) {
         return api.createCompletion(engineId, request).blockingGet();
+    }
+
+    public EditResult createEdit(String engineId, EditRequest request) {
+        return api.createEdit(engineId, request).blockingGet();
     }
 
     public List<SearchResult> search(String engineId, SearchRequest request) {

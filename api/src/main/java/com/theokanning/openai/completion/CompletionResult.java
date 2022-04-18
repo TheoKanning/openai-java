@@ -7,12 +7,12 @@ import java.util.List;
 /**
  * An object containing a response from the completion api
  *
- * https://beta.openai.com/docs/api-reference/create-completion
+ * https://beta.openai.com/docs/api-reference/completions/create
  */
 @Data
 public class CompletionResult {
     /**
-     * A unique id assigned to this completion
+     * A unique id assigned to this completion.
      */
     String id;
 
@@ -27,12 +27,12 @@ public class CompletionResult {
     long created;
 
     /**
-     * The GPT-3 model used
+     * The GPT-3 model used.
      */
     String model;
 
     /**
-     * A list of generated completions
+     * A list of generated completions.
      */
     List<CompletionChoice> choices;
 }

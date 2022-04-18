@@ -6,6 +6,8 @@ import com.theokanning.openai.classification.ClassificationRequest;
 import com.theokanning.openai.classification.ClassificationResult;
 import com.theokanning.openai.completion.CompletionRequest;
 import com.theokanning.openai.completion.CompletionResult;
+import com.theokanning.openai.edit.EditRequest;
+import com.theokanning.openai.edit.EditResult;
 import com.theokanning.openai.embedding.EmbeddingRequest;
 import com.theokanning.openai.embedding.EmbeddingResult;
 import com.theokanning.openai.engine.Engine;
@@ -30,6 +32,9 @@ public interface OpenAiApi {
 
     @POST("/v1/engines/{engine_id}/completions")
     Single<CompletionResult> createCompletion(@Path("engine_id") String engineId, @Body CompletionRequest request);
+
+    @POST("/v1/engines/{engine_id}/edits")
+    Single<EditResult> createEdit(@Path("engine_id") String engineId, @Body EditRequest request);
 
     @POST("/v1/engines/{engine_id}/search")
     Single<OpenAiResponse<SearchResult>> search(@Path("engine_id") String engineId, @Body SearchRequest request);
