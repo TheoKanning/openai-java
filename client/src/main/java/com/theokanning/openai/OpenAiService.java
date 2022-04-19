@@ -4,9 +4,12 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
+import com.theokanning.openai.file.File;
+import com.theokanning.openai.finetune.FineTuneRequest;
+import com.theokanning.openai.finetune.FineTuneEvent;
+import com.theokanning.openai.finetune.FineTuneResult;
 import com.theokanning.openai.search.SearchRequest;
-import okhttp3.ConnectionPool;
-import okhttp3.OkHttpClient;
+import okhttp3.*;
 import com.theokanning.openai.completion.CompletionRequest;
 import com.theokanning.openai.completion.CompletionResult;
 import com.theokanning.openai.engine.Engine;
@@ -57,5 +60,54 @@ public class OpenAiService {
 
     public List<SearchResult> search(String engineId, SearchRequest request) {
         return api.search(engineId, request).blockingGet().data;
+    }
+
+    public List<File> listFiles() {
+        return api.listFiles().blockingGet().data;
+    }
+
+    public File uploadFile(String purpose, String filepath) {
+        java.io.File file = new java.io.File(filepath);
+        RequestBody purposeBody = RequestBody.create(okhttp3.MultipartBody.FORM, purpose);
+        RequestBody fileBody = RequestBody.create(MediaType.parse("text"), file);
+        MultipartBody.Part body = MultipartBody.Part.createFormData("file", filepath, fileBody);
+
+        return api.uploadFile(purposeBody, body).blockingGet();
+    }
+
+    public DeleteResult deleteFile(String fileId) {
+        return api.deleteFile(fileId).blockingGet();
+    }
+
+    public File retrieveFile(String fileId) {
+        return api.retrieveFile(fileId).blockingGet();
+    }
+
+    public FineTuneResult createFineTune(FineTuneRequest request) {
+        return api.createFineTune(request).blockingGet();
+    }
+
+    public CompletionResult createFineTuneCompletion(CompletionRequest request) {
+        return api.createFineTuneCompletion(request).blockingGet();
+    }
+
+    public List<FineTuneResult> listFineTunes() {
+        return api.listFineTunes().blockingGet().data;
+    }
+
+    public FineTuneResult retrieveFineTune(String fineTuneId) {
+        return api.retrieveFineTune(fineTuneId).blockingGet();
+    }
+
+    public FineTuneResult cancelFineTune(String fineTuneId) {
+        return api.cancelFineTune(fineTuneId).blockingGet();
+    }
+
+    public List<FineTuneEvent> listFineTuneEvents(String fineTuneId) {
+        return api.listFineTuneEvents(fineTuneId).blockingGet().data;
+    }
+
+    public DeleteResult deleteFineTune(String fineTuneId) {
+        return api.deleteFineTune(fineTuneId).blockingGet();
     }
 }
