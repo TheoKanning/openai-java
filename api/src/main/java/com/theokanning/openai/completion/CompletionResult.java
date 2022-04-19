@@ -22,7 +22,7 @@ public class CompletionResult {
     String object;
 
     /**
-     * The creation time in epoch milliseconds.
+     * The creation time in epoch seconds.
      */
     long created;
 

@@ -1,15 +1,18 @@
 package com.theokanning.openai;
 
 import com.theokanning.openai.engine.Engine;
+import com.theokanning.openai.file.File;
+import com.theokanning.openai.finetune.FineTuneRequest;
+import com.theokanning.openai.finetune.FineTuneEvent;
+import com.theokanning.openai.finetune.FineTuneResult;
 import com.theokanning.openai.search.SearchRequest;
 import io.reactivex.Single;
 import com.theokanning.openai.completion.CompletionRequest;
 import com.theokanning.openai.completion.CompletionResult;
 import com.theokanning.openai.search.SearchResult;
-import retrofit2.http.Body;
-import retrofit2.http.GET;
-import retrofit2.http.POST;
-import retrofit2.http.Path;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
+import retrofit2.http.*;
 
 public interface OpenAiApi {
 
@@ -24,4 +27,39 @@ public interface OpenAiApi {
 
     @POST("/v1/engines/{engine_id}/search")
     Single<OpenAiResponse<SearchResult>> search(@Path("engine_id") String engineId, @Body SearchRequest request);
+
+    @GET("/v1/files")
+    Single<OpenAiResponse<File>> listFiles();
+
+    @Multipart
+    @POST("/v1/files")
+    Single<File> uploadFile(@Part("purpose") RequestBody purpose, @Part MultipartBody.Part file);
+
+    @DELETE("/v1/files/{file_id}")
+    Single<DeleteResult> deleteFile(@Path("file_id") String fileId);
+
+    @GET("/v1/files/{file_id}")
+    Single<File> retrieveFile(@Path("file_id") String fileId);
+
+    @POST("/v1/fine-tunes")
+    Single<FineTuneResult> createFineTune(@Body FineTuneRequest request);
+
+    @POST("/v1/completions")
+    Single<CompletionResult> createFineTuneCompletion(@Body CompletionRequest request);
+
+    @GET("/v1/fine-tunes")
+    Single<OpenAiResponse<FineTuneResult>> listFineTunes();
+
+    @GET("/v1/fine-tunes/{fine_tune_id}")
+    Single<FineTuneResult> retrieveFineTune(@Path("fine_tune_id") String fineTuneId);
+
+    @POST("/v1/fine-tunes/{fine_tune_id}/cancel")
+    Single<FineTuneResult> cancelFineTune(@Path("fine_tune_id") String fineTuneId);
+
+    @GET("/v1/fine-tunes/{fine_tune_id}/events")
+    Single<OpenAiResponse<FineTuneEvent>> listFineTuneEvents(@Path("fine_tune_id") String fineTuneId);
+
+    @DELETE("/v1/models/{fine_tune_id}")
+    Single<DeleteResult> deleteFineTune(@Path("fine_tune_id") String fineTuneId);
+
 }

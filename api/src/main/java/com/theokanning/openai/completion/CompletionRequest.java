@@ -21,6 +21,11 @@ import java.util.List;
 public class CompletionRequest {
 
     /**
+     * The name of the model to use, only used if specifying a fine tuned model.
+     */
+    String model;
+
+    /**
      * An optional prompt to complete from
      */
     String prompt;
