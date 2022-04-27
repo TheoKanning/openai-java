@@ -1,6 +1,5 @@
 apply plugin: 'java-library'
-apply plugin: 'maven'
-apply plugin: 'signing'
+apply plugin: "com.vanniktech.maven.publish"
 
 dependencies {
     api project(":api")
@@ -12,80 +11,7 @@ dependencies {
     testImplementation('org.junit.jupiter:junit-jupiter')
 }
 
-test {
-    useJUnitPlatform()
-    testLogging {
-        events "passed", "skipped", "failed"
-    }
-}
-
-ext {
-    libraryVersion = System.getProperty("libraryVersion")
-    ossrhUsername = System.getProperty("ossrhUsername")
-    ossrhPassword = System.getProperty("ossrhPassword")
-}
-
-version = libraryVersion
-group = 'com.theokanning.openai-gpt3-java'
-archivesBaseName = "client"
-
-task sourcesJar(type: Jar, dependsOn: classes) {
-    classifier = 'sources'
-    from sourceSets.main.allSource
-}
-
-task javadocJar(type: Jar, dependsOn: javadoc) {
-    classifier = 'javadoc'
-    from javadoc.destinationDir
-}
-
-artifacts {
-    archives javadocJar, sourcesJar
-}
-
-signing {
-    sign configurations.archives
-}
-
-uploadArchives {
-    repositories {
-        mavenDeployer {
-            beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
-
-            repository(url: "https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/") {
-                authentication(userName: ossrhUsername, password: ossrhPassword)
-            }
-
-            snapshotRepository(url: "https://s01.oss.sonatype.org/content/repositories/snapshots/") {
-                authentication(userName: ossrhUsername, password: ossrhPassword)
-            }
-
-            pom.project {
-                name = 'client'
-                packaging 'jar'
-
-                description = 'Basic retrofit client for OpenAI\'s GPT-3 API'
-                url = 'https://github.com/theokanning/openai-java'
-                developers {
-                    developer {
-                        id = "theokanning"
-                        name = "Theo Kanning"
-                        email = "theokanning@gmail.com"
-                    }
-                }
-                scm {
-                    connection "https://github.com/theokanning/openai-java.git"
-                    developerConnection "https://github.com/theokanning/openai-java.git"
-                    url = "https://github.com/theokanning/openai-java"
-                }
-                licenses {
-                    license {
-                        name = "The MIT License"
-                        url = "https://www.mit.edu/~amini/LICENSE.md"
-                        distribution = "repo"
-                    }
-                }
-            }
-        }
-    }
+compileJava {
+    sourceCompatibility = '1.8'
+    targetCompatibility = '1.8'
 }
