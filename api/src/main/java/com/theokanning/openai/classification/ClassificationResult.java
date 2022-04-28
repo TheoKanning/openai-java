@@ -1,13 +1,12 @@
 package com.theokanning.openai.classification;
 
-import com.theokanning.openai.completion.CompletionChoice;
 import lombok.Data;
 
 import java.util.List;
 
 /**
  * An object containing a response from the classification api
- * <p>
+ * <
  * https://beta.openai.com/docs/api-reference/classifications/create
  */
 @Data
