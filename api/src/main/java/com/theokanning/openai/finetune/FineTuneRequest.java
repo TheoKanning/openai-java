@@ -1,9 +1,6 @@
 package com.theokanning.openai.finetune;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.List;
 
@@ -22,6 +19,7 @@ public class FineTuneRequest {
     /**
      * The ID of an uploaded file that contains training data.
      */
+    @NonNull
     String trainingFile;
 
     /**

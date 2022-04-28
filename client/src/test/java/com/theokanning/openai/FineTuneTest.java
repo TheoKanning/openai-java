@@ -6,6 +6,7 @@ import com.theokanning.openai.finetune.FineTuneResult;
 import org.junit.jupiter.api.*;
 
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -17,10 +18,13 @@ public class FineTuneTest {
 
 
     @BeforeAll
-   static void setup() {
+   static void setup() throws Exception {
         String token = System.getenv("OPENAI_TOKEN");
         service = new OpenAiService(token);
         fileId = service.uploadFile("fine-tune", "src/test/resources/fine-tuning-data.jsonl").getId();
+
+        // wait for file to be processed
+        TimeUnit.SECONDS.sleep(10);
     }
 
     @AfterAll

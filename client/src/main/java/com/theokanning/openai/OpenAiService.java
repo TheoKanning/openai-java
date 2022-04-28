@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
+import com.theokanning.openai.classification.ClassificationRequest;
+import com.theokanning.openai.classification.ClassificationResult;
 import com.theokanning.openai.file.File;
 import com.theokanning.openai.finetune.FineTuneRequest;
 import com.theokanning.openai.finetune.FineTuneEvent;
@@ -60,6 +62,10 @@ public class OpenAiService {
 
     public List<SearchResult> search(String engineId, SearchRequest request) {
         return api.search(engineId, request).blockingGet().data;
+    }
+
+    public ClassificationResult createClassification(ClassificationRequest request) {
+        return api.createClassification(request).blockingGet();
     }
 
     public List<File> listFiles() {
