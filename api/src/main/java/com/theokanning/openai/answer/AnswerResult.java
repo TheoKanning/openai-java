@@ -6,7 +6,7 @@ import java.util.List;
 
 /**
  * An object containing a response from the answer api
- * <p>
+ *
  * https://beta.openai.com/docs/api-reference/answers/create
  */
 @Data

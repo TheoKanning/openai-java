@@ -10,6 +10,8 @@ import com.theokanning.openai.classification.ClassificationRequest;
 import com.theokanning.openai.classification.ClassificationResult;
 import com.theokanning.openai.completion.CompletionRequest;
 import com.theokanning.openai.completion.CompletionResult;
+import com.theokanning.openai.embedding.EmbeddingRequest;
+import com.theokanning.openai.embedding.EmbeddingResult;
 import com.theokanning.openai.engine.Engine;
 import com.theokanning.openai.file.File;
 import com.theokanning.openai.finetune.FineTuneEvent;
@@ -121,5 +123,9 @@ public class OpenAiService {
 
     public DeleteResult deleteFineTune(String fineTuneId) {
         return api.deleteFineTune(fineTuneId).blockingGet();
+    }
+
+    public EmbeddingResult createEmbeddings(String engineId, EmbeddingRequest request) {
+        return api.createEmbeddings(engineId, request).blockingGet();
     }
 }

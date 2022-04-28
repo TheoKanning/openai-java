@@ -6,6 +6,8 @@ import com.theokanning.openai.classification.ClassificationRequest;
 import com.theokanning.openai.classification.ClassificationResult;
 import com.theokanning.openai.completion.CompletionRequest;
 import com.theokanning.openai.completion.CompletionResult;
+import com.theokanning.openai.embedding.EmbeddingRequest;
+import com.theokanning.openai.embedding.EmbeddingResult;
 import com.theokanning.openai.engine.Engine;
 import com.theokanning.openai.file.File;
 import com.theokanning.openai.finetune.FineTuneEvent;
@@ -71,5 +73,9 @@ public interface OpenAiApi {
 
     @DELETE("/v1/models/{fine_tune_id}")
     Single<DeleteResult> deleteFineTune(@Path("fine_tune_id") String fineTuneId);
+
+    @POST("/v1/engines/{engine_id}/embeddings")
+    Single<EmbeddingResult> createEmbeddings(@Path("engine_id") String engineId, @Body EmbeddingRequest request);
+
 
 }
