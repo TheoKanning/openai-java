@@ -1,5 +1,7 @@
 package com.theokanning.openai;
 
+import com.theokanning.openai.classification.ClassificationRequest;
+import com.theokanning.openai.classification.ClassificationResult;
 import com.theokanning.openai.engine.Engine;
 import com.theokanning.openai.file.File;
 import com.theokanning.openai.finetune.FineTuneRequest;
@@ -27,6 +29,9 @@ public interface OpenAiApi {
 
     @POST("/v1/engines/{engine_id}/search")
     Single<OpenAiResponse<SearchResult>> search(@Path("engine_id") String engineId, @Body SearchRequest request);
+
+    @POST("v1/classifications")
+    Single<ClassificationResult> createClassification(@Body ClassificationRequest request);
 
     @GET("/v1/files")
     Single<OpenAiResponse<File>> listFiles();
