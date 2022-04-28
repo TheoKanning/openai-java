@@ -4,18 +4,20 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
+import com.theokanning.openai.answer.AnswerRequest;
+import com.theokanning.openai.answer.AnswerResult;
 import com.theokanning.openai.classification.ClassificationRequest;
 import com.theokanning.openai.classification.ClassificationResult;
-import com.theokanning.openai.file.File;
-import com.theokanning.openai.finetune.FineTuneRequest;
-import com.theokanning.openai.finetune.FineTuneEvent;
-import com.theokanning.openai.finetune.FineTuneResult;
-import com.theokanning.openai.search.SearchRequest;
-import okhttp3.*;
 import com.theokanning.openai.completion.CompletionRequest;
 import com.theokanning.openai.completion.CompletionResult;
 import com.theokanning.openai.engine.Engine;
+import com.theokanning.openai.file.File;
+import com.theokanning.openai.finetune.FineTuneEvent;
+import com.theokanning.openai.finetune.FineTuneRequest;
+import com.theokanning.openai.finetune.FineTuneResult;
+import com.theokanning.openai.search.SearchRequest;
 import com.theokanning.openai.search.SearchResult;
+import okhttp3.*;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.jackson.JacksonConverterFactory;
@@ -66,6 +68,10 @@ public class OpenAiService {
 
     public ClassificationResult createClassification(ClassificationRequest request) {
         return api.createClassification(request).blockingGet();
+    }
+
+    public AnswerResult createAnswer(AnswerRequest request) {
+        return api.createAnswer(request).blockingGet();
     }
 
     public List<File> listFiles() {
