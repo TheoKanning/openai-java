@@ -11,8 +11,7 @@ import java.util.List;
  * A request for OpenAi to generate a predicted completion for a prompt.
  * All fields are nullable.
  *
- * Documentation taken from
- * https://beta.openai.com/docs/api-reference/create-completion
+ * https://beta.openai.com/docs/api-reference/completions/create
  */
 @Builder
 @NoArgsConstructor
@@ -41,7 +40,7 @@ public class CompletionRequest {
      * What sampling temperature to use. Higher values means the model will take more risks.
      * Try 0.9 for more creative applications, and 0 (argmax sampling) for ones with a well-defined answer.
      *
-     * We generally recommend using this or {@link top_p} but not both.
+     * We generally recommend using this or {@link CompletionRequest#topP} but not both.
      */
     Double temperature;
 
@@ -50,7 +49,7 @@ public class CompletionRequest {
      * the tokens with top_p probability mass. So 0.1 means only the tokens comprising the top 10% probability mass are
      * considered.
      *
-     * We generally recommend using this or {@link temperature} but not both.
+     * We generally recommend using this or {@link CompletionRequest#temperature} but not both.
      */
     Double topP;
 
@@ -58,7 +57,7 @@ public class CompletionRequest {
      * How many completions to generate for each prompt.
      *
      * Because this parameter generates many completions, it can quickly consume your token quota.
-     * Use carefully and ensure that you have reasonable settings for {@link max_tokens} and {@link stop}.
+     * Use carefully and ensure that you have reasonable settings for {@link CompletionRequest#maxTokens} and {@link CompletionRequest#stop}.
      */
     Integer n;
 
@@ -105,7 +104,7 @@ public class CompletionRequest {
      * (the one with the lowest log probability per token).
      * Results cannot be streamed.
      *
-     * When used with {@link n}, best_of controls the number of candidate completions and n specifies how many to return,
+     * When used with {@link CompletionRequest#n}, best_of controls the number of candidate completions and n specifies how many to return,
      * best_of must be greater than n.
      */
     Integer bestOf;

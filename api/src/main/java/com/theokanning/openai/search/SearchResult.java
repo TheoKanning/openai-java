@@ -5,7 +5,7 @@ import lombok.Data;
 /**
  * A search result for a single document.
  *
- * https://beta.openai.com/docs/api-reference/search
+ * https://beta.openai.com/docs/api-reference/searches
  */
 @Data
 public class SearchResult {
