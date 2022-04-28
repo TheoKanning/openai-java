@@ -6,8 +6,7 @@ on:
       - '[0-9]+.[0-9]+.[0-9]+'
 
 jobs:
-  build:
-
+  publish:
     runs-on: ubuntu-latest
 
     steps:
@@ -20,6 +19,8 @@ jobs:
 
     - name: Test
       run: ./gradlew test
+      env:
+        OPENAI_TOKEN: ${{ secrets.OPENAI_TOKEN }}
 
     - name: Publish
       run: ./gradlew build publish
@@ -27,4 +28,4 @@ jobs:
         ORG_GRADLE_PROJECT_mavenCentralUsername: ${{ secrets.SONATYPE_NEXUS_USERNAME }}
         ORG_GRADLE_PROJECT_mavenCentralPassword: ${{ secrets.SONATYPE_NEXUS_PASSWORD }}
         ORG_GRADLE_PROJECT_signingInMemoryKey: ${{ secrets.SIGNING_KEY }}
-        ORG_GRADLE_PROJECT_signingInMemoeryKeyPassword: ${{ secrets.SIGNING_KEY_PASSWORD }}
+        ORG_GRADLE_PROJECT_signingInMemoryKeyPassword: ${{ secrets.SIGNING_KEY_PASSWORD }}
