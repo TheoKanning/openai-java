@@ -33,7 +33,20 @@ public class OpenAiService {
 
     OpenAiApi api;
 
+    /**
+     * Creates a new OpenAiService that wraps OpenAiApi
+     * @param token OpenAi token string "sk-XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
+     */
     public OpenAiService(String token) {
+        this(token, 10);
+    }
+
+    /**
+     * Creates a new OpenAiService that wraps OpenAiApi
+     * @param token OpenAi token string "sk-XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
+     * @param timeout http read timeout in seconds, 0 means no timeout
+     */
+    public OpenAiService(String token, int timeout) {
         ObjectMapper mapper = new ObjectMapper();
         mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
@@ -42,6 +55,7 @@ public class OpenAiService {
         OkHttpClient client = new OkHttpClient.Builder()
                 .addInterceptor(new AuthenticationInterceptor(token))
                 .connectionPool(new ConnectionPool(5, 1, TimeUnit.SECONDS))
+                .readTimeout(timeout, TimeUnit.SECONDS)
                 .build();
 
         Retrofit retrofit = new Retrofit.Builder()
@@ -51,7 +65,15 @@ public class OpenAiService {
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .build();
 
-        api = retrofit.create(OpenAiApi.class);
+        this.api = retrofit.create(OpenAiApi.class);
+    }
+
+    /**
+     * Creates a new OpenAiService that wraps OpenAiApi
+     * @param api OpenAiApi instance to use for all methods
+     */
+    public OpenAiService(OpenAiApi api) {
+        this.api = api;
     }
 
     public List<Engine> getEngines() {
