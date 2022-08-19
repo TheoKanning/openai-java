@@ -23,6 +23,7 @@ class OpenAiApiExample {
         CompletionRequest completionRequest = CompletionRequest.builder()
                 .prompt("Somebody once told me the world is gonna roll me")
                 .echo(true)
+                .user("testing")
                 .build();
         service.createCompletion("ada", completionRequest).getChoices().forEach(System.out::println);
 
