@@ -9,6 +9,7 @@ import java.util.List;
  * <
  * https://beta.openai.com/docs/api-reference/classifications/create
  */
+@Deprecated
 @Data
 public class ClassificationResult {
 

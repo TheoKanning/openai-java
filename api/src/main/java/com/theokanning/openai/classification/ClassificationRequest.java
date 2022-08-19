@@ -12,6 +12,7 @@ import java.util.Map;
  * Documentation taken from
  * https://beta.openai.com/docs/api-reference/classifications/create
  */
+@Deprecated
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
