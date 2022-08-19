@@ -15,6 +15,8 @@ import com.theokanning.openai.file.File;
 import com.theokanning.openai.finetune.FineTuneEvent;
 import com.theokanning.openai.finetune.FineTuneRequest;
 import com.theokanning.openai.finetune.FineTuneResult;
+import com.theokanning.openai.moderation.ModerationRequest;
+import com.theokanning.openai.moderation.ModerationResult;
 import com.theokanning.openai.search.SearchRequest;
 import com.theokanning.openai.search.SearchResult;
 import io.reactivex.Single;
@@ -35,6 +37,9 @@ public interface OpenAiApi {
 
     @POST("/v1/engines/{engine_id}/edits")
     Single<EditResult> createEdit(@Path("engine_id") String engineId, @Body EditRequest request);
+
+    @POST("/v1/engines/{engine_id}/embeddings")
+    Single<EmbeddingResult> createEmbeddings(@Path("engine_id") String engineId, @Body EmbeddingRequest request);
 
     @POST("/v1/engines/{engine_id}/search")
     Single<OpenAiResponse<SearchResult>> search(@Path("engine_id") String engineId, @Body SearchRequest request);
@@ -79,8 +84,6 @@ public interface OpenAiApi {
     @DELETE("/v1/models/{fine_tune_id}")
     Single<DeleteResult> deleteFineTune(@Path("fine_tune_id") String fineTuneId);
 
-    @POST("/v1/engines/{engine_id}/embeddings")
-    Single<EmbeddingResult> createEmbeddings(@Path("engine_id") String engineId, @Body EmbeddingRequest request);
-
-
+    @POST("/v1/moderations")
+    Single<ModerationResult> createModeration(@Body ModerationRequest request);
 }
