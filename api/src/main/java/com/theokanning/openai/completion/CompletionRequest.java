@@ -108,4 +108,9 @@ public class CompletionRequest {
      * best_of must be greater than n.
      */
     Integer bestOf;
+
+    /**
+     * A unique identifier representing your end-user, which will help OpenAI to monitor and detect abuse.
+     */
+    String user;
 }

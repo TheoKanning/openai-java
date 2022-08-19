@@ -19,6 +19,7 @@ public class CompletionTest {
         CompletionRequest completionRequest = CompletionRequest.builder()
                 .prompt("Somebody once told me the world is gonna roll me")
                 .echo(true)
+                .user("testing")
                 .build();
 
         List<CompletionChoice> choices = service.createCompletion("ada", completionRequest).getChoices();
