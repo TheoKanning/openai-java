@@ -26,4 +26,9 @@ public class EditResult {
      * A list of generated edits.
      */
     List<EditChoice> choices;
+
+    /**
+     * The API usage for this request
+     */
+    EditUsage usage;
 }

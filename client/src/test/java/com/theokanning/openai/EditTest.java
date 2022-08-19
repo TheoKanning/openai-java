@@ -2,12 +2,10 @@ package com.theokanning.openai;
 
 import com.theokanning.openai.edit.EditRequest;
 import com.theokanning.openai.edit.EditResult;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-@Disabled // disabled until edit example CURL works
 public class EditTest {
 
     String token = System.getenv("OPENAI_TOKEN");
@@ -20,8 +18,8 @@ public class EditTest {
                 .instruction("Fix the spelling mistakes")
                 .build();
 
-        EditResult result = service.createEdit("text-ada-001", request);
+        EditResult result = service.createEdit("text-davinci-edit-001", request);
 
-        assertEquals("What day of the week is it?", result.getChoices().get(0).getText());
+        assertNotNull(result.getChoices().get(0).getText());
     }
 }

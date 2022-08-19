@@ -1,9 +1,7 @@
 package com.theokanning.openai.edit;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.*;
 
 /**
  * Given a prompt and an instruction, OpenAi will return an edited version of the prompt
@@ -25,7 +23,13 @@ public class EditRequest {
      * The instruction that tells the model how to edit the prompt.
      * For example, "Fix the spelling mistakes"
      */
+    @NonNull
     String instruction;
+
+    /**
+     * How many edits to generate for the input and instruction.
+     */
+    Integer n;
 
     /**
      * What sampling temperature to use. Higher values means the model will take more risks. Try 0.9 for more creative applications, and 0 (argmax sampling) for ones with a well-defined answer.
@@ -39,5 +43,6 @@ public class EditRequest {
      *
      * We generally recommend altering this or {@link EditRequest#temperature} but not both.
      */
+    @JsonProperty("top_p")
     Double topP;
 }
