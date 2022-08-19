@@ -12,12 +12,13 @@ as well as an example project using the client.
 - [Engines](https://beta.openai.com/docs/api-reference/engines)
 - [Completions](https://beta.openai.com/docs/api-reference/completions)
 - [Edits](https://beta.openai.com/docs/api-reference/edits)
+- [Embeddings](https://beta.openai.com/docs/api-reference/embeddings)
 - [Searches](https://beta.openai.com/docs/api-reference/searches)
 - [Classifications](https://beta.openai.com/docs/api-reference/classifications)
 - [Answers](https://beta.openai.com/docs/api-reference/answers)
 - [Files](https://beta.openai.com/docs/api-reference/files)
 - [Fine-tunes](https://beta.openai.com/docs/api-reference/fine-tunes)
-- [Embeddings](https://beta.openai.com/docs/api-reference/embeddings)
+- [Moderations](https://beta.openai.com/docs/api-reference/moderations)
 
 ## Usage
 

@@ -19,6 +19,8 @@ import com.theokanning.openai.file.File;
 import com.theokanning.openai.finetune.FineTuneEvent;
 import com.theokanning.openai.finetune.FineTuneRequest;
 import com.theokanning.openai.finetune.FineTuneResult;
+import com.theokanning.openai.moderation.ModerationRequest;
+import com.theokanning.openai.moderation.ModerationResult;
 import com.theokanning.openai.search.SearchRequest;
 import com.theokanning.openai.search.SearchResult;
 import okhttp3.*;
@@ -92,6 +94,10 @@ public class OpenAiService {
         return api.createEdit(engineId, request).blockingGet();
     }
 
+    public EmbeddingResult createEmbeddings(String engineId, EmbeddingRequest request) {
+        return api.createEmbeddings(engineId, request).blockingGet();
+    }
+
     public List<SearchResult> search(String engineId, SearchRequest request) {
         return api.search(engineId, request).blockingGet().data;
     }
@@ -153,7 +159,7 @@ public class OpenAiService {
         return api.deleteFineTune(fineTuneId).blockingGet();
     }
 
-    public EmbeddingResult createEmbeddings(String engineId, EmbeddingRequest request) {
-        return api.createEmbeddings(engineId, request).blockingGet();
+    public ModerationResult createModeration(ModerationRequest request) {
+        return api.createModeration(request).blockingGet();
     }
 }
