@@ -98,18 +98,6 @@ public class OpenAiService {
         return api.createEmbeddings(engineId, request).blockingGet();
     }
 
-    public List<SearchResult> search(String engineId, SearchRequest request) {
-        return api.search(engineId, request).blockingGet().data;
-    }
-
-    public ClassificationResult createClassification(ClassificationRequest request) {
-        return api.createClassification(request).blockingGet();
-    }
-
-    public AnswerResult createAnswer(AnswerRequest request) {
-        return api.createAnswer(request).blockingGet();
-    }
-
     public List<File> listFiles() {
         return api.listFiles().blockingGet().data;
     }
@@ -161,5 +149,20 @@ public class OpenAiService {
 
     public ModerationResult createModeration(ModerationRequest request) {
         return api.createModeration(request).blockingGet();
+    }
+
+    @Deprecated
+    public AnswerResult createAnswer(AnswerRequest request) {
+        return api.createAnswer(request).blockingGet();
+    }
+
+    @Deprecated
+    public ClassificationResult createClassification(ClassificationRequest request) {
+        return api.createClassification(request).blockingGet();
+    }
+
+    @Deprecated
+    public List<SearchResult> search(String engineId, SearchRequest request) {
+        return api.search(engineId, request).blockingGet().data;
     }
 }

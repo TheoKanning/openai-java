@@ -9,6 +9,7 @@ import java.util.List;
  *
  * https://beta.openai.com/docs/api-reference/answers/create
  */
+@Deprecated
 @Data
 public class AnswerResult {
     /**

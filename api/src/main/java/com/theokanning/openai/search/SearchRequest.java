@@ -14,6 +14,7 @@ import java.util.List;
  *
  * https://beta.openai.com/docs/api-reference/searches
  */
+@Deprecated
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor

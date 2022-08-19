@@ -3,9 +3,6 @@ package example;
 import com.theokanning.openai.OpenAiService;
 import com.theokanning.openai.completion.CompletionRequest;
 import com.theokanning.openai.engine.Engine;
-import com.theokanning.openai.search.SearchRequest;
-
-import java.util.Arrays;
 
 class OpenAiApiExample {
     public static void main(String... args) {
@@ -26,12 +23,5 @@ class OpenAiApiExample {
                 .user("testing")
                 .build();
         service.createCompletion("ada", completionRequest).getChoices().forEach(System.out::println);
-
-        System.out.println("\nSearching documents...");
-        SearchRequest searchRequest = SearchRequest.builder()
-                .documents(Arrays.asList("Water", "Earth", "Electricity", "Fire"))
-                .query("Pikachu")
-                .build();
-        service.search("ada", searchRequest).forEach(System.out::println);
     }
 }

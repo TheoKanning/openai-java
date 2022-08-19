@@ -13,6 +13,7 @@ import java.util.Map;
  * Documentation taken from
  * https://beta.openai.com/docs/api-reference/answers/create
  */
+@Deprecated
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor

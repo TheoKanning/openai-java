@@ -7,6 +7,7 @@ import lombok.Data;
  *
  * https://beta.openai.com/docs/api-reference/searches
  */
+@Deprecated
 @Data
 public class SearchResult {
     /**

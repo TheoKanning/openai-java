@@ -41,15 +41,6 @@ public interface OpenAiApi {
     @POST("/v1/engines/{engine_id}/embeddings")
     Single<EmbeddingResult> createEmbeddings(@Path("engine_id") String engineId, @Body EmbeddingRequest request);
 
-    @POST("/v1/engines/{engine_id}/search")
-    Single<OpenAiResponse<SearchResult>> search(@Path("engine_id") String engineId, @Body SearchRequest request);
-
-    @POST("v1/classifications")
-    Single<ClassificationResult> createClassification(@Body ClassificationRequest request);
-
-    @POST("v1/answers")
-    Single<AnswerResult> createAnswer(@Body AnswerRequest request);
-
     @GET("/v1/files")
     Single<OpenAiResponse<File>> listFiles();
 
@@ -86,4 +77,16 @@ public interface OpenAiApi {
 
     @POST("/v1/moderations")
     Single<ModerationResult> createModeration(@Body ModerationRequest request);
+
+    @Deprecated
+    @POST("v1/answers")
+    Single<AnswerResult> createAnswer(@Body AnswerRequest request);
+
+    @Deprecated
+    @POST("v1/classifications")
+    Single<ClassificationResult> createClassification(@Body ClassificationRequest request);
+
+    @Deprecated
+    @POST("/v1/engines/{engine_id}/search")
+    Single<OpenAiResponse<SearchResult>> search(@Path("engine_id") String engineId, @Body SearchRequest request);
 }
