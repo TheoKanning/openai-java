@@ -7,6 +7,7 @@ import lombok.Data;
  *
  * https://beta.openai.com/docs/api-reference/retrieve-engine
  */
+@Deprecated
 @Data
 public class Engine {
     /**

@@ -1,5 +1,6 @@
 package com.theokanning.openai.finetune;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 
 import java.util.List;
@@ -83,7 +84,8 @@ public class FineTuneRequest {
      *
      * This parameter is required for multiclass classification.
      */
-    Integer classificationNClasses; // todo verify snake case
+    @JsonProperty("classification_n_classes")
+    Integer classificationNClasses;
 
     /**
      * The positive class in binary classification.

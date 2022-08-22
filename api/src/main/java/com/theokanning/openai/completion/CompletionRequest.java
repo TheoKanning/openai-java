@@ -20,7 +20,8 @@ import java.util.List;
 public class CompletionRequest {
 
     /**
-     * The name of the model to use, only used if specifying a fine tuned model.
+     * The name of the model to use.
+     * Required if specifying a fine tuned model or if using the new v1/completions endpoint.
      */
     String model;
 

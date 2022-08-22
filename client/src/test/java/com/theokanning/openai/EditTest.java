@@ -14,6 +14,19 @@ public class EditTest {
     @Test
     void edit() {
         EditRequest request = EditRequest.builder()
+                .model("text-davinci-edit-001")
+                .input("What day of the wek is it?")
+                .instruction("Fix the spelling mistakes")
+                .build();
+
+        EditResult result = service.createEdit( request);
+
+        assertNotNull(result.getChoices().get(0).getText());
+    }
+
+    @Test
+    void editDeprecated() {
+        EditRequest request = EditRequest.builder()
                 .input("What day of the wek is it?")
                 .instruction("Fix the spelling mistakes")
                 .build();

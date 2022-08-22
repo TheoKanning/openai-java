@@ -17,6 +17,19 @@ public class CompletionTest {
     @Test
     void createCompletion() {
         CompletionRequest completionRequest = CompletionRequest.builder()
+                .model("ada")
+                .prompt("Somebody once told me the world is gonna roll me")
+                .echo(true)
+                .user("testing")
+                .build();
+
+        List<CompletionChoice> choices = service.createCompletion(completionRequest).getChoices();
+        assertFalse(choices.isEmpty());
+    }
+
+    @Test
+    void createCompletionDeprecated() {
+        CompletionRequest completionRequest = CompletionRequest.builder()
                 .prompt("Somebody once told me the world is gonna roll me")
                 .echo(true)
                 .user("testing")
