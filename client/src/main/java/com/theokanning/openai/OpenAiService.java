@@ -19,6 +19,7 @@ import com.theokanning.openai.file.File;
 import com.theokanning.openai.finetune.FineTuneEvent;
 import com.theokanning.openai.finetune.FineTuneRequest;
 import com.theokanning.openai.finetune.FineTuneResult;
+import com.theokanning.openai.model.Model;
 import com.theokanning.openai.moderation.ModerationRequest;
 import com.theokanning.openai.moderation.ModerationResult;
 import com.theokanning.openai.search.SearchRequest;
@@ -78,22 +79,40 @@ public class OpenAiService {
         this.api = api;
     }
 
-    public List<Engine> getEngines() {
-        return api.getEngines().blockingGet().data;
+    public List<Model> listModels() {
+        return api.listModels().blockingGet().data;
     }
 
-    public Engine getEngine(String engineId) {
-        return api.getEngine(engineId).blockingGet();
+    public Model getModel(String modelId) {
+        return api.getModel(modelId).blockingGet();
     }
 
+    public CompletionResult createCompletion(CompletionRequest request) {
+        return api.createCompletion(request).blockingGet();
+    }
+
+    /** Use {@link OpenAiService#createCompletion(CompletionRequest)} and {@link CompletionRequest#model}instead */
+    @Deprecated
     public CompletionResult createCompletion(String engineId, CompletionRequest request) {
         return api.createCompletion(engineId, request).blockingGet();
     }
 
+    public EditResult createEdit(EditRequest request) {
+        return api.createEdit(request).blockingGet();
+    }
+
+    /** Use {@link OpenAiService#createEdit(EditRequest)} and {@link EditRequest#model}instead */
+    @Deprecated
     public EditResult createEdit(String engineId, EditRequest request) {
         return api.createEdit(engineId, request).blockingGet();
     }
 
+    public EmbeddingResult createEmbeddings(EmbeddingRequest request) {
+        return api.createEmbeddings(request).blockingGet();
+    }
+
+    /** Use {@link OpenAiService#createEmbeddings(EmbeddingRequest)} and {@link EmbeddingRequest#model}instead */
+    @Deprecated
     public EmbeddingResult createEmbeddings(String engineId, EmbeddingRequest request) {
         return api.createEmbeddings(engineId, request).blockingGet();
     }
@@ -149,6 +168,16 @@ public class OpenAiService {
 
     public ModerationResult createModeration(ModerationRequest request) {
         return api.createModeration(request).blockingGet();
+    }
+
+    @Deprecated
+    public List<Engine> getEngines() {
+        return api.getEngines().blockingGet().data;
+    }
+
+    @Deprecated
+    public Engine getEngine(String engineId) {
+        return api.getEngine(engineId).blockingGet();
     }
 
     @Deprecated

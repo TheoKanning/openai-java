@@ -15,20 +15,20 @@ public class EditResult {
     /**
      * The type of object returned, should be "edit"
      */
-    String object;
+    public String object;
 
     /**
      * The creation time in epoch milliseconds.
      */
-    long created;
+    public long created;
 
     /**
      * A list of generated edits.
      */
-    List<EditChoice> choices;
+    public List<EditChoice> choices;
 
     /**
      * The API usage for this request
      */
-    EditUsage usage;
+    public EditUsage usage;
 }

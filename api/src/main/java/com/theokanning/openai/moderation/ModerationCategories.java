@@ -14,21 +14,21 @@ import java.util.List;
 @Data
 public class ModerationCategories {
 
-    boolean hate;
+    public boolean hate;
 
     @JsonProperty("hate/threatening")
-    boolean hateThreatening;
+    public boolean hateThreatening;
 
     @JsonProperty("self-harm")
-    boolean selfHarm;
+    public boolean selfHarm;
 
-    boolean sexual;
+    public boolean sexual;
 
     @JsonProperty("sexual/minors")
-    boolean sexualMinors;
+    public boolean sexualMinors;
 
-    boolean violence;
+    public boolean violence;
 
     @JsonProperty("violence/graphic")
-    boolean violenceGraphic;
+    public boolean violenceGraphic;
 }

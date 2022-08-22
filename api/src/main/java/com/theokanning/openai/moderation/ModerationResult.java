@@ -14,15 +14,15 @@ public class ModerationResult {
     /**
      * A unique id assigned to this moderation.
      */
-    String id;
+    public String id;
 
     /**
      * The GPT-3 model used.
      */
-    String model;
+    public String model;
 
     /**
      * A list of moderation scores.
      */
-    List<Moderation> results;
+    public List<Moderation> results;
 }
