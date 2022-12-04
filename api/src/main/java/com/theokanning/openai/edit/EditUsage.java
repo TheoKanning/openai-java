@@ -5,9 +5,12 @@ import lombok.Data;
 /**
  * An object containing the API usage for an edit request
  *
+ * Deprecated, use {@link com.theokanning.openai.Usage} instead
+ *
  * https://beta.openai.com/docs/api-reference/edits/create
  */
 @Data
+@Deprecated
 public class EditUsage {
 
     /**

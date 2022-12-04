@@ -1,5 +1,6 @@
 package com.theokanning.openai.edit;
 
+import com.theokanning.openai.Usage;
 import lombok.Data;
 
 import java.util.List;
@@ -30,5 +31,5 @@ public class EditResult {
     /**
      * The API usage for this request
      */
-    public EditUsage usage;
+    public Usage usage;
 }

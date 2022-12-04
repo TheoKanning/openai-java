@@ -1,5 +1,6 @@
 package com.theokanning.openai.embedding;
 
+import com.theokanning.openai.Usage;
 import lombok.Data;
 
 import java.util.List;
@@ -26,4 +27,9 @@ public class EmbeddingResult {
      * A list of the calculated embeddings
      */
     List<Embedding> data;
+
+    /**
+     * The API usage for this request
+     */
+    Usage usage;
 }
