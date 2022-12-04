@@ -41,12 +41,13 @@ or
 ### Using OpenAiService
 If you're looking for the fastest solution, import the `client` and use [OpenAiService](client/src/main/java/com/theokanning/openai/OpenAiService.java).
 ```
-OpenAiService service = new OpenAiService(your_token)
+OpenAiService service = new OpenAiService("your_token");
 CompletionRequest completionRequest = CompletionRequest.builder()
         .prompt("Somebody once told me the world is gonna roll me")
+        .model("ada")
         .echo(true)
         .build();
-service.createCompletion("ada", completionRequest).getChoices().forEach(System.out::println);
+service.createCompletion( completionRequest).getChoices().forEach(System.out::println);
 ```
 
 ### Using OpenAiApi Retrofit client
