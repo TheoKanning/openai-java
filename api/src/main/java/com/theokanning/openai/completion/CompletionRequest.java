@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * A request for OpenAi to generate a predicted completion for a prompt.
@@ -109,6 +110,15 @@ public class CompletionRequest {
      * best_of must be greater than n.
      */
     Integer bestOf;
+
+    /**
+     * Modify the likelihood of specified tokens appearing in the completion.
+     *
+     * Maps tokens (specified by their token ID in the GPT tokenizer) to an associated bias value from -100 to 100.
+     *
+     * https://beta.openai.com/docs/api-reference/completions/create#completions/create-logit_bias
+     */
+    Map<String, Integer> logitBias;
 
     /**
      * A unique identifier representing your end-user, which will help OpenAI to monitor and detect abuse.

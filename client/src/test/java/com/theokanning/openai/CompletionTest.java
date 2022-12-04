@@ -4,6 +4,7 @@ import com.theokanning.openai.completion.CompletionChoice;
 import com.theokanning.openai.completion.CompletionRequest;
 import org.junit.jupiter.api.Test;
 
+import java.util.HashMap;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -21,6 +22,7 @@ public class CompletionTest {
                 .prompt("Somebody once told me the world is gonna roll me")
                 .echo(true)
                 .user("testing")
+                .logitBias(new HashMap<>())
                 .build();
 
         List<CompletionChoice> choices = service.createCompletion(completionRequest).getChoices();
