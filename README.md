@@ -47,7 +47,7 @@ CompletionRequest completionRequest = CompletionRequest.builder()
         .model("ada")
         .echo(true)
         .build();
-service.createCompletion( completionRequest).getChoices().forEach(System.out::println);
+service.createCompletion(completionRequest).getChoices().forEach(System.out::println);
 ```
 
 ### Using OpenAiApi Retrofit client
