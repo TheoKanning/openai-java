@@ -1,5 +1,6 @@
 package com.theokanning.openai.completion;
 
+import com.theokanning.openai.Usage;
 import lombok.Data;
 
 import java.util.List;
@@ -35,4 +36,9 @@ public class CompletionResult {
      * A list of generated completions.
      */
     List<CompletionChoice> choices;
+
+    /**
+     * The API usage for this request
+     */
+    Usage usage;
 }
