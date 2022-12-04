@@ -3,8 +3,8 @@ apply plugin: "com.vanniktech.maven.publish"
 
 dependencies {
     implementation 'com.fasterxml.jackson.core:jackson-annotations:2.9.0'
-    compileOnly 'org.projectlombok:lombok:1.18.12'
-    annotationProcessor 'org.projectlombok:lombok:1.18.12'
+    compileOnly 'org.projectlombok:lombok:1.18.24'
+    annotationProcessor 'org.projectlombok:lombok:1.18.24'
 }
 
 compileJava {
