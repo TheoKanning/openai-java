@@ -1,9 +1,5 @@
 package com.theokanning.openai;
 
-import com.theokanning.openai.answer.AnswerRequest;
-import com.theokanning.openai.answer.AnswerResult;
-import com.theokanning.openai.classification.ClassificationRequest;
-import com.theokanning.openai.classification.ClassificationResult;
 import com.theokanning.openai.completion.CompletionRequest;
 import com.theokanning.openai.completion.CompletionResult;
 import com.theokanning.openai.edit.EditRequest;
@@ -18,8 +14,6 @@ import com.theokanning.openai.finetune.FineTuneResult;
 import com.theokanning.openai.model.Model;
 import com.theokanning.openai.moderation.ModerationRequest;
 import com.theokanning.openai.moderation.ModerationResult;
-import com.theokanning.openai.search.SearchRequest;
-import com.theokanning.openai.search.SearchResult;
 import io.reactivex.Single;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
@@ -98,16 +92,4 @@ public interface OpenAiApi {
     @Deprecated
     @GET("/v1/engines/{engine_id}")
     Single<Engine> getEngine(@Path("engine_id") String engineId);
-
-    @Deprecated
-    @POST("v1/answers")
-    Single<AnswerResult> createAnswer(@Body AnswerRequest request);
-
-    @Deprecated
-    @POST("v1/classifications")
-    Single<ClassificationResult> createClassification(@Body ClassificationRequest request);
-
-    @Deprecated
-    @POST("/v1/engines/{engine_id}/search")
-    Single<OpenAiResponse<SearchResult>> search(@Path("engine_id") String engineId, @Body SearchRequest request);
 }

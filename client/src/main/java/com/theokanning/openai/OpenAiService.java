@@ -4,10 +4,6 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
-import com.theokanning.openai.answer.AnswerRequest;
-import com.theokanning.openai.answer.AnswerResult;
-import com.theokanning.openai.classification.ClassificationRequest;
-import com.theokanning.openai.classification.ClassificationResult;
 import com.theokanning.openai.completion.CompletionRequest;
 import com.theokanning.openai.completion.CompletionResult;
 import com.theokanning.openai.edit.EditRequest;
@@ -22,8 +18,6 @@ import com.theokanning.openai.finetune.FineTuneResult;
 import com.theokanning.openai.model.Model;
 import com.theokanning.openai.moderation.ModerationRequest;
 import com.theokanning.openai.moderation.ModerationResult;
-import com.theokanning.openai.search.SearchRequest;
-import com.theokanning.openai.search.SearchResult;
 import okhttp3.*;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
@@ -38,6 +32,7 @@ public class OpenAiService {
 
     /**
      * Creates a new OpenAiService that wraps OpenAiApi
+     *
      * @param token OpenAi token string "sk-XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
      */
     public OpenAiService(String token) {
@@ -46,7 +41,8 @@ public class OpenAiService {
 
     /**
      * Creates a new OpenAiService that wraps OpenAiApi
-     * @param token OpenAi token string "sk-XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
+     *
+     * @param token   OpenAi token string "sk-XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
      * @param timeout http read timeout in seconds, 0 means no timeout
      */
     public OpenAiService(String token, int timeout) {
@@ -73,6 +69,7 @@ public class OpenAiService {
 
     /**
      * Creates a new OpenAiService that wraps OpenAiApi
+     *
      * @param api OpenAiApi instance to use for all methods
      */
     public OpenAiService(OpenAiApi api) {
@@ -91,7 +88,9 @@ public class OpenAiService {
         return api.createCompletion(request).blockingGet();
     }
 
-    /** Use {@link OpenAiService#createCompletion(CompletionRequest)} and {@link CompletionRequest#model}instead */
+    /**
+     * Use {@link OpenAiService#createCompletion(CompletionRequest)} and {@link CompletionRequest#model}instead
+     */
     @Deprecated
     public CompletionResult createCompletion(String engineId, CompletionRequest request) {
         return api.createCompletion(engineId, request).blockingGet();
@@ -101,7 +100,9 @@ public class OpenAiService {
         return api.createEdit(request).blockingGet();
     }
 
-    /** Use {@link OpenAiService#createEdit(EditRequest)} and {@link EditRequest#model}instead */
+    /**
+     * Use {@link OpenAiService#createEdit(EditRequest)} and {@link EditRequest#model}instead
+     */
     @Deprecated
     public EditResult createEdit(String engineId, EditRequest request) {
         return api.createEdit(engineId, request).blockingGet();
@@ -111,7 +112,9 @@ public class OpenAiService {
         return api.createEmbeddings(request).blockingGet();
     }
 
-    /** Use {@link OpenAiService#createEmbeddings(EmbeddingRequest)} and {@link EmbeddingRequest#model}instead */
+    /**
+     * Use {@link OpenAiService#createEmbeddings(EmbeddingRequest)} and {@link EmbeddingRequest#model}instead
+     */
     @Deprecated
     public EmbeddingResult createEmbeddings(String engineId, EmbeddingRequest request) {
         return api.createEmbeddings(engineId, request).blockingGet();
@@ -178,20 +181,5 @@ public class OpenAiService {
     @Deprecated
     public Engine getEngine(String engineId) {
         return api.getEngine(engineId).blockingGet();
-    }
-
-    @Deprecated
-    public AnswerResult createAnswer(AnswerRequest request) {
-        return api.createAnswer(request).blockingGet();
-    }
-
-    @Deprecated
-    public ClassificationResult createClassification(ClassificationRequest request) {
-        return api.createClassification(request).blockingGet();
-    }
-
-    @Deprecated
-    public List<SearchResult> search(String engineId, SearchRequest request) {
-        return api.search(engineId, request).blockingGet().data;
     }
 }
