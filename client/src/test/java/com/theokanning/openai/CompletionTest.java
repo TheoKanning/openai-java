@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 import java.util.HashMap;
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
 
@@ -21,12 +22,14 @@ public class CompletionTest {
                 .model("ada")
                 .prompt("Somebody once told me the world is gonna roll me")
                 .echo(true)
+                .n(5)
+                .maxTokens(50)
                 .user("testing")
                 .logitBias(new HashMap<>())
                 .build();
 
         List<CompletionChoice> choices = service.createCompletion(completionRequest).getChoices();
-        assertFalse(choices.isEmpty());
+        assertEquals(5, choices.size());
     }
 
     @Test
