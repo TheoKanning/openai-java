@@ -11,6 +11,9 @@ import com.theokanning.openai.file.File;
 import com.theokanning.openai.finetune.FineTuneEvent;
 import com.theokanning.openai.finetune.FineTuneRequest;
 import com.theokanning.openai.finetune.FineTuneResult;
+import com.theokanning.openai.image.CreateImageEditRequest;
+import com.theokanning.openai.image.CreateImageRequest;
+import com.theokanning.openai.image.ImageResult;
 import com.theokanning.openai.model.Model;
 import com.theokanning.openai.moderation.ModerationRequest;
 import com.theokanning.openai.moderation.ModerationResult;
@@ -81,6 +84,15 @@ public interface OpenAiApi {
 
     @DELETE("/v1/models/{fine_tune_id}")
     Single<DeleteResult> deleteFineTune(@Path("fine_tune_id") String fineTuneId);
+
+    @POST("/v1/images/generations")
+    Single<ImageResult> createImage(@Body CreateImageRequest request);
+
+    @POST("/v1/images/edits")
+    Single<ImageResult> createImageEdit(@Body RequestBody requestBody);
+
+    @POST("/v1/images/variations")
+    Single<ImageResult> createImageVariation(@Body RequestBody requestBody);
 
     @POST("/v1/moderations")
     Single<ModerationResult> createModeration(@Body ModerationRequest request);

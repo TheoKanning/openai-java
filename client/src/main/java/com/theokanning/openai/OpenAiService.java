@@ -15,6 +15,7 @@ import com.theokanning.openai.file.File;
 import com.theokanning.openai.finetune.FineTuneEvent;
 import com.theokanning.openai.finetune.FineTuneRequest;
 import com.theokanning.openai.finetune.FineTuneResult;
+import com.theokanning.openai.image.*;
 import com.theokanning.openai.model.Model;
 import com.theokanning.openai.moderation.ModerationRequest;
 import com.theokanning.openai.moderation.ModerationResult;
@@ -167,6 +168,62 @@ public class OpenAiService {
 
     public DeleteResult deleteFineTune(String fineTuneId) {
         return api.deleteFineTune(fineTuneId).blockingGet();
+    }
+
+    public ImageResult createImage(CreateImageRequest request) {
+        return api.createImage(request).blockingGet();
+    }
+
+    public ImageResult createImageEdit(CreateImageEditRequest request, String imagePath, String maskPath) {
+        java.io.File image = new java.io.File(imagePath);
+        java.io.File mask = null;
+        if (maskPath != null) {
+            mask = new java.io.File(maskPath);
+        }
+        return createImageEdit(request, image, mask);
+    }
+
+    public ImageResult createImageEdit(CreateImageEditRequest request, java.io.File image, java.io.File mask) {
+        RequestBody imageBody = RequestBody.create(MediaType.parse("image"), image);
+
+        MultipartBody.Builder builder = new MultipartBody.Builder()
+                .setType(MediaType.get("multipart/form-data"))
+                .addFormDataPart("prompt", request.getPrompt())
+                .addFormDataPart("size", request.getSize())
+                .addFormDataPart("response_format", request.getResponseFormat())
+                .addFormDataPart("image", "image", imageBody);
+
+        if (request.getN() != null) {
+            builder.addFormDataPart("n", request.getN().toString());
+        }
+
+        if (mask != null) {
+            RequestBody maskBody = RequestBody.create(MediaType.parse("image"), mask);
+            builder.addFormDataPart("mask", "mask", maskBody);
+        }
+
+        return api.createImageEdit(builder.build()).blockingGet();
+    }
+
+    public ImageResult createImageVariation(CreateImageVariationRequest request, String imagePath) {
+        java.io.File image = new java.io.File(imagePath);
+        return createImageVariation(request, image);
+    }
+
+    public ImageResult createImageVariation(CreateImageVariationRequest request, java.io.File image) {
+        RequestBody imageBody = RequestBody.create(MediaType.parse("image"), image);
+
+        MultipartBody.Builder builder = new MultipartBody.Builder()
+                .setType(MediaType.get("multipart/form-data"))
+                .addFormDataPart("size", request.getSize())
+                .addFormDataPart("response_format", request.getResponseFormat())
+                .addFormDataPart("image", "image", imageBody);
+
+        if (request.getN() != null) {
+            builder.addFormDataPart("n", request.getN().toString());
+        }
+
+        return api.createImageVariation(builder.build()).blockingGet();
     }
 
     public ModerationResult createModeration(ModerationRequest request) {
