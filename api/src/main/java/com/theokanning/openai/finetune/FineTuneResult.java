@@ -6,7 +6,7 @@ import lombok.Data;
 import java.util.List;
 
 /**
- * An object describing an fine-tuned model. Returned by multiple fine-tune requests.
+ * An object describing a fine-tuned model. Returned by multiple fine-tune requests.
  *
  * https://beta.openai.com/docs/api-reference/fine-tunes
  */
