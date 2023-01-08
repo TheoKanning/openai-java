@@ -1,10 +1,5 @@
 ![Maven Central](https://img.shields.io/maven-central/v/com.theokanning.openai-gpt3-java/client?color=blue)
 
-> ⚠️The [Answers](https://help.openai.com/en/articles/6233728-answers-transition-guide), 
->[Classifications](https://help.openai.com/en/articles/6272941-classifications-transition-guide), 
->and [Searches](https://help.openai.com/en/articles/6272952-search-transition-guide) APIs are deprecated, 
->and will stop working on December 3rd, 2022.
-
 > ⚠️OpenAI has deprecated all Engine-based APIs. See [Deprecated Endpoints](https://github.com/TheoKanning/openai-java#deprecated-endpoints) below for more info.
 
 # OpenAI-Java
@@ -23,12 +18,10 @@ as well as an example project using the client.
 - [Embeddings](https://beta.openai.com/docs/api-reference/embeddings)
 - [Files](https://beta.openai.com/docs/api-reference/files)
 - [Fine-tunes](https://beta.openai.com/docs/api-reference/fine-tunes)
+- [Images](https://beta.openai.com/docs/api-reference/images)
 - [Moderations](https://beta.openai.com/docs/api-reference/moderations)
 
 #### Deprecated by OpenAI
-- [Searches](https://beta.openai.com/docs/api-reference/searches)
-- [Classifications](https://beta.openai.com/docs/api-reference/classifications)
-- [Answers](https://beta.openai.com/docs/api-reference/answers)
 - [Engines](https://beta.openai.com/docs/api-reference/engines)
 
 ## Usage
