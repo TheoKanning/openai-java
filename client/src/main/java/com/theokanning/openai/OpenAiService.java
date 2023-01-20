@@ -28,6 +28,7 @@ import java.time.Duration;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+import static java.time.Duration.from;
 import static java.time.Duration.ofSeconds;
 
 public class OpenAiService {
@@ -72,25 +73,50 @@ public class OpenAiService {
      *
      * @param token   OpenAi token string "sk-XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
      * @param timeout http read timeout, Duration.ZERO means no timeout
+     * @param orgId   specify which organization is used for an API request
+     */
+    public OpenAiService(final String token, final Duration timeout, final String orgId) {
+        this(token, BASE_URL, timeout, orgId);
+    }
+
+    /**
+     * Creates a new OpenAiService that wraps OpenAiApi
+     *
+     * @param token   OpenAi token string "sk-XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
+     * @param baseUrl OpenAi API URL
+     * @param timeout http read timeout, Duration.ZERO means no timeout
      */
     public OpenAiService(final String token, final String baseUrl, final Duration timeout) {
+        this(token, baseUrl, timeout, null);
+    }
+
+    /**
+     * Creates a new OpenAiService that wraps OpenAiApi
+     *
+     * @param token   OpenAi token string "sk-XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
+     * @param baseUrl OpenAi API URL
+     * @param timeout http read timeout, Duration.ZERO means no timeout
+     * @param orgId   specify which organization is used for an API request
+     */
+    public OpenAiService(final String token, final String baseUrl, final Duration timeout, final String orgId) {
         ObjectMapper mapper = new ObjectMapper();
         mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
         mapper.setPropertyNamingStrategy(PropertyNamingStrategy.SNAKE_CASE);
 
         OkHttpClient client = new OkHttpClient.Builder()
-                .addInterceptor(new AuthenticationInterceptor(token))
-                .connectionPool(new ConnectionPool(5, 1, TimeUnit.SECONDS))
-                .readTimeout(timeout.toMillis(), TimeUnit.MILLISECONDS)
-                .build();
+            .addInterceptor(new AuthenticationInterceptor(token))
+            .addInterceptor(new OrganizationInterceptor(orgId))
+            .connectionPool(new ConnectionPool(5, 1, TimeUnit.SECONDS))
+            .readTimeout(timeout.toMillis(), TimeUnit.MILLISECONDS)
+            .build();
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(baseUrl)
-                .client(client)
-                .addConverterFactory(JacksonConverterFactory.create(mapper))
-                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-                .build();
+            .baseUrl(baseUrl)
+            .client(client)
+            .addConverterFactory(JacksonConverterFactory.create(mapper))
+            .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+            .build();
 
         this.api = retrofit.create(OpenAiApi.class);
     }
