@@ -3,3 +3,9 @@ rootProject.name = 'openai-java'
 include 'api'
 include 'client'
 include 'example'
+
+dependencyResolutionManagement {
+    repositories {
+        mavenCentral()
+    }
+}

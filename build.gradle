@@ -1,18 +1,8 @@
-buildscript {
-    repositories {
-        mavenCentral()
-    }
-
-    dependencies {
-        classpath 'com.vanniktech:gradle-maven-publish-plugin:0.19.0'
-    }
+plugins {
+    id "com.vanniktech.maven.publish" version "0.19.0" apply false
 }
 
 allprojects {
-    repositories {
-        mavenCentral()
-    }
-
     plugins.withId("com.vanniktech.maven.publish") {
         mavenPublish {
             sonatypeHost = "S01"
