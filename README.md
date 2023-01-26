@@ -31,6 +31,25 @@ as well as an example project using the client.
 or   
 `implementation 'com.theokanning.openai-gpt3-java:client:<version>'`
 
+### Importing into a Maven project
+```xml
+   <dependency>
+    <groupId>com.theokanning.openai-gpt3-java</groupId>
+    <artifactId>api</artifactId>
+    <version>version</version>       
+   </dependency>
+```
+
+or 
+
+```xml
+   <dependency>
+    <groupId>com.theokanning.openai-gpt3-java</groupId>
+    <artifactId>client</artifactId>
+    <version>version</version>       
+   </dependency>
+```
+
 ### Using OpenAiService
 If you're looking for the fastest solution, import the `client` and use [OpenAiService](client/src/main/java/com/theokanning/openai/OpenAiService.java).
 ```
