@@ -2,6 +2,7 @@ package example;
 
 import com.theokanning.openai.OpenAiService;
 import com.theokanning.openai.completion.CompletionRequest;
+import com.theokanning.openai.image.CreateImageRequest;
 
 class OpenAiApiExample {
     public static void main(String... args) {
@@ -16,5 +17,13 @@ class OpenAiApiExample {
                 .user("testing")
                 .build();
         service.createCompletion(completionRequest).getChoices().forEach(System.out::println);
+
+        System.out.println("\nCreating Image...");
+        CreateImageRequest request = CreateImageRequest.builder()
+                .prompt("A cow breakdancing with a turtle")
+                .build();
+
+        System.out.println("\nImage is located at:");
+        System.out.println(service.createImage(request).getData().get(0).getUrl());
     }
 }
