@@ -71,9 +71,11 @@ public class OpenAiService {
      * Creates a new OpenAiService that wraps OpenAiApi
      *
      * @param token   OpenAi token string "sk-XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
-     * @param timeout http read timeout, Duration.ZERO means no timeout
+     * @param timeout http read timeout, Duration.ZERO means no timeout, Duration cannot be negative
      */
     public OpenAiService(final String token, final String baseUrl, final Duration timeout) {
+        if(token == null || baseUrl == null || timeout == null) return;
+        if(timeout.isNegative()) return;
         ObjectMapper mapper = new ObjectMapper();
         mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
