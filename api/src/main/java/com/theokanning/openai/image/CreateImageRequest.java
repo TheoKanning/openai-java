@@ -1,5 +1,7 @@
 package com.theokanning.openai.image;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import lombok.*;
 
 /**
@@ -33,6 +35,7 @@ public class CreateImageRequest {
     /**
      * The format in which the generated images are returned. Must be one of url or b64_json. Defaults to url.
      */
+    @JsonProperty("response_format")
     String responseFormat;
 
     /**
