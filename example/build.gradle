@@ -6,5 +6,5 @@ application {
 }
 
 dependencies {
-    implementation project(":client")
+    implementation project(":service")
 }

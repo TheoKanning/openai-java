@@ -12,7 +12,7 @@ public class EditTest {
     OpenAiService service = new OpenAiService(token);
 
     @Test
-    void edit() throws OpenAiHttpException {
+    void edit() {
         EditRequest request = EditRequest.builder()
                 .model("text-davinci-edit-001")
                 .input("What day of the wek is it?")
