@@ -1,6 +1,6 @@
 package example;
 
-import com.theokanning.openai.OpenAiService;
+import com.theokanning.openai.service.OpenAiService;
 import com.theokanning.openai.completion.CompletionRequest;
 import com.theokanning.openai.image.CreateImageRequest;
 
@@ -15,6 +15,7 @@ class OpenAiApiExample {
                 .prompt("Somebody once told me the world is gonna roll me")
                 .echo(true)
                 .user("testing")
+                .n(3)
                 .build();
         service.createCompletion(completionRequest).getChoices().forEach(System.out::println);
 
