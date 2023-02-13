@@ -6,10 +6,11 @@
 Java libraries for using OpenAI's GPT-3 api.
 
 Includes the following artifacts:
-- `api` : request/response POJOs for the GPT-3 engine, completion, and search APIs.
+- `api` : request/response POJOs for the GPT-3 APIs.
 - `client` : a basic retrofit client for the GPT-3 endpoints, includes the `api` module
+- `service` : A basic service class that creates and calls the client. This is the easiest way to get started.
 
-as well as an example project using the client.
+as well as an example project using the service.
 
 ## Supported APIs
 - [Models](https://beta.openai.com/docs/api-reference/models)
@@ -24,34 +25,34 @@ as well as an example project using the client.
 #### Deprecated by OpenAI
 - [Engines](https://beta.openai.com/docs/api-reference/engines)
 
+## Importing
+
+### Gradle
+`implementation 'com.theokanning.openai-gpt3-java:<api|client|service>:<version>'`
+
+### Maven
+```xml
+   <dependency>
+    <groupId>com.theokanning.openai-gpt3-java</groupId>
+    <artifactId>{api|client|service}</artifactId>
+    <version>version</version>       
+   </dependency>
+```
+
 ## Usage
+### Data classes only
+If you want to make your own client, just import the POJOs from the `api` module.
+Your client will need to use snake case to work with the OpenAI API.
 
-### Importing into a gradle project
-`implementation 'com.theokanning.openai-gpt3-java:api:<version>'`  
-or   
-`implementation 'com.theokanning.openai-gpt3-java:client:<version>'`
+### Retrofit client
+If you're using retrofit, you can import the `client` module and use the [OpenAiApi](client/src/main/java/com/theokanning/openai/OpenAiApi.java).  
+You'll have to add your auth token as a header (see [AuthenticationInterceptor](client/src/main/java/com/theokanning/openai/AuthenticationInterceptor.java))
+and set your converter factory to use snake case and only include non-null fields.
 
-### Importing into a Maven project
-```xml
-   <dependency>
-    <groupId>com.theokanning.openai-gpt3-java</groupId>
-    <artifactId>api</artifactId>
-    <version>version</version>       
-   </dependency>
-```
+### OpenAiService
+If you're looking for the fastest solution, import the `service` module and use [OpenAiService](client/src/main/java/com/theokanning/openai/OpenAiService.java).  
 
-or 
-
-```xml
-   <dependency>
-    <groupId>com.theokanning.openai-gpt3-java</groupId>
-    <artifactId>client</artifactId>
-    <version>version</version>       
-   </dependency>
-```
-
-### Using OpenAiService
-If you're looking for the fastest solution, import the `client` and use [OpenAiService](client/src/main/java/com/theokanning/openai/OpenAiService.java).
+> ⚠️The OpenAiService in the client module is deprecated, please switch to the new version in the service module.
 ```
 OpenAiService service = new OpenAiService("your_token");
 CompletionRequest completionRequest = CompletionRequest.builder()
@@ -62,14 +63,23 @@ CompletionRequest completionRequest = CompletionRequest.builder()
 service.createCompletion(completionRequest).getChoices().forEach(System.out::println);
 ```
 
-### Using OpenAiApi Retrofit client
-If you're using retrofit, you can import the `client` module and use the [OpenAiApi](client/src/main/java/com/theokanning/openai/OpenAiApi.java).  
-You'll have to add your auth token as a header (see [AuthenticationInterceptor](client/src/main/java/com/theokanning/openai/AuthenticationInterceptor.java))
-and set your converter factory to use snake case and only include non-null fields.
+### Customizing OpenAiService
+If you need to customize OpenAiService, create your own Retrofit client and pass it in to the constructor.
+For example, do the following to add request logging (after adding the logging gradle dependency):
+```
+ObjectMapper mapper = defaultObjectMapper();
+OkHttpClient client = defaultClient(token, timeout)
+        .newBuilder()
+        .interceptor(HttpLoggingInterceptor())
+        .build();
+Retrofit retrofit = defaultRetrofit(client, mapper);
 
-### Using data classes only
-If you want to make your own client, just import the POJOs from the `api` module.  
-Your client will need to use snake case to work with the OpenAI API.
+OpenAiApi api = retrofit.create(OpenAiApi.class);
+OpenAiService service = new OpenAiService(api);
+```
+
+
+
 
 ## Running the example project
 All the [example](example/src/main/java/example/OpenAiApiExample.java) project requires is your OpenAI api token
