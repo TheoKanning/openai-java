@@ -1,5 +1,6 @@
 ![Maven Central](https://img.shields.io/maven-central/v/com.theokanning.openai-gpt3-java/client?color=blue)
 
+> ⚠️ Please switch to using the new 'service' library if you need to use OpenAiService. The old 'client' OpenAiService is deprecated as of 0.10.0.  
 > ⚠️OpenAI has deprecated all Engine-based APIs. See [Deprecated Endpoints](https://github.com/TheoKanning/openai-java#deprecated-endpoints) below for more info.
 
 # OpenAI-Java
