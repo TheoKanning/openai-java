@@ -124,4 +124,5 @@ public class CompletionRequest {
      * A unique identifier representing your end-user, which will help OpenAI to monitor and detect abuse.
      */
     String user;
+
 }

@@ -1,5 +1,4 @@
 apply plugin: 'java-library'
-apply plugin: "com.vanniktech.maven.publish"
 
 dependencies {
     api project(":client")
@@ -19,3 +18,4 @@ compileJava {
 test {
     useJUnitPlatform()
 }
+

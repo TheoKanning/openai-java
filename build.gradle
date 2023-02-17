@@ -3,19 +3,59 @@ buildscript {
         mavenCentral()
     }
 
-    dependencies {
-        classpath 'com.vanniktech:gradle-maven-publish-plugin:0.19.0'
-    }
+//    dependencies {
+//        classpath 'com.vanniktech:gradle-maven-publish-plugin:0.19.0'
+//    }
 }
 
 allprojects {
+    apply plugin: 'java'
+    apply plugin: 'java-library'
+
+    compileJava {
+        sourceCompatibility = '1.8'
+        targetCompatibility = '1.8'
+    }
+
     repositories {
         mavenCentral()
     }
 
-    plugins.withId("com.vanniktech.maven.publish") {
-        mavenPublish {
-            sonatypeHost = "S01"
+    group = 'com.theokanning.openai-gpt3-java'
+    version = '0.12.0'
+
+    task sourcesJar(type: Jar, dependsOn: classes) {
+        classifier = 'sources'
+        from sourceSets.main.allSource
+    }
+
+    [compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
+
+    artifacts {
+        archives sourcesJar
+    }
+
+    apply plugin: 'maven-publish'
+
+    publishing {
+        publications {
+            maven(MavenPublication) {
+                groupId = "$project.group"
+                artifactId = "$artifactId"
+                version = "$project.version"
+                from components.java
+            }
+        }
+        repositories {
+            maven {
+                //认证用户和密码
+                credentials{
+                    username = ""
+                    password = ""
+                }
+                //指定要上传的maven私服仓库
+                url "https://packages.aliyun.com/maven/repository/2137731-release-WXgfEj"
+            }
         }
     }
 }
