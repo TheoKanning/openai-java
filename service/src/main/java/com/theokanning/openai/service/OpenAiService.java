@@ -1,6 +1,7 @@
 package com.theokanning.openai.service;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
@@ -25,6 +26,8 @@ import com.theokanning.openai.image.ImageResult;
 import com.theokanning.openai.model.Model;
 import com.theokanning.openai.moderation.ModerationRequest;
 import com.theokanning.openai.moderation.ModerationResult;
+import com.theokanning.openai.service.event.OkSse;
+import com.theokanning.openai.service.event.ServerSentEvent;
 import io.reactivex.Single;
 import okhttp3.*;
 import retrofit2.HttpException;
@@ -43,7 +46,10 @@ public class OpenAiService {
     private static final Duration DEFAULT_TIMEOUT = Duration.ofSeconds(10);
     private static final ObjectMapper errorMapper = defaultObjectMapper();
 
-    private final OpenAiApi api;
+    private OpenAiApi api;
+
+    private OkHttpClient client;
+
 
     /**
      * Creates a new OpenAiService that wraps OpenAiApi
@@ -61,7 +67,9 @@ public class OpenAiService {
      * @param timeout http read timeout, Duration.ZERO means no timeout
      */
     public OpenAiService(final String token, final Duration timeout) {
-        this(buildApi(token, timeout));
+        this.client = defaultClient(token, timeout);
+        OpenAiApi api = buildApi(client);
+        init(api);
     }
 
     /**
@@ -71,6 +79,10 @@ public class OpenAiService {
      * @param api OpenAiApi instance to use for all methods
      */
     public OpenAiService(final OpenAiApi api) {
+        init(api);
+    }
+
+    public void init(final OpenAiApi api){
         this.api = api;
     }
 
@@ -84,6 +96,16 @@ public class OpenAiService {
 
     public CompletionResult createCompletion(CompletionRequest request) {
         return execute(api.createCompletion(request));
+    }
+
+    public ServerSentEvent createCompletionStream(CompletionRequest completionRequest, ServerSentEvent.Listener listener) throws JsonProcessingException {
+        completionRequest.setStream(true);
+        String requestBody = errorMapper.writeValueAsString(completionRequest);
+        RequestBody body = RequestBody.create(MediaType.get("application/json"), requestBody);
+
+        Request request = new Request.Builder().url(BASE_URL + "/v1/completions")
+                .post(body).build();
+        return new OkSse(client).newServerSentEvent(request, listener);
     }
 
     public EditResult createEdit(EditRequest request) {
@@ -225,11 +247,9 @@ public class OpenAiService {
         }
     }
 
-    public static OpenAiApi buildApi(String token, Duration timeout) {
+    public static OpenAiApi buildApi(OkHttpClient client) {
         ObjectMapper mapper = defaultObjectMapper();
-        OkHttpClient client = defaultClient(token, timeout);
         Retrofit retrofit = defaultRetrofit(client, mapper);
-
         return retrofit.create(OpenAiApi.class);
     }
 
