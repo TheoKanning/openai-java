@@ -1,13 +1,14 @@
 package example;
 
-import com.theokanning.openai.service.OpenAiService;
 import com.theokanning.openai.completion.CompletionRequest;
 import com.theokanning.openai.image.CreateImageRequest;
+import com.theokanning.openai.service.OpenAiService;
 import com.theokanning.openai.service.event.ServerSentEvent;
+import lombok.extern.slf4j.Slf4j;
 import okhttp3.Request;
 import okhttp3.Response;
 
-
+@Slf4j
 class OpenAiApiExample {
 
     public static void main(String... args) throws Exception {
@@ -22,35 +23,37 @@ class OpenAiApiExample {
                 .user("testing")
                 .n(3)
                 .build();
-        service.createCompletion(completionRequest).getChoices().forEach(System.out::println);
+        var result = service.createCompletion(completionRequest);
+        result.getChoices().forEach(System.out::println);
 
         ServerSentEvent.Listener listener = new ServerSentEvent.Listener(){
 
             @Override
             public void onOpen(ServerSentEvent sse, Response response) {
-                System.out.println("response:" + response.message());
+                log.info("response:{}", response.message());
             }
 
             @Override
             public void onMessage(ServerSentEvent sse, String id, String event, String message) {
-                System.out.println("event:" + event + ",message:" + message + ",id:" + id);
+                log.info("event:{},message:{},id:{}", event, message,id);
             }
 
             @Override
             public void onComment(ServerSentEvent sse, String comment) {
-                System.out.println("comment:" + comment);
+                log.info("comment:{}", comment);
 
             }
 
             @Override
             public boolean onRetryTime(ServerSentEvent sse, long milliseconds) {
-                System.out.println("milliseconds:" + milliseconds);
+                log.warn("milliseconds:{}",milliseconds);
                 return false;
             }
 
             @Override
             public boolean onRetryError(ServerSentEvent sse, Throwable throwable, Response response) {
-                System.out.println("throwable:" + throwable.getMessage() + throwable);
+                log.error("throwable:", throwable);
+                log.warn("throwable:{}", response.message());
                 return false;
             }
 
@@ -64,6 +67,7 @@ class OpenAiApiExample {
                 return null;
             }
         };
+        completionRequest.setN(1);
         ServerSentEvent sse = service.createCompletionStream(completionRequest, listener);
 
         System.out.println("\nCreating Image...");

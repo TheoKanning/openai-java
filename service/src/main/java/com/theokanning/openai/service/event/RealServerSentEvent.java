@@ -162,7 +162,8 @@ class RealServerSentEvent implements ServerSentEvent {
             try {
                 String line = source.readUtf8LineStrict();
                 processLine(line);
-            } catch (IOException e) {
+            }
+            catch (IOException e) {
                 notifyFailure(e, null);
                 return false;
             }
@@ -182,7 +183,7 @@ class RealServerSentEvent implements ServerSentEvent {
         }
 
         private void processLine(String line) {
-            //log("Sse read line: " + line);
+            //log.info("Sse read line: " + line);
             if (line == null || line.isEmpty()) { // If the line is empty (a blank line). Dispatch the event.
                 dispatchEvent();
                 return;
@@ -214,6 +215,9 @@ class RealServerSentEvent implements ServerSentEvent {
             String dataString = data.toString();
             if (dataString.endsWith("\n")) {
                 dataString = dataString.substring(0, dataString.length() - 1);
+            }
+            if("[DONE]".equals(dataString)){
+                RealServerSentEvent.this.close();
             }
             listener.onMessage(RealServerSentEvent.this, lastEventId, eventName, dataString);
             data.setLength(0);
