@@ -98,12 +98,12 @@ public class OpenAiService {
         return execute(api.createCompletion(request));
     }
 
-    public ServerSentEvent createCompletionStream(CompletionRequest completionRequest, ServerSentEvent.Listener listener) throws JsonProcessingException {
+    public ServerSentEvent createCompletionStream(CompletionRequest completionRequest, ServerSentEvent.Listener listener) throws Exception {
         completionRequest.setStream(true);
         String requestBody = errorMapper.writeValueAsString(completionRequest);
         RequestBody body = RequestBody.create(MediaType.get("application/json"), requestBody);
 
-        Request request = new Request.Builder().url(BASE_URL + "/v1/completions")
+        Request request = new Request.Builder().url(BASE_URL + "v1/completions")
                 .post(body).build();
         return new OkSse(client).newServerSentEvent(request, listener);
     }
