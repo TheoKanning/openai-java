@@ -1,7 +1,9 @@
 package com.theokanning.openai.completion.chat;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * <p>Each object has a role (either “system”, “user”, or “assistant”) and content (the content of the message). Conversations can be as short as 1 message or fill many pages.</p>
@@ -14,9 +16,14 @@ import lombok.Data;
  * see <a href="https://platform.openai.com/docs/guides/chat/introduction">OpenAi documentation</a>
  */
 @Data
-@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class ChatMessage {
 
-	ChatMessageRole role;
+	/**
+	 * Must be either 'system', 'user', or 'assistant'.<br>
+	 * You may use {@link ChatMessageRole} enum.
+	 */
+	String role;
 	String content;
 }

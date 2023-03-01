@@ -21,11 +21,7 @@ class ChatCompletionTest {
     @Test
     void createChatCompletion() {
         final List<ChatMessage> messages = new ArrayList<>();  // java version agnostic
-        final ChatMessage systemMessage = ChatMessage
-                .builder()
-                .role(ChatMessageRole.SYSTEM)
-                .content("You are a dog and will speak as such")
-                .build();
+        final ChatMessage systemMessage = new ChatMessage(ChatMessageRole.SYSTEM.value(), "You are a dog and will speak as such.");
         messages.add(systemMessage);
 
         ChatCompletionRequest chatCompletionRequest = ChatCompletionRequest

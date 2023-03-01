@@ -2,6 +2,7 @@ package com.theokanning.openai.completion;
 
 import com.theokanning.openai.Usage;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.List;
 

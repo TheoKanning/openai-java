@@ -12,32 +12,28 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class ChatCompletionTest {
-	
-	String token = System.getenv("OPENAI_TOKEN");
-	OpenAiService service = new OpenAiService(token);
 
-	@Test
-	void createChatCompletion() {
-		final List<ChatMessage> messages = new ArrayList<>();
-		final ChatMessage systemMessage = ChatMessage
-				.builder()
-				.role(ChatMessageRole.SYSTEM)
-				.content("You are a dog and will speak as such")
-				.build();
-		messages.add(systemMessage);
+    String token = System.getenv("OPENAI_TOKEN");
+    OpenAiService service = new OpenAiService(token);
 
-		ChatCompletionRequest chatCompletionRequest = ChatCompletionRequest
-				.builder()
-				.model("gpt-3.5-turbo")
-				.messages(messages)
-				.n(5)
-				.maxTokens(50)
-				.logitBias(new HashMap<>())
-				.build();
+    @Test
+    void createChatCompletion() {
+        final List<ChatMessage> messages = new ArrayList<>();
+        final ChatMessage systemMessage = new ChatMessage(ChatMessageRole.SYSTEM.value(), "You are a dog and will speak as such.");
+        messages.add(systemMessage);
 
-		List<ChatCompletionChoice> choices = service.createChatCompletion(chatCompletionRequest).getChoices();
-		assertEquals(5, choices.size());
+        ChatCompletionRequest chatCompletionRequest = ChatCompletionRequest
+                .builder()
+                .model("gpt-3.5-turbo")
+                .messages(messages)
+                .n(5)
+                .maxTokens(50)
+                .logitBias(new HashMap<>())
+                .build();
 
-	}
+        List<ChatCompletionChoice> choices = service.createChatCompletion(chatCompletionRequest).getChoices();
+        assertEquals(5, choices.size());
+
+    }
 
 }
