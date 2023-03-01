@@ -1,0 +1,43 @@
+package com.theokanning.openai.service;
+import com.theokanning.openai.completion.chat.ChatCompletionChoice;
+import com.theokanning.openai.completion.chat.ChatCompletionRequest;
+import com.theokanning.openai.completion.chat.ChatMessage;
+import com.theokanning.openai.completion.chat.ChatMessageRole;
+import org.junit.jupiter.api.Test;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+class ChatCompletionTest {
+	
+	String token = System.getenv("OPENAI_TOKEN");
+	OpenAiService service = new OpenAiService(token);
+
+	@Test
+	void createChatCompletion() {
+		final List<ChatMessage> messages = new ArrayList<>();
+		final ChatMessage systemMessage = ChatMessage
+				.builder()
+				.role(ChatMessageRole.SYSTEM)
+				.content("You are a dog and will speak as such")
+				.build();
+		messages.add(systemMessage);
+
+		ChatCompletionRequest chatCompletionRequest = ChatCompletionRequest
+				.builder()
+				.model("gpt-3.5-turbo")
+				.messages(messages)
+				.n(5)
+				.maxTokens(50)
+				.logitBias(new HashMap<>())
+				.build();
+
+		List<ChatCompletionChoice> choices = service.createChatCompletion(chatCompletionRequest).getChoices();
+		assertEquals(5, choices.size());
+
+	}
+
+}

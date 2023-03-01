@@ -1,5 +1,6 @@
 package com.theokanning.openai.completion.chat;
 
+import lombok.Builder;
 import lombok.Data;
 
 /**
@@ -13,6 +14,7 @@ import lombok.Data;
  * see <a href="https://platform.openai.com/docs/guides/chat/introduction">OpenAi documentation</a>
  */
 @Data
+@Builder
 public class ChatMessage {
 
 	ChatMessageRole role;

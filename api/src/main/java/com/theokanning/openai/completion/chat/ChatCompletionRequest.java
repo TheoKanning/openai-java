@@ -1,12 +1,14 @@
 package com.theokanning.openai.completion.chat;
 
+import lombok.Builder;
 import lombok.Data;
 
 import java.util.List;
 import java.util.Map;
 
 @Data
-class ChatCompletionRequest {
+@Builder
+public class ChatCompletionRequest {
 
     /**
      * ID of the model to use. Currently, only gpt-3.5-turbo and gpt-3.5-turbo-0301 are supported.
