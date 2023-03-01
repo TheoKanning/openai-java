@@ -14,17 +14,18 @@ Includes the following artifacts:
 as well as an example project using the service.
 
 ## Supported APIs
-- [Models](https://beta.openai.com/docs/api-reference/models)
-- [Completions](https://beta.openai.com/docs/api-reference/completions)
-- [Edits](https://beta.openai.com/docs/api-reference/edits)
-- [Embeddings](https://beta.openai.com/docs/api-reference/embeddings)
-- [Files](https://beta.openai.com/docs/api-reference/files)
-- [Fine-tunes](https://beta.openai.com/docs/api-reference/fine-tunes)
-- [Images](https://beta.openai.com/docs/api-reference/images)
-- [Moderations](https://beta.openai.com/docs/api-reference/moderations)
+- [Models](https://platform.openai.com/docs/api-reference/models)
+- [Completions](https://platform.openai.com/docs/api-reference/completions)
+- [Chat Completions](https://platform.openai.com/docs/api-reference/chat/create)
+- [Edits](https://platform.openai.com/docs/api-reference/edits)
+- [Embeddings](https://platform.openai.com/docs/api-reference/embeddings)
+- [Files](https://platform.openai.com/docs/api-reference/files)
+- [Fine-tunes](https://platform.openai.com/docs/api-reference/fine-tunes)
+- [Images](https://platform.openai.com/docs/api-reference/images)
+- [Moderations](https://platform.openai.com/docs/api-reference/moderations)
 
 #### Deprecated by OpenAI
-- [Engines](https://beta.openai.com/docs/api-reference/engines)
+- [Engines](https://platform.openai.com/docs/api-reference/engines)
 
 ## Importing
 
