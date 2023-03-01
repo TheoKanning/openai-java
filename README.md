@@ -55,7 +55,7 @@ and set your converter factory to use snake case and only include non-null field
 If you're looking for the fastest solution, import the `service` module and use [OpenAiService](client/src/main/java/com/theokanning/openai/OpenAiService.java).  
 
 > ⚠️The OpenAiService in the client module is deprecated, please switch to the new version in the service module.
-```
+```java
 OpenAiService service = new OpenAiService("your_token");
 CompletionRequest completionRequest = CompletionRequest.builder()
         .prompt("Somebody once told me the world is gonna roll me")
@@ -68,7 +68,8 @@ service.createCompletion(completionRequest).getChoices().forEach(System.out::pri
 ### Customizing OpenAiService
 If you need to customize OpenAiService, create your own Retrofit client and pass it in to the constructor.
 For example, do the following to add request logging (after adding the logging gradle dependency):
-```
+
+```java
 ObjectMapper mapper = defaultObjectMapper();
 OkHttpClient client = defaultClient(token, timeout)
         .newBuilder()
@@ -85,7 +86,7 @@ OpenAiService service = new OpenAiService(api);
 
 ## Running the example project
 All the [example](example/src/main/java/example/OpenAiApiExample.java) project requires is your OpenAI api token
-```
+```bash
 export OPENAI_TOKEN="sk-XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
 ./gradlew example:run
 ```
