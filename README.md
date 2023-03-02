@@ -16,6 +16,7 @@ as well as an example project using the service.
 ## Supported APIs
 - [Models](https://beta.openai.com/docs/api-reference/models)
 - [Completions](https://beta.openai.com/docs/api-reference/completions)
+- [Chat Completions](https://platform.openai.com/docs/api-reference/chat/create)
 - [Edits](https://beta.openai.com/docs/api-reference/edits)
 - [Embeddings](https://beta.openai.com/docs/api-reference/embeddings)
 - [Files](https://beta.openai.com/docs/api-reference/files)
