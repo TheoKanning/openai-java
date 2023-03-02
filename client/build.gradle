@@ -6,6 +6,7 @@ dependencies {
     api 'com.squareup.retrofit2:retrofit:2.9.0'
     implementation 'com.squareup.retrofit2:adapter-rxjava2:2.9.0'
     implementation 'com.squareup.retrofit2:converter-jackson:2.9.0'
+    implementation "com.squareup.okhttp3:logging-interceptor:4.0.1"
 
     testImplementation(platform('org.junit:junit-bom:5.8.2'))
     testImplementation('org.junit.jupiter:junit-jupiter')
@@ -18,4 +19,5 @@ compileJava {
 
 test {
     useJUnitPlatform()
+    testLogging.showStandardStreams = true
 }

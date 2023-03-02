@@ -20,6 +20,7 @@ import com.theokanning.openai.model.Model;
 import com.theokanning.openai.moderation.ModerationRequest;
 import com.theokanning.openai.moderation.ModerationResult;
 import okhttp3.*;
+import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.jackson.JacksonConverterFactory;
@@ -83,8 +84,12 @@ public class OpenAiService {
         mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
         mapper.setPropertyNamingStrategy(PropertyNamingStrategy.SNAKE_CASE);
 
+        HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
+        logging.level(HttpLoggingInterceptor.Level.BODY);
+
         OkHttpClient client = new OkHttpClient.Builder()
                 .addInterceptor(new AuthenticationInterceptor(token))
+                .addInterceptor(logging)
                 .connectionPool(new ConnectionPool(5, 1, TimeUnit.SECONDS))
                 .readTimeout(timeout.toMillis(), TimeUnit.MILLISECONDS)
                 .build();
