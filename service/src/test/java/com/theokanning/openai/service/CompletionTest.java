@@ -1,10 +1,12 @@
 package com.theokanning.openai.service;
 
+import com.theokanning.openai.chat.completion.ChatCompletionRequest;
+import com.theokanning.openai.chat.completion.ChatCompletionResult;
 import com.theokanning.openai.completion.CompletionChoice;
 import com.theokanning.openai.completion.CompletionRequest;
-import com.theokanning.openai.service.OpenAiService;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -31,5 +33,23 @@ public class CompletionTest {
 
         List<CompletionChoice> choices = service.createCompletion(completionRequest).getChoices();
         assertEquals(5, choices.size());
+    }
+
+    @Test
+    void createChatCompletion() {
+        List<ChatCompletionRequest.MessagesDTO> messages= new ArrayList<>();
+        ChatCompletionRequest.MessagesDTO messagesDTO = ChatCompletionRequest.MessagesDTO.builder()
+                .role("user")
+                .content("Hello!")
+                .build();
+        messages.add(messagesDTO);
+
+        final ChatCompletionRequest chatCompletionRequest = ChatCompletionRequest.builder()
+                .model("gpt-3.5-turbo")
+                .messages(messages)
+                .build();
+
+        final List<ChatCompletionResult.ChoicesDTO> choices = service.createChatCompletion(chatCompletionRequest).getChoices();
+        assertFalse(choices.isEmpty());
     }
 }

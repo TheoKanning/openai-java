@@ -1,5 +1,8 @@
 package com.theokanning.openai;
 
+
+import com.theokanning.openai.chat.completion.ChatCompletionRequest;
+import com.theokanning.openai.chat.completion.ChatCompletionResult;
 import com.theokanning.openai.completion.CompletionRequest;
 import com.theokanning.openai.completion.CompletionResult;
 import com.theokanning.openai.edit.EditRequest;
@@ -11,7 +14,6 @@ import com.theokanning.openai.file.File;
 import com.theokanning.openai.finetune.FineTuneEvent;
 import com.theokanning.openai.finetune.FineTuneRequest;
 import com.theokanning.openai.finetune.FineTuneResult;
-import com.theokanning.openai.image.CreateImageEditRequest;
 import com.theokanning.openai.image.CreateImageRequest;
 import com.theokanning.openai.image.ImageResult;
 import com.theokanning.openai.model.Model;
@@ -32,6 +34,9 @@ public interface OpenAiApi {
 
     @POST("/v1/completions")
     Single<CompletionResult> createCompletion(@Body CompletionRequest request);
+
+    @POST("/v1/chat/completions")
+    Single<ChatCompletionResult> createChatCompletion(@Body ChatCompletionRequest request);
 
     @Deprecated
     @POST("/v1/engines/{engine_id}/completions")

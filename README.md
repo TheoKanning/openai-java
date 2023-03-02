@@ -22,6 +22,7 @@ as well as an example project using the service.
 - [Fine-tunes](https://beta.openai.com/docs/api-reference/fine-tunes)
 - [Images](https://beta.openai.com/docs/api-reference/images)
 - [Moderations](https://beta.openai.com/docs/api-reference/moderations)
+- [Chat](https://platform.openai.com/docs/api-reference/chat)(**NEW**!)
 
 #### Deprecated by OpenAI
 - [Engines](https://beta.openai.com/docs/api-reference/engines)
