@@ -8,6 +8,8 @@ import com.theokanning.openai.DeleteResult;
 import com.theokanning.openai.OpenAiApi;
 import com.theokanning.openai.OpenAiError;
 import com.theokanning.openai.OpenAiHttpException;
+import com.theokanning.openai.chat.ChatCompletionRequest;
+import com.theokanning.openai.chat.ChatCompletionResult;
 import com.theokanning.openai.completion.CompletionRequest;
 import com.theokanning.openai.completion.CompletionResult;
 import com.theokanning.openai.edit.EditRequest;
@@ -80,6 +82,10 @@ public class OpenAiService {
 
     public Model getModel(String modelId) {
         return execute(api.getModel(modelId));
+    }
+
+    public ChatCompletionResult createChatCompletion(ChatCompletionRequest request) {
+        return execute(api.createChatCompletion(request));
     }
 
     public CompletionResult createCompletion(CompletionRequest request) {

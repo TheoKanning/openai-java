@@ -4,17 +4,18 @@
 > ⚠️OpenAI has deprecated all Engine-based APIs. See [Deprecated Endpoints](https://github.com/TheoKanning/openai-java#deprecated-endpoints) below for more info.
 
 # OpenAI-Java
-Java libraries for using OpenAI's GPT-3 api.
+Java libraries for using OpenAI's ChatGPT / GPT-3 api.
 
 Includes the following artifacts:
-- `api` : request/response POJOs for the GPT-3 APIs.
-- `client` : a basic retrofit client for the GPT-3 endpoints, includes the `api` module
+- `api` : request/response POJOs for the ChatGPT / GPT-3 APIs.
+- `client` : a basic retrofit client for the ChatGPT / GPT-3 endpoints, includes the `api` module
 - `service` : A basic service class that creates and calls the client. This is the easiest way to get started.
 
 as well as an example project using the service.
 
 ## Supported APIs
 - [Models](https://beta.openai.com/docs/api-reference/models)
+- [Chat](https://platform.openai.com/docs/api-reference/chat/create)
 - [Completions](https://beta.openai.com/docs/api-reference/completions)
 - [Edits](https://beta.openai.com/docs/api-reference/edits)
 - [Embeddings](https://beta.openai.com/docs/api-reference/embeddings)
