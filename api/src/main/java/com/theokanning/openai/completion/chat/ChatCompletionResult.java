@@ -24,6 +24,11 @@ public class ChatCompletionResult {
      * The creation time in epoch seconds.
      */
     long created;
+    
+    /**
+     * The GPT-3.5 model used.
+     */
+    String model;
 
     /**
      * A list of all generated completions.
