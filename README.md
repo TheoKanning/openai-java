@@ -14,17 +14,18 @@ Includes the following artifacts:
 as well as an example project using the service.
 
 ## Supported APIs
-- [Models](https://beta.openai.com/docs/api-reference/models)
-- [Completions](https://beta.openai.com/docs/api-reference/completions)
-- [Edits](https://beta.openai.com/docs/api-reference/edits)
-- [Embeddings](https://beta.openai.com/docs/api-reference/embeddings)
-- [Files](https://beta.openai.com/docs/api-reference/files)
-- [Fine-tunes](https://beta.openai.com/docs/api-reference/fine-tunes)
-- [Images](https://beta.openai.com/docs/api-reference/images)
-- [Moderations](https://beta.openai.com/docs/api-reference/moderations)
+- [Models](https://platform.openai.com/docs/api-reference/models)
+- [Completions](https://platform.openai.com/docs/api-reference/completions)
+- [Chat Completions](https://platform.openai.com/docs/api-reference/chat/create)
+- [Edits](https://platform.openai.com/docs/api-reference/edits)
+- [Embeddings](https://platform.openai.com/docs/api-reference/embeddings)
+- [Files](https://platform.openai.com/docs/api-reference/files)
+- [Fine-tunes](https://platform.openai.com/docs/api-reference/fine-tunes)
+- [Images](https://platform.openai.com/docs/api-reference/images)
+- [Moderations](https://platform.openai.com/docs/api-reference/moderations)
 
 #### Deprecated by OpenAI
-- [Engines](https://beta.openai.com/docs/api-reference/engines)
+- [Engines](https://platform.openai.com/docs/api-reference/engines)
 
 ## Importing
 
@@ -54,7 +55,7 @@ and set your converter factory to use snake case and only include non-null field
 If you're looking for the fastest solution, import the `service` module and use [OpenAiService](client/src/main/java/com/theokanning/openai/OpenAiService.java).  
 
 > ⚠️The OpenAiService in the client module is deprecated, please switch to the new version in the service module.
-```
+```java
 OpenAiService service = new OpenAiService("your_token");
 CompletionRequest completionRequest = CompletionRequest.builder()
         .prompt("Somebody once told me the world is gonna roll me")
@@ -67,7 +68,8 @@ service.createCompletion(completionRequest).getChoices().forEach(System.out::pri
 ### Customizing OpenAiService
 If you need to customize OpenAiService, create your own Retrofit client and pass it in to the constructor.
 For example, do the following to add request logging (after adding the logging gradle dependency):
-```
+
+```java
 ObjectMapper mapper = defaultObjectMapper();
 OkHttpClient client = defaultClient(token, timeout)
         .newBuilder()
@@ -84,7 +86,7 @@ OpenAiService service = new OpenAiService(api);
 
 ## Running the example project
 All the [example](example/src/main/java/example/OpenAiApiExample.java) project requires is your OpenAI api token
-```
+```bash
 export OPENAI_TOKEN="sk-XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
 ./gradlew example:run
 ```
