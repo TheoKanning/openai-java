@@ -38,6 +38,7 @@ public class FineTuneTest {
         FineTuneRequest request = FineTuneRequest.builder()
                 .trainingFile(fileId)
                 .model("ada")
+                .nEpochs(4)
                 .build();
 
         FineTuneResult fineTune = service.createFineTune(request);
