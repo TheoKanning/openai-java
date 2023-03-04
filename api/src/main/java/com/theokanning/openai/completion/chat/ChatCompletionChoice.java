@@ -20,5 +20,5 @@ public class ChatCompletionChoice {
     /**
      * The reason why GPT-3 stopped generating, for example "length".
      */
-    String finishReason;
+    String finish_reason;
 }
