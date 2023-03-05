@@ -52,7 +52,7 @@ You'll have to add your auth token as a header (see [AuthenticationInterceptor](
 and set your converter factory to use snake case and only include non-null fields.
 
 ### OpenAiService
-If you're looking for the fastest solution, import the `service` module and use [OpenAiService](client/src/main/java/com/theokanning/openai/OpenAiService.java).  
+If you're looking for the fastest solution, import the `service` module and use [OpenAiService](service/src/main/java/com/theokanning/openai/service/OpenAiService.java).  
 
 > ⚠️The OpenAiService in the client module is deprecated, please switch to the new version in the service module.
 ```java
