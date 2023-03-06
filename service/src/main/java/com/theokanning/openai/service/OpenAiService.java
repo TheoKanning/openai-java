@@ -67,6 +67,17 @@ public class OpenAiService {
     }
 
     /**
+     * Creates a new OpenAiService that wraps OpenAiApi
+     *
+     * @param token   OpenAi token string "sk-XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
+     * @param baseUrl OpenAi custom baseurl string "https://custom.url/"
+     * @param timeout http read timeout, Duration.ZERO means no timeout
+     */
+    public OpenAiService(final String token, final String baseUrl, final Duration timeout) {
+        this(buildApi(token, baseUrl, timeout));
+    }
+
+    /**
      * Creates a new OpenAiService that wraps OpenAiApi.
      * Use this if you need more customization.
      *
@@ -239,6 +250,14 @@ public class OpenAiService {
         return retrofit.create(OpenAiApi.class);
     }
 
+    public static OpenAiApi buildApi(String token, String baseUrl, Duration timeout) {
+        ObjectMapper mapper = defaultObjectMapper();
+        OkHttpClient client = defaultClient(token, timeout);
+        Retrofit retrofit = defaultRetrofit(client, baseUrl, mapper);
+
+        return retrofit.create(OpenAiApi.class);
+    }
+
     public static ObjectMapper defaultObjectMapper() {
         ObjectMapper mapper = new ObjectMapper();
         mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
@@ -256,8 +275,12 @@ public class OpenAiService {
     }
 
     public static Retrofit defaultRetrofit(OkHttpClient client, ObjectMapper mapper) {
+        return defaultRetrofit(client, BASE_URL, mapper);
+    }
+
+    public static Retrofit defaultRetrofit(OkHttpClient client, String baseUrl, ObjectMapper mapper) {
         return new Retrofit.Builder()
-                .baseUrl(BASE_URL)
+                .baseUrl(baseUrl)
                 .client(client)
                 .addConverterFactory(JacksonConverterFactory.create(mapper))
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
