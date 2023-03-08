@@ -81,6 +81,19 @@ OpenAiApi api = retrofit.create(OpenAiApi.class);
 OpenAiService service = new OpenAiService(api);
 ```
 
+### Adding a Proxy
+To use a proxy, modify the OkHttp client as shown below:
+```java
+ObjectMapper mapper = defaultObjectMapper();
+Proxy proxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress(host, port));
+OkHttpClient client = defaultClient(token, timeout)
+        .newBuilder()
+        .proxy(proxy)
+        .build();
+Retrofit retrofit = defaultRetrofit(client, mapper);
+OpenAiApi api = retrofit.create(OpenAiApi.class);
+OpenAiService service = new OpenAiService(api);
+```
 
 
 
