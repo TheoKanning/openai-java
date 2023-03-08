@@ -16,6 +16,12 @@ import static org.junit.jupiter.api.Assertions.*;
 public class OpenAiServiceTest {
 
     @Test
+    void assertTokenNotNull() {
+        String token = null;
+        assertThrows(NullPointerException.class, () -> new OpenAiService(token));
+    }
+
+    @Test
     void executeHappyPath() {
         CompletionResult expected = new CompletionResult();
         Single<CompletionResult> single = Single.just(expected);

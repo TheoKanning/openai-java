@@ -37,6 +37,7 @@ import retrofit2.converter.jackson.JacksonConverterFactory;
 import java.io.IOException;
 import java.time.Duration;
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 public class OpenAiService {
@@ -232,6 +233,7 @@ public class OpenAiService {
     }
 
     public static OpenAiApi buildApi(String token, Duration timeout) {
+        Objects.requireNonNull(token, "OpenAI token required");
         ObjectMapper mapper = defaultObjectMapper();
         OkHttpClient client = defaultClient(token, timeout);
         Retrofit retrofit = defaultRetrofit(client, mapper);
