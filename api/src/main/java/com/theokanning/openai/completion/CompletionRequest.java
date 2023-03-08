@@ -24,7 +24,7 @@ public class CompletionRequest {
 
     /**
      * The name of the model to use.
-     * Required if specifying a fine tuned model or if using the new v1/completions endpoint.
+     * Required if specifying a fine-tuned model or if using the new v1/completions endpoint.
      */
     String model;
 
