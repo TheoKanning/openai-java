@@ -32,6 +32,11 @@ public class CompletionRequest {
     String prompt;
 
     /**
+     * The suffix that comes after a completion of inserted text.
+     */
+    String suffix;
+
+    /**
      * The maximum number of tokens to generate.
      * Requests can use up to 2048 tokens shared between prompt and completion.
      * (One token is roughly 4 characters for normal English text)

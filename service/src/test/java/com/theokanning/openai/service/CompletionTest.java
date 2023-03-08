@@ -1,13 +1,15 @@
-package com.theokanning.openai;
+package com.theokanning.openai.service;
 
 import com.theokanning.openai.completion.CompletionChoice;
 import com.theokanning.openai.completion.CompletionRequest;
+import com.theokanning.openai.service.OpenAiService;
 import org.junit.jupiter.api.Test;
 
 import java.util.HashMap;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 
 public class CompletionTest {
@@ -29,17 +31,5 @@ public class CompletionTest {
 
         List<CompletionChoice> choices = service.createCompletion(completionRequest).getChoices();
         assertEquals(5, choices.size());
-    }
-
-    @Test
-    void createCompletionDeprecated() {
-        CompletionRequest completionRequest = CompletionRequest.builder()
-                .prompt("Somebody once told me the world is gonna roll me")
-                .echo(true)
-                .user("testing")
-                .build();
-
-        List<CompletionChoice> choices = service.createCompletion("ada", completionRequest).getChoices();
-        assertFalse(choices.isEmpty());
     }
 }
