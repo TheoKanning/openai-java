@@ -8,6 +8,8 @@ import lombok.NoArgsConstructor;
 import java.util.List;
 import java.util.Map;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 /**
  * A request for OpenAi to generate a predicted completion for a prompt.
  * All fields are nullable.
@@ -41,6 +43,7 @@ public class CompletionRequest {
      * Requests can use up to 2048 tokens shared between prompt and completion.
      * (One token is roughly 4 characters for normal English text)
      */
+    @JsonProperty("max_tokens")
     Integer maxTokens;
 
     /**
@@ -58,6 +61,7 @@ public class CompletionRequest {
      *
      * We generally recommend using this or {@link CompletionRequest#temperature} but not both.
      */
+    @JsonProperty("top_p")
     Double topP;
 
     /**
@@ -98,12 +102,14 @@ public class CompletionRequest {
      * Number between 0 and 1 (default 0) that penalizes new tokens based on whether they appear in the text so far.
      * Increases the model's likelihood to talk about new topics.
      */
+    @JsonProperty("presence_penalty")
     Double presencePenalty;
 
     /**
      * Number between 0 and 1 (default 0) that penalizes new tokens based on their existing frequency in the text so far.
      * Decreases the model's likelihood to repeat the same line verbatim.
      */
+    @JsonProperty("frequency_penalty")
     Double frequencyPenalty;
 
     /**
@@ -114,6 +120,7 @@ public class CompletionRequest {
      * When used with {@link CompletionRequest#n}, best_of controls the number of candidate completions and n specifies how many to return,
      * best_of must be greater than n.
      */
+    @JsonProperty("best_of")
     Integer bestOf;
 
     /**
@@ -123,6 +130,7 @@ public class CompletionRequest {
      *
      * https://beta.openai.com/docs/api-reference/completions/create#completions/create-logit_bias
      */
+    @JsonProperty("logit_bias")
     Map<String, Integer> logitBias;
 
     /**
