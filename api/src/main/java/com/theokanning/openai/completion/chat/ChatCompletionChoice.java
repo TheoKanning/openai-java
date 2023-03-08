@@ -1,4 +1,5 @@
 package com.theokanning.openai.completion.chat;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
 /**
@@ -20,5 +21,6 @@ public class ChatCompletionChoice {
     /**
      * The reason why GPT-3 stopped generating, for example "length".
      */
+    @JsonProperty("finish_reason")
     String finishReason;
 }

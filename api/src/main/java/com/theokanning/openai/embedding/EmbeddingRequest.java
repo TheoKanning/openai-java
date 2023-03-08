@@ -26,7 +26,7 @@ public class EmbeddingRequest {
      * To get embeddings for multiple inputs in a single request, pass an array of strings or array of token arrays.
      * Each input must not exceed 2048 tokens in length.
      * <p>
-     * Unless your are embedding code, we suggest replacing newlines (\n) in your input with a single space,
+     * Unless you are embedding code, we suggest replacing newlines (\n) in your input with a single space,
      * as we have observed inferior results when newlines are present.
      */
     @NonNull

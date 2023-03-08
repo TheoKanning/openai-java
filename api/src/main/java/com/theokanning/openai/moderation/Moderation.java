@@ -1,5 +1,6 @@
 package com.theokanning.openai.moderation;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
 /**
@@ -26,5 +27,6 @@ public class Moderation {
      * The value is between 0 and 1, where higher values denote higher confidence.
      * The scores should not be interpreted as probabilities.
      */
+    @JsonProperty("category_scores")
     public ModerationCategoryScores categoryScores;
 }

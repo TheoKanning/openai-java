@@ -1,5 +1,6 @@
 package com.theokanning.openai.finetune;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
 /**
@@ -17,6 +18,7 @@ public class FineTuneEvent {
     /**
      * The creation time in epoch seconds.
      */
+    @JsonProperty("created_at")
     Long createdAt;
 
     /**

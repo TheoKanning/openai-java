@@ -23,7 +23,6 @@ public class OpenAiHttpException extends RuntimeException {
 
     public OpenAiHttpException(OpenAiError error, Exception parent, int statusCode) {
         super(error.error.message, parent);
-        // todo error.error looks dumb
         this.statusCode = statusCode;
         this.code = error.error.code;
         this.param = error.error.param;
