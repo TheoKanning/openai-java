@@ -1,6 +1,7 @@
 package com.theokanning.openai.completion.chat;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.theokanning.openai.IStream;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -13,7 +14,7 @@ import java.util.Map;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class ChatCompletionRequest {
+public class ChatCompletionRequest implements IStream {
 
     /**
      * ID of the model to use. Currently, only gpt-3.5-turbo and gpt-3.5-turbo-0301 are supported.
@@ -94,4 +95,9 @@ public class ChatCompletionRequest {
      * A unique identifier representing your end-user, which will help OpenAI to monitor and detect abuse.
      */
     String user;
+
+    @Override
+    public void setStream(boolean isSSE) {
+        this.stream = isSSE;
+    }
 }

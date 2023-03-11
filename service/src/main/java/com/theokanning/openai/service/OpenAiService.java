@@ -88,7 +88,7 @@ public class OpenAiService {
     public CompletionResult createCompletion(CompletionRequest request) {
         return execute(api.createCompletion(request));
     }
-    
+
     public ChatCompletionResult createChatCompletion(ChatCompletionRequest request) {
         return execute(api.createChatCompletion(request));
     }

@@ -1,5 +1,6 @@
 package com.theokanning.openai.completion;
 
+import com.theokanning.openai.IStream;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -20,7 +21,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
-public class CompletionRequest {
+public class CompletionRequest implements IStream {
 
     /**
      * The name of the model to use.
@@ -137,4 +138,9 @@ public class CompletionRequest {
      * A unique identifier representing your end-user, which will help OpenAI to monitor and detect abuse.
      */
     String user;
+
+    @Override
+    public void setStream(boolean isSSE) {
+        this.stream = isSSE;
+    }
 }

@@ -7,4 +7,5 @@ application {
 
 dependencies {
     implementation project(":service")
+    implementation 'com.squareup.okhttp3:okhttp-sse:4.9.3'
 }
