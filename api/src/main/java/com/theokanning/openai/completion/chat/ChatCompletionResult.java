@@ -16,7 +16,7 @@ public class ChatCompletionResult {
     String id;
 
     /**
-     * The type of object returned, should be "chat.completion"
+     * The type of object returned, should be "chat.completion", or "chat.completion.chunk" for stream request
      */
     String object;
 

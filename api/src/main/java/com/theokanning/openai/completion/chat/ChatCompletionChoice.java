@@ -18,6 +18,8 @@ public class ChatCompletionChoice {
      */
     ChatMessage message;
 
+    ChatMessage delta;
+
     /**
      * The reason why GPT-3 stopped generating, for example "length".
      */

@@ -7,4 +7,8 @@ application {
 
 dependencies {
     implementation project(":service")
+
+    implementation 'com.squareup.okhttp3:okhttp-sse:4.9.3'
+    implementation 'com.squareup.retrofit2:converter-jackson:2.9.0'
+
 }
