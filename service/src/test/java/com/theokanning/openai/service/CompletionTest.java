@@ -8,8 +8,7 @@ import org.junit.jupiter.api.Test;
 import java.util.HashMap;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.*;
 
 
 public class CompletionTest {
@@ -27,9 +26,11 @@ public class CompletionTest {
                 .maxTokens(50)
                 .user("testing")
                 .logitBias(new HashMap<>())
+                .logprobs(5)
                 .build();
 
         List<CompletionChoice> choices = service.createCompletion(completionRequest).getChoices();
         assertEquals(5, choices.size());
+        assertNotNull(choices.get(0).getLogprobs());
     }
 }

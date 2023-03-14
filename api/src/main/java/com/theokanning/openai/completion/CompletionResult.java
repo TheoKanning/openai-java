@@ -2,6 +2,7 @@ package com.theokanning.openai.completion;
 
 import com.theokanning.openai.Usage;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.List;
 
@@ -17,7 +18,7 @@ public class CompletionResult {
      */
     String id;
 
-    /**
+    /**https://beta.openai.com/docs/api-reference/create-completion
      * The type of object returned, should be "text_completion"
      */
     String object;

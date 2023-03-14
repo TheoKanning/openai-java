@@ -31,3 +31,10 @@ hs_err_pid*
 
 # Ignore Gradle build output directory
 build
+
+# VSCode
+.vscode
+
+# Ignore any files in /bin and /obj Folders
+**/bin/*
+**/obj/*

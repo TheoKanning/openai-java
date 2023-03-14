@@ -11,6 +11,8 @@ import com.theokanning.openai.OpenAiError;
 import com.theokanning.openai.OpenAiHttpException;
 import com.theokanning.openai.completion.CompletionRequest;
 import com.theokanning.openai.completion.CompletionResult;
+import com.theokanning.openai.completion.chat.ChatCompletionRequest;
+import com.theokanning.openai.completion.chat.ChatCompletionResult;
 import com.theokanning.openai.edit.EditRequest;
 import com.theokanning.openai.edit.EditResult;
 import com.theokanning.openai.embedding.EmbeddingRequest;
@@ -38,6 +40,7 @@ import retrofit2.converter.jackson.JacksonConverterFactory;
 import java.io.IOException;
 import java.time.Duration;
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 public class OpenAiService {
@@ -96,6 +99,10 @@ public class OpenAiService {
 
     public CompletionResult createCompletion(CompletionRequest request) {
         return execute(api.createCompletion(request));
+    }
+    
+    public ChatCompletionResult createChatCompletion(ChatCompletionRequest request) {
+        return execute(api.createChatCompletion(request));
     }
 
     public ServerSentEvent createCompletionStream(CompletionRequest completionRequest, ServerSentEvent.Listener listener) throws Exception {

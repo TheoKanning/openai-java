@@ -1,5 +1,6 @@
 package com.theokanning.openai.file;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
 /**
@@ -28,6 +29,7 @@ public class File {
     /**
      * The creation time in epoch seconds.
      */
+    @JsonProperty("created_at")
     Long createdAt;
 
     /**

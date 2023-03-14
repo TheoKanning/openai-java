@@ -1,5 +1,6 @@
 package com.theokanning.openai.completion;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
 import java.util.List;
@@ -22,12 +23,14 @@ public class LogProbResult {
     /**
      * The log probability of each token in {@link tokens}
      */
+    @JsonProperty("token_logprobs")
     List<Double> tokenLogprobs;
 
     /**
      * A map for each index in the completion result.
      * The map contains the top {@link CompletionRequest#logprobs} tokens and their probabilities
      */
+    @JsonProperty("top_logprobs")
     List<Map<String, Double>> topLogprobs;
 
     /**

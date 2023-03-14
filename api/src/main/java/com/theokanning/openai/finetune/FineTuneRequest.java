@@ -21,11 +21,13 @@ public class FineTuneRequest {
      * The ID of an uploaded file that contains training data.
      */
     @NonNull
+    @JsonProperty("training_file")
     String trainingFile;
 
     /**
      * The ID of an uploaded file that contains validation data.
      */
+    @JsonProperty("validation_file")
     String validationFile;
 
     /**
@@ -37,6 +39,7 @@ public class FineTuneRequest {
     /**
      * The number of epochs to train the model for. An epoch refers to one full cycle through the training dataset.
      */
+    @JsonProperty("n_epochs")
     Integer nEpochs;
 
     /**
@@ -46,6 +49,7 @@ public class FineTuneRequest {
      * By default, the batch size will be dynamically configured to be ~0.2% of the number of examples in the training
      * set, capped at 256 - in general, we've found that larger batch sizes tend to work better for larger datasets.
      */
+    @JsonProperty("batch_size")
     Integer batchSize;
 
     /**
@@ -56,6 +60,7 @@ public class FineTuneRequest {
      * (larger learning rates tend to perform better with larger batch sizes).
      * We recommend experimenting with values in the range 0.02 to 0.2 to see what produces the best results.
      */
+    @JsonProperty("learning_rate_multiplier")
     Double learningRateMultiplier;
 
     /**
@@ -67,6 +72,7 @@ public class FineTuneRequest {
      * If prompts are extremely long (relative to completions), it may make sense to reduce this weight so as to
      * avoid over-prioritizing learning the prompt.
      */
+    @JsonProperty("prompt_loss_weight")
     Double promptLossWeight;
 
     /**
@@ -77,6 +83,7 @@ public class FineTuneRequest {
      * Additionally, you must specify {@link FineTuneRequest#classificationNClasses} for multiclass
      * classification or {@link FineTuneRequest#classificationPositiveClass} for binary classification.
      */
+    @JsonProperty("compute_classification_metrics")
     Boolean computeClassificationMetrics;
 
     /**
@@ -92,6 +99,7 @@ public class FineTuneRequest {
      *
      * This parameter is needed to generate precision, recall, and F1 metrics when doing binary classification.
      */
+    @JsonProperty("classification_positive_class")
     String classificationPositiveClass;
 
     /**
@@ -102,6 +110,7 @@ public class FineTuneRequest {
      * A larger beta score puts more weight on recall and less on precision.
      * A smaller beta score puts more weight on precision and less on recall.
      */
+    @JsonProperty("classification_betas")
     List<Double> classificationBetas;
 
     /**
