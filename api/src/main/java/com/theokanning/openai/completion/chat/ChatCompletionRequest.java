@@ -16,7 +16,20 @@ import java.util.Map;
 public class ChatCompletionRequest {
 
     /**
-     * ID of the model to use. Currently, only gpt-3.5-turbo and gpt-3.5-turbo-0301 are supported.
+     * ID of the model to use.<br>
+     * For all users, the following models are supported:
+     * <ul>
+     *     <li>gpt-3.5-turbo</li>
+     *     <li>gpt-3.5-turbo-0301</li>
+     * </ul>
+     * Currently, for whitelisted users, the following <a href="https://platform.openai.com/docs/models/gpt-4">GPT4</a> models are also supported:
+     * <ul>
+     *     <li>gpt-4</li>
+     *     <li>gpt-4-0314</li>
+     *     <li>gpt-4-32k</li>
+     *     <li>gpt-4-32k-0314</li>
+     *     <li>gpt-4</li>
+     * </ul>
      */
     String model;
 

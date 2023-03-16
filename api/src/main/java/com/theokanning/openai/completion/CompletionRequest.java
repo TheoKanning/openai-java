@@ -25,6 +25,16 @@ public class CompletionRequest {
     /**
      * The name of the model to use.
      * Required if specifying a fine-tuned model or if using the new v1/completions endpoint.
+     * ID of the model to use.<br>
+     * Currently, for whitelisted users, the following <a href="https://platform.openai.com/docs/models/gpt-4">GPT4 models</a> are also supported:
+     * <ul>
+     *     <li>gpt-4</li>
+     *     <li>gpt-4-0314</li>
+     *     <li>gpt-4-32k</li>
+     *     <li>gpt-4-32k-0314</li>
+     *     <li>gpt-4</li>
+     * </ul>
+     *
      */
     String model;
 
