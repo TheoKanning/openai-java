@@ -28,7 +28,6 @@ public class ChatCompletionRequest {
      *     <li>gpt-4-0314</li>
      *     <li>gpt-4-32k</li>
      *     <li>gpt-4-32k-0314</li>
-     *     <li>gpt-4</li>
      * </ul>
      */
     String model;
