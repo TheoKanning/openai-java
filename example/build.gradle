@@ -7,4 +7,7 @@ application {
 
 dependencies {
     implementation project(":service")
+    
+    // https://mvnrepository.com/artifact/io.reactivex.rxjava2/rxjava
+    implementation group: 'io.reactivex.rxjava2', name: 'rxjava', version: '2.2.21'
 }
