@@ -26,7 +26,7 @@ public class ChatCompletionResult {
     long created;
     
     /**
-     * The GPT-3.5 model used.
+     * The GPT model used.
      */
     String model;
 

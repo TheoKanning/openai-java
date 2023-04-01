@@ -26,7 +26,7 @@ public class CompletionChunk {
     long created;
 
     /**
-     * The GPT-3 model used.
+     * The model used.
      */
     String model;
 
