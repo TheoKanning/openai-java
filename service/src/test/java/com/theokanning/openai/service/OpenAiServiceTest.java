@@ -1,7 +1,5 @@
 package com.theokanning.openai.service;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.theokanning.openai.OpenAiHttpException;
 import com.theokanning.openai.completion.CompletionResult;
 import io.reactivex.Single;
@@ -31,7 +29,7 @@ public class OpenAiServiceTest {
     }
 
     @Test
-    void executeParseHttpError() throws JsonProcessingException{
+    void executeParseHttpError() {
         String errorBody = "{\"error\":{\"message\":\"Invalid auth token\",\"type\":\"type\",\"param\":\"param\",\"code\":\"code\"}}";
         HttpException httpException = createException(errorBody, 401);
         Single<CompletionResult> single = Single.error(httpException);
