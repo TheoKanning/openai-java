@@ -23,81 +23,77 @@ import retrofit2.Response;
  * SSE.
  */
 public class ResponseBodyCallback implements Callback<ResponseBody> {
-	private static final ObjectMapper errorMapper = OpenAiService.defaultObjectMapper();
+    private static final ObjectMapper mapper = OpenAiService.defaultObjectMapper();
 
-	private FlowableEmitter<SSE> emitter;
-	private boolean emitDone = false;
-	
-	public ResponseBodyCallback(FlowableEmitter<SSE> emitter, boolean emitDone) {
-		this.emitter = emitter;
-		this.emitDone = emitDone;
-	}
+    private FlowableEmitter<SSE> emitter;
+    private boolean emitDone;
 
-	@Override
-	public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-		BufferedReader reader = null;
-		
-		try {
-			if(!response.isSuccessful()) {
-				HttpException e = new HttpException(response);
-				ResponseBody errorBody = response.errorBody();
+    public ResponseBodyCallback(FlowableEmitter<SSE> emitter, boolean emitDone) {
+        this.emitter = emitter;
+        this.emitDone = emitDone;
+    }
 
-				if(errorBody == null) {
-					throw e;
-				} 
-                else {
-					OpenAiError error = errorMapper.readValue(
-                        errorBody.string(), 
-                        OpenAiError.class
+    @Override
+    public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+        BufferedReader reader = null;
+
+        try {
+            if (!response.isSuccessful()) {
+                HttpException e = new HttpException(response);
+                ResponseBody errorBody = response.errorBody();
+
+                if (errorBody == null) {
+                    throw e;
+                } else {
+                    OpenAiError error = mapper.readValue(
+                            errorBody.string(),
+                            OpenAiError.class
                     );
-					throw new OpenAiHttpException(error, e, e.code());
-				}
-			}
+                    throw new OpenAiHttpException(error, e, e.code());
+                }
+            }
 
-			InputStream in = response.body().byteStream();
-			reader = new BufferedReader(new InputStreamReader(in));
-			String line;
-			SSE sse = null;
+            InputStream in = response.body().byteStream();
+            reader = new BufferedReader(new InputStreamReader(in));
+            String line;
+            SSE sse = null;
 
-			while((line = reader.readLine()) != null) {
-				if(line.startsWith("data:")){
-					String data = line.substring(5).trim();
-					sse = new SSE(data);
-				} 
-				else if(line.equals("") && sse != null){
-					if(sse.isDone()){
-						if(emitDone){
-							emitter.onNext(sse);
-						}
+            while ((line = reader.readLine()) != null) {
+                if (line.startsWith("data:")) {
+                    String data = line.substring(5).trim();
+                    sse = new SSE(data);
+                } else if (line.equals("") && sse != null) {
+                    if (sse.isDone()) {
+                        if (emitDone) {
+                            emitter.onNext(sse);
+                        }
+                        break;
+                    }
 
-						break;
-					}
-					
                     emitter.onNext(sse);
-					sse = null;
-				}
-				else {
-					throw new SSEFormatException("Invalid sse format!");
-				}
-			}
+                    sse = null;
+                } else {
+                    throw new SSEFormatException("Invalid sse format! " + line);
+                }
+            }
 
-			emitter.onComplete();
-		} 
-		catch (Throwable t) {
-			onFailure(call, t);
-		}
-		finally {
-			if(reader != null){
-				try {
-					reader.close();
-				} 
-				catch (IOException e) {}
-			}
-		}
-	}
+            emitter.onComplete();
 
-	@Override
-	public void onFailure(Call<ResponseBody> call, Throwable t) {
-		emitter.onError(t);
-	}
+        } catch (Throwable t) {
+            onFailure(call, t);
+        } finally {
+            if (reader != null) {
+                try {
+                    reader.close();
+                } catch (IOException e) {
+					// do nothing
+                }
+            }
+        }
+    }
+
+    @Override
+    public void onFailure(Call<ResponseBody> call, Throwable t) {
+        emitter.onError(t);
+    }
 }

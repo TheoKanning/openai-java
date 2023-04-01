@@ -95,7 +95,9 @@ OpenAiApi api = retrofit.create(OpenAiApi.class);
 OpenAiService service = new OpenAiService(api);
 ```
 
-
+### Streaming thread shutdown
+If you want to shut down your process immediately after streaming responses, call `OpenAiService.shutdown()`.  
+This is not necessary for non-streaming calls.
 
 ## Running the example project
 All the [example](example/src/main/java/example/OpenAiApiExample.java) project requires is your OpenAI api token
