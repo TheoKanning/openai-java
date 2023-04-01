@@ -4,11 +4,11 @@
 > ⚠️OpenAI has deprecated all Engine-based APIs. See [Deprecated Endpoints](https://github.com/TheoKanning/openai-java#deprecated-endpoints) below for more info.
 
 # OpenAI-Java
-Java libraries for using OpenAI's GPT-3 api.
+Java libraries for using OpenAI's GPT apis. Supports GPT-3, ChatGPT, and GPT-4.
 
 Includes the following artifacts:
-- `api` : request/response POJOs for the GPT-3 APIs.
-- `client` : a basic retrofit client for the GPT-3 endpoints, includes the `api` module
+- `api` : request/response POJOs for the GPT APIs.
+- `client` : a basic retrofit client for the GPT endpoints, includes the `api` module
 - `service` : A basic service class that creates and calls the client. This is the easiest way to get started.
 
 as well as an example project using the service.
@@ -105,6 +105,19 @@ All the [example](example/src/main/java/example/OpenAiApiExample.java) project r
 export OPENAI_TOKEN="sk-XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
 ./gradlew example:run
 ```
+
+## FAQ
+### Does this support GPT-4?
+Yes! GPT-4 uses the ChatCompletion Api, and you can see the latest model options [here](https://platform.openai.com/docs/models/gpt-4).  
+GPT-4 is currently in a limited beta (as of 4/1/23), so make sure you have access before trying to use it.
+
+### Why am I getting connection timeouts?
+Make sure that OpenAI is available in your country.
+
+### Why doesn't OpenAiService support x configuration option?
+Many projects use OpenAiService, and in order to support them best I've kept it extremely simple.  
+You can create your own OpenAiApi instance to customize headers, timeouts, base urls etc.  
+If you want features like retry logic and async calls, you'll have to make an `OpenAiApi` instance and call it directly instead of using `OpenAiService`
 
 ## Deprecated Endpoints
 OpenAI has deprecated engine-based endpoints in favor of model-based endpoints. 
