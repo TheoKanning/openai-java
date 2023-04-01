@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
 /**
- * GPT-3 model permissions
+ * Model permissions
  * I couldn't find documentation for the specific permissions, and I've elected to leave them undocumented rather than
  * write something incorrect.
  *

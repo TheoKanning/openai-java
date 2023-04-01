@@ -24,7 +24,7 @@ public class ChatCompletionChunk {
     long created;
     
     /**
-     * The GPT-3.5 model used.
+     * The model used.
      */
     String model;
 

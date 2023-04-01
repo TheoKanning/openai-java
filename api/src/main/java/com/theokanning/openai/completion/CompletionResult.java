@@ -29,7 +29,7 @@ public class CompletionResult {
     long created;
 
     /**
-     * The GPT-3 model used.
+     * The GPT model used.
      */
     String model;
 
