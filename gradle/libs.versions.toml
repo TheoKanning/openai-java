@@ -1,0 +1,9 @@
+[libraries]
+jacksonDatabind = { module = "com.fasterxml.jackson.core:jackson-databind", version = "2.14.2" }
+jacksoAnnotations = { module = "com.fasterxml.jackson.core:jackson-annotations", version = "2.14.2" }
+lombok = { module = "org.projectlombok:lombok", version = "1.18.24" }
+junitBom = { module = "org.junit:junit-bom", version = "5.8.2" }
+retrofit = { module = "com.squareup.retrofit2:retrofit", version = "2.9.0" }
+retrofitJackson = { module = "com.squareup.retrofit2:converter-jackson", version = "2.9.0" }
+retrofitRxJava2 = { module = "com.squareup.retrofit2:adapter-rxjava2", version = "2.9.0" }
+retrofitMock = { module = "com.squareup.retrofit2:retrofit-mock", version = "2.9.0" }
