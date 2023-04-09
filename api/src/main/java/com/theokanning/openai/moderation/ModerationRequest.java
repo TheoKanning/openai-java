@@ -16,10 +16,10 @@ import java.util.List;
 public class ModerationRequest {
 
     /**
-     * The input text to classify.
+     * The input text to classify, string or array.
      */
     @NonNull
-    String input;
+    String[] input;
 
     /**
      * The name of the model to use, defaults to text-moderation-stable.
