@@ -30,7 +30,9 @@ as well as an example project using the service.
 ## Importing
 
 ### Gradle
-`implementation 'com.theokanning.openai-gpt3-java:<api|client|service>:<version>'`
+```groovy
+implementation 'com.theokanning.openai-gpt3-java:<api|client|service>:<version>'
+```
 
 ### Maven
 ```xml
