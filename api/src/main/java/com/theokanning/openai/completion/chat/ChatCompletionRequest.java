@@ -1,5 +1,6 @@
 package com.theokanning.openai.completion.chat;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -15,7 +16,7 @@ import java.util.Map;
 public class ChatCompletionRequest {
 
     /**
-     * ID of the model to use. Currently, only gpt-3.5-turbo and gpt-3.5-turbo-0301 are supported.
+     * ID of the model to use.
      */
     String model;
 
@@ -38,6 +39,7 @@ public class ChatCompletionRequest {
      * with top_p probability mass. So 0.1 means only the tokens comprising the top 10% probability mass are considered.<br>
      * We generally recommend altering this or temperature but not both.
      */
+    @JsonProperty("top_p")
     Double topP;
 
     /**
@@ -61,18 +63,21 @@ public class ChatCompletionRequest {
      * The maximum number of tokens allowed for the generated answer. By default, the number of tokens the model can return will
      * be (4096 - prompt tokens).
      */
+    @JsonProperty("max_tokens")
     Integer maxTokens;
 
     /**
      * Number between -2.0 and 2.0. Positive values penalize new tokens based on whether they appear in the text so far,
      * increasing the model's likelihood to talk about new topics.
      */
+    @JsonProperty("presence_penalty")
     Double presencePenalty;
 
     /**
      * Number between -2.0 and 2.0. Positive values penalize new tokens based on their existing frequency in the text so far,
      * decreasing the model's likelihood to repeat the same line verbatim.
      */
+    @JsonProperty("frequency_penalty")
     Double frequencyPenalty;
 
     /**
@@ -81,6 +86,7 @@ public class ChatCompletionRequest {
      * vary per model, but values between -1 and 1 should decrease or increase likelihood of selection; values like -100 or 100
      * should result in a ban or exclusive selection of the relevant token.
      */
+    @JsonProperty("logit_bias")
     Map<String, Integer> logitBias;
 
 

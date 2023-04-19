@@ -18,7 +18,7 @@ public class CompletionResult {
      */
     String id;
 
-    /**
+    /**https://beta.openai.com/docs/api-reference/create-completion
      * The type of object returned, should be "text_completion"
      */
     String object;
@@ -29,7 +29,7 @@ public class CompletionResult {
     long created;
 
     /**
-     * The GPT-3 model used.
+     * The GPT model used.
      */
     String model;
 

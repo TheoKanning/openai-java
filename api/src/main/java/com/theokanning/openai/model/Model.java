@@ -1,11 +1,12 @@
 package com.theokanning.openai.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
 import java.util.List;
 
 /**
- * GPT-3 model details
+ * GPT model details
  *
  * https://beta.openai.com/docs/api-reference/models
  */
@@ -22,8 +23,9 @@ public class Model {
     public String object;
 
     /**
-     * The owner of the GPT-3 model, typically "openai"
+     * The owner of the model, typically "openai"
      */
+    @JsonProperty("owned_by")
     public String ownedBy;
 
     /**

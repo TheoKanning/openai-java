@@ -1,5 +1,6 @@
 package com.theokanning.openai.finetune;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.theokanning.openai.file.File;
 import lombok.Data;
 
@@ -30,6 +31,7 @@ public class FineTuneResult {
     /**
      * The creation time in epoch seconds.
      */
+    @JsonProperty("created_at")
     Long createdAt;
 
     /**
@@ -41,6 +43,7 @@ public class FineTuneResult {
      * The ID of the fine-tuned model, null if tuning job is not finished.
      * This is the id used to call the model.
      */
+    @JsonProperty("fine_tuned_model")
     String fineTunedModel;
 
     /**
@@ -51,11 +54,13 @@ public class FineTuneResult {
     /**
      * The ID of the organization this model belongs to.
      */
+    @JsonProperty("organization_id")
     String organizationId;
 
     /**
      * Result files for this fine-tune job.
      */
+    @JsonProperty("result_files")
     List<File> resultFiles;
 
     /**
@@ -66,15 +71,18 @@ public class FineTuneResult {
     /**
      * Training files for this fine-tune job.
      */
+    @JsonProperty("training_files")
     List<File> trainingFiles;
 
     /**
      * The last update time in epoch seconds.
      */
+    @JsonProperty("updated_at")
     Long updatedAt;
 
     /**
      * Validation files for this fine-tune job.
      */
+    @JsonProperty("validation_files")
     List<File> validationFiles;
 }

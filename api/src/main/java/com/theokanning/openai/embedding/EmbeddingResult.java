@@ -14,7 +14,7 @@ import java.util.List;
 public class EmbeddingResult {
 
     /**
-     * The GPT-3 model used for generating embeddings
+     * The GPTmodel used for generating embeddings
      */
     String model;
 

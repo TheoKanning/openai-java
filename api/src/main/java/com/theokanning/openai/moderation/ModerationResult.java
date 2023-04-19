@@ -17,7 +17,7 @@ public class ModerationResult {
     public String id;
 
     /**
-     * The GPT-3 model used.
+     * The model used.
      */
     public String model;
 

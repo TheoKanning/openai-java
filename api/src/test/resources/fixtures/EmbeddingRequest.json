@@ -1,0 +1,4 @@
+{
+  "model": "text-embedding-ada-002",
+  "input": ["The food was delicious and the waiter..."]
+}

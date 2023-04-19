@@ -8,7 +8,8 @@ dependencies {
     implementation 'com.squareup.retrofit2:converter-jackson:2.9.0'
 
     testImplementation(platform('org.junit:junit-bom:5.8.2'))
-    testImplementation('org.junit.jupiter:junit-jupiter')
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+    testImplementation 'com.squareup.retrofit2:retrofit-mock:2.9.0'
 }
 
 compileJava {

@@ -22,6 +22,8 @@ import com.theokanning.openai.moderation.ModerationResult;
 import io.reactivex.Single;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
+import okhttp3.ResponseBody;
+import retrofit2.Call;
 import retrofit2.http.*;
 
 public interface OpenAiApi {
@@ -34,9 +36,17 @@ public interface OpenAiApi {
 
     @POST("/v1/completions")
     Single<CompletionResult> createCompletion(@Body CompletionRequest request);
+
+    @Streaming
+    @POST("/v1/completions")
+    Call<ResponseBody> createCompletionStream(@Body CompletionRequest request);
     
     @POST("/v1/chat/completions")
     Single<ChatCompletionResult> createChatCompletion(@Body ChatCompletionRequest request);
+
+    @Streaming
+    @POST("/v1/chat/completions")
+	Call<ResponseBody> createChatCompletionStream(@Body ChatCompletionRequest request);
 
     @Deprecated
     @POST("/v1/engines/{engine_id}/completions")

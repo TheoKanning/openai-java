@@ -8,8 +8,10 @@ import com.theokanning.openai.DeleteResult;
 import com.theokanning.openai.OpenAiApi;
 import com.theokanning.openai.OpenAiError;
 import com.theokanning.openai.OpenAiHttpException;
+import com.theokanning.openai.completion.CompletionChunk;
 import com.theokanning.openai.completion.CompletionRequest;
 import com.theokanning.openai.completion.CompletionResult;
+import com.theokanning.openai.completion.chat.ChatCompletionChunk;
 import com.theokanning.openai.completion.chat.ChatCompletionRequest;
 import com.theokanning.openai.completion.chat.ChatCompletionResult;
 import com.theokanning.openai.edit.EditRequest;
@@ -27,25 +29,32 @@ import com.theokanning.openai.image.ImageResult;
 import com.theokanning.openai.model.Model;
 import com.theokanning.openai.moderation.ModerationRequest;
 import com.theokanning.openai.moderation.ModerationResult;
+
+import io.reactivex.BackpressureStrategy;
+import io.reactivex.Flowable;
 import io.reactivex.Single;
 import okhttp3.*;
 import retrofit2.HttpException;
 import retrofit2.Retrofit;
+import retrofit2.Call;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.jackson.JacksonConverterFactory;
 
 import java.io.IOException;
 import java.time.Duration;
 import java.util.List;
+import java.util.Objects;
+import java.util.concurrent.ExecutorService;
 import java.util.concurrent.TimeUnit;
 
 public class OpenAiService {
 
     private static final String BASE_URL = "https://api.openai.com/";
     private static final Duration DEFAULT_TIMEOUT = Duration.ofSeconds(10);
-    private static final ObjectMapper errorMapper = defaultObjectMapper();
+    private static final ObjectMapper mapper = defaultObjectMapper();
 
     private final OpenAiApi api;
+    private final ExecutorService executorService;
 
     /**
      * Creates a new OpenAiService that wraps OpenAiApi
@@ -63,7 +72,12 @@ public class OpenAiService {
      * @param timeout http read timeout, Duration.ZERO means no timeout
      */
     public OpenAiService(final String token, final Duration timeout) {
-        this(buildApi(token, timeout));
+        ObjectMapper mapper = defaultObjectMapper();
+        OkHttpClient client = defaultClient(token, timeout);
+        Retrofit retrofit = defaultRetrofit(client, mapper);
+
+        this.api = retrofit.create(OpenAiApi.class);
+        this.executorService = client.dispatcher().executorService();
     }
 
     /**
@@ -79,12 +93,29 @@ public class OpenAiService {
 
     /**
      * Creates a new OpenAiService that wraps OpenAiApi.
-     * Use this if you need more customization.
+     * Use this if you need more customization, but use OpenAiService(api, executorService) if you use streaming and
+     * want to shut down instantly
      *
      * @param api OpenAiApi instance to use for all methods
      */
     public OpenAiService(final OpenAiApi api) {
         this.api = api;
+        this.executorService = null;
+    }
+
+    /**
+     * Creates a new OpenAiService that wraps OpenAiApi.
+     * The ExecutorService must be the one you get from the client you created the api with
+     * otherwise shutdownExecutor() won't work.
+     * <p>
+     * Use this if you need more customization.
+     *
+     * @param api             OpenAiApi instance to use for all methods
+     * @param executorService the ExecutorService from client.dispatcher().executorService()
+     */
+    public OpenAiService(final OpenAiApi api, final ExecutorService executorService) {
+        this.api = api;
+        this.executorService = executorService;
     }
 
     public List<Model> listModels() {
@@ -98,9 +129,21 @@ public class OpenAiService {
     public CompletionResult createCompletion(CompletionRequest request) {
         return execute(api.createCompletion(request));
     }
-    
+
+    public Flowable<CompletionChunk> streamCompletion(CompletionRequest request) {
+        request.setStream(true);
+
+        return stream(api.createCompletionStream(request), CompletionChunk.class);
+    }
+
     public ChatCompletionResult createChatCompletion(ChatCompletionRequest request) {
         return execute(api.createChatCompletion(request));
+    }
+
+    public Flowable<ChatCompletionChunk> streamChatCompletion(ChatCompletionRequest request) {
+        request.setStream(true);
+
+        return stream(api.createChatCompletionStream(request), ChatCompletionChunk.class);
     }
 
     public EditResult createEdit(EditRequest request) {
@@ -233,13 +276,55 @@ public class OpenAiService {
                 }
                 String errorBody = e.response().errorBody().string();
 
-                OpenAiError error = errorMapper.readValue(errorBody, OpenAiError.class);
+                OpenAiError error = mapper.readValue(errorBody, OpenAiError.class);
                 throw new OpenAiHttpException(error, e, e.code());
             } catch (IOException ex) {
                 // couldn't parse OpenAI error
                 throw e;
             }
         }
+    }
+
+    /**
+     * Calls the Open AI api and returns a Flowable of SSE for streaming
+     * omitting the last message.
+     *
+     * @param apiCall The api call
+     */
+    public static Flowable<SSE> stream(Call<ResponseBody> apiCall) {
+        return stream(apiCall, false);
+    }
+
+    /**
+     * Calls the Open AI api and returns a Flowable of SSE for streaming.
+     *
+     * @param apiCall  The api call
+     * @param emitDone If true the last message ([DONE]) is emitted
+     */
+    public static Flowable<SSE> stream(Call<ResponseBody> apiCall, boolean emitDone) {
+        return Flowable.create(emitter -> apiCall.enqueue(new ResponseBodyCallback(emitter, emitDone)), BackpressureStrategy.BUFFER);
+    }
+
+    /**
+     * Calls the Open AI api and returns a Flowable of type T for streaming
+     * omitting the last message.
+     *
+     * @param apiCall The api call
+     * @param cl      Class of type T to return
+     */
+    public static <T> Flowable<T> stream(Call<ResponseBody> apiCall, Class<T> cl) {
+        return stream(apiCall).map(sse -> mapper.readValue(sse.getData(), cl));
+    }
+
+    /**
+     * Shuts down the OkHttp ExecutorService.
+     * The default behaviour of OkHttp's ExecutorService (ConnectionPool)
+     * is to shut down after an idle timeout of 60s.
+     * Call this method to shut down the ExecutorService immediately.
+     */
+    public void shutdownExecutor() {
+        Objects.requireNonNull(this.executorService, "executorService must be set in order to shut down");
+        this.executorService.shutdown();
     }
 
     public static OpenAiApi buildApi(String token, Duration timeout) {
