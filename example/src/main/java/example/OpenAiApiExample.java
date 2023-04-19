@@ -1,5 +1,6 @@
 package example;
 
+import com.theokanning.openai.OpenAIPropertyLoader;
 import com.theokanning.openai.completion.chat.ChatCompletionRequest;
 import com.theokanning.openai.completion.chat.ChatMessage;
 import com.theokanning.openai.completion.chat.ChatMessageRole;
@@ -13,7 +14,7 @@ import java.util.List;
 
 class OpenAiApiExample {
     public static void main(String... args) {
-        String token = System.getenv("OPENAI_TOKEN");
+        String token = OpenAIPropertyLoader.loadProperties();
         OpenAiService service = new OpenAiService(token);
 
         System.out.println("\nCreating completion...");

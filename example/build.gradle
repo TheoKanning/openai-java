@@ -7,4 +7,5 @@ application {
 
 dependencies {
     implementation project(":service")
+    implementation project(path: ':utilities')
 }
