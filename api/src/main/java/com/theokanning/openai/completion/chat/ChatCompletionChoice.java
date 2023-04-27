@@ -39,6 +39,9 @@ public class ChatCompletionChoice {
     @Getter(onMethod = @__(@JsonAnyGetter))
     Map<String, Object> extensions;
 
+    /**
+     * Consumes unknown JSON attributes and adds them to {@link #extensions}.
+     */
     @JsonAnySetter
     public void handleIgnored(String name, Object value) {
         if (extensions == null) {
