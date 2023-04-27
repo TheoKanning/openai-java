@@ -8,7 +8,13 @@
       "role": "assistant",
       "content": "\n\nHello there, how may I assist you today?"
     },
-    "finish_reason": "stop"
+    "finish_reason": "stop",
+    "content_filter_result": {
+      "error": {
+        "code": "content_filter_error",
+        "message": "The contents are not filtered"
+      }
+    }
   }],
   "usage": {
     "prompt_tokens": 9,
