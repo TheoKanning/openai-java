@@ -96,7 +96,7 @@ OpenAiService service = new OpenAiService(api);
 ```
 
 ### Streaming thread shutdown
-If you want to shut down your process immediately after streaming responses, call `OpenAiService.shutdown()`.  
+If you want to shut down your process immediately after streaming responses, call `OpenAiService.shutdownExecutor()`.  
 This is not necessary for non-streaming calls.
 
 ## Running the example project
