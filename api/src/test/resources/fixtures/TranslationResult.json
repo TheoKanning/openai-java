@@ -1,0 +1,37 @@
+{
+  "task": "translate",
+  "language": "english",
+  "duration": 4.38,
+  "segments": [
+    {
+      "id": 0,
+      "seek": 0,
+      "start": 0.0,
+      "end": 4.32,
+      "text": " Hello, my name is Yuna. I am Korean voice.",
+      "tokens": [
+        50364,
+        2425,
+        11,
+        452,
+        1315,
+        307,
+        398,
+        5051,
+        13,
+        286,
+        669,
+        6933,
+        3177,
+        13,
+        50580
+      ],
+      "temperature": 0.0,
+      "avg_logprob": -0.6644304394721985,
+      "compression_ratio": 0.84,
+      "no_speech_prob": 0.006824055220931768,
+      "transient": false
+    }
+  ],
+  "text": "Hello, my name is Yuna. I am Korean voice."
+}
