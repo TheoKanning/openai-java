@@ -103,7 +103,14 @@ This is not necessary for non-streaming calls.
 All the [example](example/src/main/java/example/OpenAiApiExample.java) project requires is your OpenAI api token
 ```bash
 export OPENAI_TOKEN="sk-XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
-./gradlew example:run
+```
+You can try all the capabilities of this project using:
+```bash
+./gradlew runExampleOne
+```
+And you can also try the new functions capability using:
+```bash
+./gradlew runExampleTwo
 ```
 
 ## FAQ
