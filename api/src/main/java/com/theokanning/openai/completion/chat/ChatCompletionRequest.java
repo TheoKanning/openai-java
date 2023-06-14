@@ -94,4 +94,15 @@ public class ChatCompletionRequest {
      * A unique identifier representing your end-user, which will help OpenAI to monitor and detect abuse.
      */
     String user;
+
+    /**
+     * A list of the available functions.
+     */
+    List<ChatFunction> functions;
+
+    /**
+     * Controls how the model responds to function calls, as specified in the <a href="https://platform.openai.com/docs/api-reference/chat/create#chat/create-function_call">OpenAI documentation</a>.
+     */
+    @JsonProperty("function_call")
+    String functionCall;
 }

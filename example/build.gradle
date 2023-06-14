@@ -8,3 +8,15 @@ application {
 dependencies {
     implementation project(":service")
 }
+
+task runExampleOne(type: JavaExec) {
+    mainClass.set('example.OpenAiApiExample')
+    classpath = sourceSets.main.runtimeClasspath
+    args = []
+}
+
+task runExampleTwo(type: JavaExec) {
+    mainClass.set('example.OpenAiApiFunctionsExample')
+    classpath = sourceSets.main.runtimeClasspath
+    args = []
+}

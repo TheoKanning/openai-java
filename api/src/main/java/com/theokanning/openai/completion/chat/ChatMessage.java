@@ -1,5 +1,7 @@
 package com.theokanning.openai.completion.chat;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -24,5 +26,20 @@ public class ChatMessage {
 	 * You may use {@link ChatMessageRole} enum.
 	 */
 	String role;
+	@JsonInclude(JsonInclude.Include.ALWAYS)
 	String content;
+	String name;
+	@JsonProperty("function_call")
+	ChatFunctionCall functionCall;
+
+	public ChatMessage(String role, String content) {
+		this.role = role;
+		this.content = content;
+	}
+
+	public ChatMessage(String role, String content, String name) {
+		this.role = role;
+		this.content = content;
+		this.name = name;
+	}
 }
