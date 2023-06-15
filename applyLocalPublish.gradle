@@ -1,0 +1,6 @@
+// applyLocalPublish.gradle
+allprojects {
+    if (it != rootProject) {
+        it.apply(from: "${rootProject.projectDir}/localPublish.gradle")
+    }
+}

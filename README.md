@@ -1,12 +1,76 @@
 ![Maven Central](https://img.shields.io/maven-central/v/com.theokanning.openai-gpt3-java/client?color=blue)
 
-> ⚠️ Please switch to using the new 'service' library if you need to use OpenAiService. The old 'client' OpenAiService is deprecated as of 0.10.0.  
-> ⚠️OpenAI has deprecated all Engine-based APIs. See [Deprecated Endpoints](https://github.com/TheoKanning/openai-java#deprecated-endpoints) below for more info.
+> ⚠️ Please switch to using the new 'service' library if you need to use OpenAiService. The old 'client' OpenAiService
+> is deprecated as of 0.10.0.  
+> ⚠️OpenAI has deprecated all Engine-based APIs.
+> See [Deprecated Endpoints](https://github.com/TheoKanning/openai-java#deprecated-endpoints) below for more info.
+
+## Publishing to Local Maven Repository (Unofficial Version)
+
+This repository is a fork of the original [com.theokanning.openai-gpt3-java](https://github.com/TheoKanning/openai-java)
+. While the changes in this fork are awaiting to be pulled into the official repository, you can use this unofficial
+version by installing it to your local Maven repository.
+
+This allows you to use the modified version "0.12.0-20240614" while retaining the same dependency group and artifact
+names, i.e., the group is still "com.theokanning.openai-gpt3-java" and the artifacts are "api", "client", and "service".
+
+### Installation Instructions
+
+#### For Linux/macOS
+
+1. After cloning or downloading this repository, navigate to its root directory.
+2. Make sure that the `publishToLocal.sh` script is executable. You can set the execute permission by running the
+   following command:
+
+```sh
+chmod +x publishToLocal.sh
+```
+
+3. Now, execute the script:
+
+```sh
+./publishToLocal.sh
+```
+
+#### For Windows
+
+1. After cloning or downloading this repository, navigate to its root directory.
+2. Execute the batch script by running the following command:
+
+```batch
+publishToLocal.bat
+```
+
+### Dependency Configuration
+
+Once the unofficial version is installed to your local Maven repository, you can use it in your project by adding the
+following dependencies in your build file (e.g., `pom.xml` for Maven, `build.gradle` for Gradle):
+
+For Maven:
+
+```xml
+
+<dependency>
+    <groupId>com.theokanning.openai-gpt3-java</groupId>
+    <artifactId>api|client|service</artifactId>
+    <version>0.12.0-20240614</version>
+</dependency>
+```
+
+For Gradle:
+
+```gradle
+implementation 'com.theokanning.openai-gpt3-java:api|client|service:0.12.0-20240614'
+```
+
+This will allow you to use the modified version of the library with the changes made in this fork.
 
 # OpenAI-Java
+
 Java libraries for using OpenAI's GPT apis. Supports GPT-3, ChatGPT, and GPT-4.
 
 Includes the following artifacts:
+
 - `api` : request/response POJOs for the GPT APIs.
 - `client` : a basic retrofit client for the GPT endpoints, includes the `api` module
 - `service` : A basic service class that creates and calls the client. This is the easiest way to get started.

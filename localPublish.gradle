@@ -1,0 +1,16 @@
+apply plugin: 'maven-publish'
+
+publishing {
+    publications {
+        create("${project.name}Publication", MavenPublication) {
+            from components.findByName('java')
+        }
+    }
+    repositories {
+        mavenLocal()
+    }
+}
+
+tasks.withType(Sign) {
+    enabled = false
+}
