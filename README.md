@@ -1,11 +1,5 @@
-![Maven Central](https://img.shields.io/maven-central/v/com.theokanning.openai-gpt3-java/client?color=blue)
 
-> ⚠️ Please switch to using the new 'service' library if you need to use OpenAiService. The old 'client' OpenAiService
-> is deprecated as of 0.10.0.  
-> ⚠️OpenAI has deprecated all Engine-based APIs.
-> See [Deprecated Endpoints](https://github.com/TheoKanning/openai-java#deprecated-endpoints) below for more info.
-
-## Publishing to Local Maven Repository (Unofficial Version)
+# 🚀 Publishing to Local Maven Repository (⚠ Unofficial Version with Function Support)
 
 This repository is a fork of the original [com.theokanning.openai-gpt3-java](https://github.com/TheoKanning/openai-java)
 . While the changes in this fork are awaiting to be pulled into the official repository, you can use this unofficial
@@ -64,6 +58,15 @@ implementation 'com.theokanning.openai-gpt3-java:api|client|service:0.12.0-20240
 ```
 
 This will allow you to use the modified version of the library with the changes made in this fork.
+
+--------------------------------------------------
+
+![Maven Central](https://img.shields.io/maven-central/v/com.theokanning.openai-gpt3-java/client?color=blue)
+
+> ⚠️ Please switch to using the new 'service' library if you need to use OpenAiService. The old 'client' OpenAiService
+> is deprecated as of 0.10.0.  
+> ⚠️OpenAI has deprecated all Engine-based APIs.
+> See [Deprecated Endpoints](https://github.com/TheoKanning/openai-java#deprecated-endpoints) below for more info.
 
 # OpenAI-Java
 
