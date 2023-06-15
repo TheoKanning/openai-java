@@ -175,7 +175,7 @@ You can try all the capabilities of this project using:
 ```bash
 ./gradlew runExampleOne
 ```
-And you can also try the new functions capability using:
+And you can also try the new capability of using functions:
 ```bash
 ./gradlew runExampleTwo
 ```
