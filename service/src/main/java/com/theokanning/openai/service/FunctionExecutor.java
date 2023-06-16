@@ -26,6 +26,19 @@ public class FunctionExecutor {
         }
     }
 
+    public ChatMessage executeAndConvertToMessageHandlingExceptions(ChatFunctionCall call) {
+        try {
+            return executeAndConvertToMessage(call);
+        } catch (Exception exception) {
+            return convertExceptionToMessage(exception);
+        }
+    }
+
+    public ChatMessage convertExceptionToMessage(Exception exception) {
+        String error = exception.getMessage() == null ? exception.toString() : exception.getMessage();
+        return new ChatMessage(ChatMessageRole.FUNCTION.value(), "{\"error\": \"" + error + "\"}");
+    }
+
     public ChatMessage executeAndConvertToMessage(ChatFunctionCall call) {
         return new ChatMessage(ChatMessageRole.FUNCTION.value(), executeAndConvertToJson(call), call.getName());
     }
