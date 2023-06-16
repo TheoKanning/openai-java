@@ -95,6 +95,67 @@ OpenAiApi api = retrofit.create(OpenAiApi.class);
 OpenAiService service = new OpenAiService(api);
 ```
 
+### Functions
+You can create your functions and define their executors easily using the ChatFunction class, along with any of your custom classes that will serve to define their available parameters. You can also process the functions with ease, with the help of an executor called FunctionExecutor.
+
+First we declare our function parameters:
+```java
+public class Weather {
+    @JsonPropertyDescription("City and state, for example: León, Guanajuato")
+    public String location;
+    @JsonPropertyDescription("The temperature unit, can be 'celsius' or 'fahrenheit'")
+    @JsonProperty(required = true)
+    public WeatherUnit unit;
+}
+public enum WeatherUnit {
+    CELSIUS, FAHRENHEIT;
+}
+```
+
+Next, we declare the function itself and associate it with an executor, in this example we will fake a response from some API:
+```java
+ChatFunction.builder()
+        .name("get_weather")
+        .description("Get the current weather of a location")
+        .executor(Weather.class, w -> "{\"location\": \"" + w.location + "\", " +
+            "\"temperature\": \"" + new Random().nextInt(50) + "\", " +
+            "\"unit\": \"" + w.unit + "\", " +
+            "\"description\": \"sunny\"}")
+        .build()
+```
+
+Then, we employ the FunctionExecutor object from the 'service' module to assist with execution and transformation into an object that is ready for the conversation:
+```java
+List<ChatFunction> functionList = // list with functions
+FunctionExecutor functionExecutor = new FunctionExecutor(functionList);
+
+List<ChatMessage> messages = new ArrayList<>();
+ChatMessage userMessage = new ChatMessage(ChatMessageRole.USER.value(), "Tell me the weather in Barcelona.");
+messages.add(userMessage);
+ChatCompletionRequest chatCompletionRequest = ChatCompletionRequest
+        .builder()
+        .model("gpt-3.5-turbo-0613")
+        .messages(messages)
+        .functions(functionExecutor.getFunctions())
+        .functionCall("auto")
+        .maxTokens(256)
+        .build();
+
+ChatMessage responseMessage = service.createChatCompletion(chatCompletionRequest).getChoices().get(0).getMessage();
+ChatFunctionCall functionCall = responseMessage.getFunctionCall(); // might be null, but in this case it is a call to our 'get_weather' function.
+
+// "executeAndConvertToMessageSafely" converts the function's response to your custom object, executes it, gets the response, and then converts it to a ChatMessage object, ready to be added to the current conversation.
+Optional<ChatMessage> functionResponseMessage = functionExecutor.executeAndConvertToMessageSafely(functionCall);
+functionResponseMessage.ifPresentOrElse((response) -> {
+            // messages.add(response);
+        }, () -> {
+            // do something else
+        });
+```
+> **Note:** The `FunctionExecutor` class is part of the 'service' module.
+
+For a more in-depth look, refer to a conversational example that employs functions in: [OpenAiApiFunctionsExample.java](example/src/main/java/example/OpenAiApiFunctionsExample.java).
+
 ### Streaming thread shutdown
 If you want to shut down your process immediately after streaming responses, call `OpenAiService.shutdown()`.  
 This is not necessary for non-streaming calls.
@@ -103,7 +164,14 @@ This is not necessary for non-streaming calls.
 All the [example](example/src/main/java/example/OpenAiApiExample.java) project requires is your OpenAI api token
 ```bash
 export OPENAI_TOKEN="sk-XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
-./gradlew example:run
+```
+You can try all the capabilities of this project using:
+```bash
+./gradlew runExampleOne
+```
+And you can also try the new capability of using functions:
+```bash
+./gradlew runExampleTwo
 ```
 
 ## FAQ

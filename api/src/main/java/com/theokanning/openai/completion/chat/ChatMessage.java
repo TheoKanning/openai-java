@@ -1,6 +1,12 @@
 package com.theokanning.openai.completion.chat;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * <p>Each object has a role (either "system", "user", or "assistant") and content (the content of the message). Conversations can be as short as 1 message or fill many pages.</p>
@@ -14,7 +20,7 @@ import lombok.*;
  */
 @Data
 @NoArgsConstructor(force = true)
-@RequiredArgsConstructor
+//@RequiredArgsConstructor
 @AllArgsConstructor
 public class ChatMessage {
 
@@ -25,7 +31,20 @@ public class ChatMessage {
 	@NonNull
 	String role;
 	@NonNull
+	@JsonInclude(JsonInclude.Include.ALWAYS)
 	String content;
-	//name is optional, The name of the author of this message. May contain a-z, A-Z, 0-9, and underscores, with a maximum length of 64 characters.
 	String name;
+	@JsonProperty("function_call")
+	ChatFunctionCall functionCall;
+
+	public ChatMessage(String role, String content) {
+		this.role = role;
+		this.content = content;
+	}
+
+	public ChatMessage(String role, String content, String name) {
+		this.role = role;
+		this.content = content;
+		this.name = name;
+	}
 }
