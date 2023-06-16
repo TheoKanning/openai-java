@@ -1,6 +1,5 @@
 package com.theokanning.openai.service;
 
-import com.fasterxml.jackson.core.JacksonException;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;
@@ -16,12 +15,14 @@ public class ChatCompletionRequestSerializerAndDeserializer {
     public static class Serializer extends JsonSerializer<ChatCompletionRequest.ChatCompletionRequestFunctionCall> {
         @Override
         public void serialize(ChatCompletionRequest.ChatCompletionRequestFunctionCall value, JsonGenerator gen, SerializerProvider serializers) throws IOException {
-            if ("none".equals(value.name) || "auto".equals(value.name)) {
-                gen.writeString(value.name);
+            if (value == null || value.getName() == null) {
+                gen.writeNull();
+            } else if ("none".equals(value.getName()) || "auto".equals(value.getName())) {
+                gen.writeString(value.getName());
             } else {
                 gen.writeStartObject();
                 gen.writeFieldName("name");
-                gen.writeString(value.name);
+                gen.writeString(value.getName());
                 gen.writeEndObject();
             }
         }
@@ -29,15 +30,12 @@ public class ChatCompletionRequestSerializerAndDeserializer {
 
     public static class Deserializer extends JsonDeserializer<ChatCompletionRequest.ChatCompletionRequestFunctionCall> {
         @Override
-        public ChatCompletionRequest.ChatCompletionRequestFunctionCall deserialize(JsonParser p, DeserializationContext ctxt) throws IOException, JacksonException {
+        public ChatCompletionRequest.ChatCompletionRequestFunctionCall deserialize(JsonParser p, DeserializationContext ctxt) throws IOException {
             if (p.getCurrentToken().isStructStart()) {
                 p.nextToken(); //key
                 p.nextToken(); //value
-                return new ChatCompletionRequest.ChatCompletionRequestFunctionCall(p.getValueAsString());
-            } else {
-                return new ChatCompletionRequest.ChatCompletionRequestFunctionCall(p.getValueAsString());
             }
-
+            return new ChatCompletionRequest.ChatCompletionRequestFunctionCall(p.getValueAsString());
         }
     }
 }
