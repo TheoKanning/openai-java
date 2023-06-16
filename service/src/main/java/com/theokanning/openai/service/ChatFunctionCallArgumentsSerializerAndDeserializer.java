@@ -2,11 +2,10 @@ package com.theokanning.openai.service;
 
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.*;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import java.io.IOException;
-import java.util.Map;
 
 public class ChatFunctionCallArgumentsSerializerAndDeserializer {
 
@@ -15,35 +14,33 @@ public class ChatFunctionCallArgumentsSerializerAndDeserializer {
     private ChatFunctionCallArgumentsSerializerAndDeserializer() {
     }
 
-    public static class Serializer extends JsonSerializer<Map<String, Object>> {
+    public static class Serializer extends JsonSerializer<ObjectNode> {
 
         private Serializer() {
         }
 
         @Override
-        public void serialize(Map<String, Object> value, JsonGenerator gen, SerializerProvider serializers) throws IOException {
+        public void serialize(ObjectNode value, JsonGenerator gen, SerializerProvider serializers) throws IOException {
             if (value == null) {
                 gen.writeNull();
             } else {
-                String json = MAPPER.writeValueAsString(value);
-                gen.writeString(json);
+                gen.writeString(value.toString());
             }
         }
     }
 
-    public static class Deserializer extends JsonDeserializer<Map<String, Object>> {
+    public static class Deserializer extends JsonDeserializer<ObjectNode> {
 
         private Deserializer() {
         }
 
         @Override
-        public Map<String, Object> deserialize(JsonParser p, DeserializationContext ctxt) throws IOException {
+        public ObjectNode deserialize(JsonParser p, DeserializationContext ctxt) throws IOException {
             String json = p.getValueAsString();
             if (json == null) {
                 return null;
             } else {
-                return MAPPER.readValue(json, new TypeReference<Map<String, Object>>() {
-                });
+                return (ObjectNode) MAPPER.readTree(json);
             }
         }
     }

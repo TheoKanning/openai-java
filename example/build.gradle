@@ -19,4 +19,5 @@ task runExampleTwo(type: JavaExec) {
     mainClass.set('example.OpenAiApiFunctionsExample')
     classpath = sourceSets.main.runtimeClasspath
     args = []
+    standardInput = System.in
 }

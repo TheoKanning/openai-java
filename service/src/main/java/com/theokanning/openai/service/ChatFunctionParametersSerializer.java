@@ -10,19 +10,19 @@ import com.kjetland.jackson.jsonSchema.JsonSchemaGenerator;
 
 import java.io.IOException;
 
-public class ChatFunctionParametersSerializer extends JsonSerializer<Object> {
+public class ChatFunctionParametersSerializer extends JsonSerializer<Class<?>> {
 
     private final ObjectMapper mapper = new ObjectMapper();
     private final JsonSchemaConfig config = JsonSchemaConfig.vanillaJsonSchemaDraft4();
     private final JsonSchemaGenerator jsonSchemaGenerator = new JsonSchemaGenerator(mapper, config);
 
     @Override
-    public void serialize(Object value, JsonGenerator gen, SerializerProvider serializers) throws IOException {
+    public void serialize(Class<?> value, JsonGenerator gen, SerializerProvider serializers) throws IOException {
         if (value == null) {
             gen.writeNull();
         } else {
             try {
-                JsonNode schema = jsonSchemaGenerator.generateJsonSchema(value.getClass());
+                JsonNode schema = jsonSchemaGenerator.generateJsonSchema(value);
                 gen.writeObject(schema);
             } catch (Exception e) {
                 throw new RuntimeException("Failed to generate JSON Schema", e);

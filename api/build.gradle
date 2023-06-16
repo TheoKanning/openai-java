@@ -3,6 +3,7 @@ apply plugin: "com.vanniktech.maven.publish"
 
 dependencies {
     api 'com.fasterxml.jackson.core:jackson-annotations:2.9.0'
+    api 'com.fasterxml.jackson.core:jackson-databind:2.15.2'
     compileOnly 'org.projectlombok:lombok:1.18.24'
     annotationProcessor 'org.projectlombok:lombok:1.18.24'
 

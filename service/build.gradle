@@ -5,8 +5,8 @@ dependencies {
     api project(":client")
     api 'com.squareup.retrofit2:retrofit:2.9.0'
     implementation 'com.squareup.retrofit2:adapter-rxjava2:2.9.0'
-    implementation 'com.squareup.retrofit2:converter-jackson:2.7.2'
-    implementation 'com.kjetland:mbknor-jackson-jsonschema_2.13:1.0.39'
+    implementation 'com.squareup.retrofit2:converter-jackson:2.9.0'
+    implementation 'com.kjetland:mbknor-jackson-jsonschema_2.12:1.0.39'
 
     testImplementation(platform('org.junit:junit-bom:5.8.2'))
     testImplementation 'org.junit.jupiter:junit-jupiter'
