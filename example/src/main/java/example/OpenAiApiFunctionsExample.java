@@ -52,7 +52,7 @@ class OpenAiApiFunctionsExample {
                     .model("gpt-3.5-turbo-0613")
                     .messages(messages)
                     .functions(functionExecutor.getFunctions())
-                    .functionCall("auto")
+                    .functionCall(new ChatCompletionRequest.ChatCompletionRequestFunctionCall("auto"))
                     .n(1)
                     .maxTokens(100)
                     .logitBias(new HashMap<>())

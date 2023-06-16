@@ -104,5 +104,13 @@ public class ChatCompletionRequest {
      * Controls how the model responds to function calls, as specified in the <a href="https://platform.openai.com/docs/api-reference/chat/create#chat/create-function_call">OpenAI documentation</a>.
      */
     @JsonProperty("function_call")
-    String functionCall;
+    ChatCompletionRequestFunctionCall functionCall;
+
+    @Data
+    @Builder
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class ChatCompletionRequestFunctionCall {
+        public String name;
+    }
 }
