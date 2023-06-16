@@ -12,11 +12,11 @@ class OpenAiApiFunctionsExample {
     private static class Weather {
 
         @JsonPropertyDescription("City and state, for example: León, Guanajuato")
-        private String location;
+        public String location;
 
         @JsonProperty(required = true)
         @JsonPropertyDescription("The temperature unit, can be 'celsius' or 'fahrenheit'")
-        private WeatherUnit unit;
+        public WeatherUnit unit;
 
     }
 
