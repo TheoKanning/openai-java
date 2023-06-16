@@ -3,6 +3,7 @@ package example;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyDescription;
 import com.theokanning.openai.completion.chat.*;
+import com.theokanning.openai.completion.chat.ChatCompletionRequest.ChatCompletionRequestFunctionCall;
 import com.theokanning.openai.service.FunctionExecutor;
 import com.theokanning.openai.service.OpenAiService;
 
@@ -52,7 +53,7 @@ class OpenAiApiFunctionsExample {
                     .model("gpt-3.5-turbo-0613")
                     .messages(messages)
                     .functions(functionExecutor.getFunctions())
-                    .functionCall(new ChatCompletionRequest.ChatCompletionRequestFunctionCall("auto"))
+                    .functionCall(ChatCompletionRequestFunctionCall.of("auto"))
                     .n(1)
                     .maxTokens(100)
                     .logitBias(new HashMap<>())

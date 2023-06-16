@@ -111,6 +111,11 @@ public class ChatCompletionRequest {
     @AllArgsConstructor
     @NoArgsConstructor
     public static class ChatCompletionRequestFunctionCall {
-        public String name;
+        String name;
+
+        public static ChatCompletionRequestFunctionCall of(String name) {
+            return new ChatCompletionRequestFunctionCall(name);
+        }
+
     }
 }
