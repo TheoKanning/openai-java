@@ -1,9 +1,12 @@
 package com.theokanning.openai.service;
 
 import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.JsonToken;
 import com.fasterxml.jackson.databind.*;
-import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.fasterxml.jackson.databind.node.JsonNodeType;
+import com.fasterxml.jackson.databind.node.TextNode;
 
 import java.io.IOException;
 
@@ -14,33 +17,46 @@ public class ChatFunctionCallArgumentsSerializerAndDeserializer {
     private ChatFunctionCallArgumentsSerializerAndDeserializer() {
     }
 
-    public static class Serializer extends JsonSerializer<ObjectNode> {
+    public static class Serializer extends JsonSerializer<JsonNode> {
 
         private Serializer() {
         }
 
         @Override
-        public void serialize(ObjectNode value, JsonGenerator gen, SerializerProvider serializers) throws IOException {
+        public void serialize(JsonNode value, JsonGenerator gen, SerializerProvider serializers) throws IOException {
             if (value == null) {
                 gen.writeNull();
             } else {
-                gen.writeString(value.toString());
+                gen.writeString(value instanceof TextNode ? value.asText() : value.toPrettyString());
             }
         }
     }
 
-    public static class Deserializer extends JsonDeserializer<ObjectNode> {
+    public static class Deserializer extends JsonDeserializer<JsonNode> {
 
         private Deserializer() {
         }
 
         @Override
-        public ObjectNode deserialize(JsonParser p, DeserializationContext ctxt) throws IOException {
+        public JsonNode deserialize(JsonParser p, DeserializationContext ctxt) throws IOException {
             String json = p.getValueAsString();
-            if (json == null) {
+            if (json == null || p.currentToken() == JsonToken.VALUE_NULL) {
                 return null;
-            } else {
-                return (ObjectNode) MAPPER.readTree(json);
+            }
+
+            try {
+                JsonNode node = null;
+                try {
+                    node = MAPPER.readTree(json);
+                } catch (JsonParseException ignored) {
+                }
+                if (node == null || node.getNodeType() == JsonNodeType.MISSING) {
+                    node = MAPPER.readTree(p);
+                }
+                return node;
+            } catch (Exception ex) {
+                ex.printStackTrace();
+                return null;
             }
         }
     }

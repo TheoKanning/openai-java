@@ -1,7 +1,9 @@
 package com.theokanning.openai.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.TextNode;
 import com.theokanning.openai.completion.chat.ChatFunction;
 import com.theokanning.openai.completion.chat.ChatFunctionCall;
 import com.theokanning.openai.completion.chat.ChatMessage;
@@ -35,13 +37,14 @@ public class FunctionExecutor {
         try {
             return executeAndConvertToMessage(call);
         } catch (Exception exception) {
+            exception.printStackTrace();
             return convertExceptionToMessage(exception);
         }
     }
 
     public ChatMessage convertExceptionToMessage(Exception exception) {
         String error = exception.getMessage() == null ? exception.toString() : exception.getMessage();
-        return new ChatMessage(ChatMessageRole.FUNCTION.value(), "{\"error\": \"" + error + "\"}");
+        return new ChatMessage(ChatMessageRole.FUNCTION.value(), "{\"error\": \"" + error + "\"}", "error");
     }
 
     public ChatMessage executeAndConvertToMessage(ChatFunctionCall call) {
@@ -50,7 +53,8 @@ public class FunctionExecutor {
 
     public String executeAndConvertToJson(ChatFunctionCall call) {
         try {
-            return MAPPER.writeValueAsString(execute(call));
+            Object execution = execute(call);
+            return execution instanceof TextNode ? ((TextNode) execution).asText() : (execution instanceof String ? execution.toString() : MAPPER.writeValueAsString(execution));
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }
@@ -60,7 +64,8 @@ public class FunctionExecutor {
         ChatFunction function = FUNCTIONS.get(call.getName());
         Object obj = null;
         try {
-            obj = MAPPER.readValue(call.getArguments().toString(), function.getParametersClass());
+            JsonNode arguments = call.getArguments();
+            obj = MAPPER.readValue(arguments instanceof TextNode ? arguments.asText() : arguments.toPrettyString(), function.getParametersClass());
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }

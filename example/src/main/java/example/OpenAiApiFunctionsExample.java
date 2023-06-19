@@ -20,7 +20,7 @@ class OpenAiApiFunctionsExample {
         public WeatherUnit unit;
     }
 
-    private enum WeatherUnit {
+    public enum WeatherUnit {
         CELSIUS, FAHRENHEIT;
     }
 

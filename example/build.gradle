@@ -21,3 +21,10 @@ task runExampleTwo(type: JavaExec) {
     args = []
     standardInput = System.in
 }
+
+task runExampleThree(type: JavaExec) {
+    mainClass.set('example.OpenAiApiFunctionsWIthStreamExample')
+    classpath = sourceSets.main.runtimeClasspath
+    args = []
+    standardInput = System.in
+}
