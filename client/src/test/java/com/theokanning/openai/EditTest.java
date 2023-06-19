@@ -1,5 +1,6 @@
 package com.theokanning.openai;
 
+import com.theokanning.openai.client.OpenAiService;
 import com.theokanning.openai.edit.EditRequest;
 import com.theokanning.openai.edit.EditResult;
 import org.junit.jupiter.api.Test;

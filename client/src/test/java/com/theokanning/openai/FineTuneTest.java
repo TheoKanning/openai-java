@@ -1,6 +1,7 @@
 package com.theokanning.openai;
 
 import com.theokanning.openai.finetune.FineTuneRequest;
+import com.theokanning.openai.client.OpenAiService;
 import com.theokanning.openai.finetune.FineTuneEvent;
 import com.theokanning.openai.finetune.FineTuneResult;
 import org.junit.jupiter.api.*;

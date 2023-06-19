@@ -1,5 +1,6 @@
 package com.theokanning.openai;
 
+import com.theokanning.openai.client.OpenAiService;
 import com.theokanning.openai.image.CreateImageEditRequest;
 import com.theokanning.openai.image.CreateImageRequest;
 import com.theokanning.openai.image.CreateImageVariationRequest;
