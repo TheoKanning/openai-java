@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.theokanning.openai.OpenAiError;
@@ -54,7 +55,7 @@ public class ResponseBodyCallback implements Callback<ResponseBody> {
             }
 
             InputStream in = response.body().byteStream();
-            reader = new BufferedReader(new InputStreamReader(in));
+            reader = new BufferedReader(new InputStreamReader(in, StandardCharsets.UTF_8));
             String line;
             SSE sse = null;
 
