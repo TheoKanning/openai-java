@@ -2,6 +2,8 @@ package com.theokanning.openai.client;
 
 import com.theokanning.openai.DeleteResult;
 import com.theokanning.openai.OpenAiResponse;
+import com.theokanning.openai.audio.TranscriptionResult;
+import com.theokanning.openai.audio.TranslationResult;
 import com.theokanning.openai.completion.CompletionRequest;
 import com.theokanning.openai.completion.CompletionResult;
 import com.theokanning.openai.completion.chat.ChatCompletionRequest;
@@ -15,7 +17,6 @@ import com.theokanning.openai.file.File;
 import com.theokanning.openai.finetune.FineTuneEvent;
 import com.theokanning.openai.finetune.FineTuneRequest;
 import com.theokanning.openai.finetune.FineTuneResult;
-import com.theokanning.openai.image.CreateImageEditRequest;
 import com.theokanning.openai.image.CreateImageRequest;
 import com.theokanning.openai.image.ImageResult;
 import com.theokanning.openai.model.Model;
@@ -42,13 +43,13 @@ public interface OpenAiApi {
     @Streaming
     @POST("/v1/completions")
     Call<ResponseBody> createCompletionStream(@Body CompletionRequest request);
-    
+
     @POST("/v1/chat/completions")
     Single<ChatCompletionResult> createChatCompletion(@Body ChatCompletionRequest request);
 
     @Streaming
     @POST("/v1/chat/completions")
-	Call<ResponseBody> createChatCompletionStream(@Body ChatCompletionRequest request);
+    Call<ResponseBody> createChatCompletionStream(@Body ChatCompletionRequest request);
 
     @Deprecated
     @POST("/v1/engines/{engine_id}/completions")
@@ -110,6 +111,12 @@ public interface OpenAiApi {
 
     @POST("/v1/images/variations")
     Single<ImageResult> createImageVariation(@Body RequestBody requestBody);
+
+    @POST("/v1/audio/transcriptions")
+    Single<TranscriptionResult> createTranscription(@Body RequestBody requestBody);
+
+    @POST("/v1/audio/translations")
+    Single<TranslationResult> createTranslation(@Body RequestBody requestBody);
 
     @POST("/v1/moderations")
     Single<ModerationResult> createModeration(@Body ModerationRequest request);
