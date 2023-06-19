@@ -2,8 +2,6 @@ package com.theokanning.openai.moderation;
 
 import lombok.*;
 
-import java.util.List;
-
 /**
  * A request for OpenAi to detect if text violates OpenAi's content policy.
  *

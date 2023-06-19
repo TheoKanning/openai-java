@@ -1,7 +1,6 @@
 package com.theokanning.openai.moderation;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.theokanning.openai.completion.CompletionChoice;
 import lombok.Data;
 
 import java.util.List;
