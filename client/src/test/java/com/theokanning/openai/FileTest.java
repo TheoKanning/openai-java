@@ -1,5 +1,6 @@
 package com.theokanning.openai;
 
+import com.theokanning.openai.client.OpenAiService;
 import com.theokanning.openai.file.File;
 import org.junit.jupiter.api.*;
 

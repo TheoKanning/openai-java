@@ -1,4 +1,5 @@
 package com.theokanning.openai;
+import com.theokanning.openai.client.OpenAiService;
 import com.theokanning.openai.completion.CompletionChoice;
 import com.theokanning.openai.completion.CompletionRequest;
 import com.theokanning.openai.completion.chat.ChatCompletionChoice;
