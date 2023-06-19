@@ -7,6 +7,10 @@ import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.theokanning.openai.DeleteResult;
 import com.theokanning.openai.OpenAiError;
 import com.theokanning.openai.OpenAiHttpException;
+import com.theokanning.openai.audio.CreateTranscriptionRequest;
+import com.theokanning.openai.audio.CreateTranslationRequest;
+import com.theokanning.openai.audio.TranscriptionResult;
+import com.theokanning.openai.audio.TranslationResult;
 import com.theokanning.openai.client.OpenAiApi;
 import com.theokanning.openai.completion.CompletionChunk;
 import com.theokanning.openai.completion.CompletionRequest;
@@ -246,6 +250,61 @@ public class OpenAiService {
         }
 
         return execute(api.createImageVariation(builder.build()));
+    }
+
+    public TranscriptionResult createTranscription(CreateTranscriptionRequest request, String audioPath) {
+        java.io.File audio = new java.io.File(audioPath);
+        return createTranscription(request, audio);
+    }
+
+    public TranscriptionResult createTranscription(CreateTranscriptionRequest request, java.io.File audio) {
+        RequestBody audioBody = RequestBody.create(MediaType.parse("audio"), audio);
+
+        MultipartBody.Builder builder = new MultipartBody.Builder()
+                .setType(MediaType.get("multipart/form-data"))
+                .addFormDataPart("model", request.getModel())
+                .addFormDataPart("file", audio.getName(), audioBody);
+
+        if (request.getPrompt() != null) {
+            builder.addFormDataPart("prompt", request.getPrompt());
+        }
+        if (request.getResponseFormat() != null) {
+            builder.addFormDataPart("response_format", request.getResponseFormat());
+        }
+        if (request.getTemperature() != null) {
+            builder.addFormDataPart("temperature", request.getTemperature().toString());
+        }
+        if (request.getLanguage() != null) {
+            builder.addFormDataPart("language", request.getLanguage());
+        }
+
+        return execute(api.createTranscription(builder.build()));
+    }
+
+    public TranslationResult createTranslation(CreateTranslationRequest request, String audioPath) {
+        java.io.File audio = new java.io.File(audioPath);
+        return createTranslation(request, audio);
+    }
+
+    public TranslationResult createTranslation(CreateTranslationRequest request, java.io.File audio) {
+        RequestBody audioBody = RequestBody.create(MediaType.parse("audio"), audio);
+
+        MultipartBody.Builder builder = new MultipartBody.Builder()
+                .setType(MediaType.get("multipart/form-data"))
+                .addFormDataPart("model", request.getModel())
+                .addFormDataPart("file", audio.getName(), audioBody);
+
+        if (request.getPrompt() != null) {
+            builder.addFormDataPart("prompt", request.getPrompt());
+        }
+        if (request.getResponseFormat() != null) {
+            builder.addFormDataPart("response_format", request.getResponseFormat());
+        }
+        if (request.getTemperature() != null) {
+            builder.addFormDataPart("temperature", request.getTemperature().toString());
+        }
+
+        return execute(api.createTranslation(builder.build()));
     }
 
     public ModerationResult createModeration(ModerationRequest request) {

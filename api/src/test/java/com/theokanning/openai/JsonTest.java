@@ -2,6 +2,8 @@ package com.theokanning.openai;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.*;
+import com.theokanning.openai.audio.TranscriptionResult;
+import com.theokanning.openai.audio.TranslationResult;
 import com.theokanning.openai.completion.chat.ChatCompletionRequest;
 import com.theokanning.openai.completion.chat.ChatCompletionResult;
 import com.theokanning.openai.edit.EditRequest;
@@ -42,6 +44,8 @@ public class JsonTest {
             FineTuneEvent.class,
             FineTuneResult.class,
             ImageResult.class,
+            TranscriptionResult.class,
+            TranslationResult.class,
             Model.class,
             ModerationRequest.class,
             ModerationResult.class
