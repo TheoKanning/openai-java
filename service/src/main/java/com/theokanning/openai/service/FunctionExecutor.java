@@ -11,11 +11,16 @@ import java.util.*;
 
 public class FunctionExecutor {
 
-    private final ObjectMapper MAPPER = new ObjectMapper();
+    private ObjectMapper MAPPER = new ObjectMapper();
     private final Map<String, ChatFunction> FUNCTIONS = new HashMap<>();
 
     public FunctionExecutor(List<ChatFunction> functions) {
         setFunctions(functions);
+    }
+
+    public FunctionExecutor(List<ChatFunction> functions, ObjectMapper objectMapper) {
+        setFunctions(functions);
+        MAPPER = objectMapper;
     }
 
     public Optional<ChatMessage> executeAndConvertToMessageSafely(ChatFunctionCall call) {
@@ -69,6 +74,10 @@ public class FunctionExecutor {
     public void setFunctions(List<ChatFunction> functions) {
         this.FUNCTIONS.clear();
         functions.forEach(f -> this.FUNCTIONS.put(f.getName(), f));
+    }
+
+    public void setObjectMapper(ObjectMapper objectMapper) {
+        this.MAPPER = objectMapper;
     }
 
 }
