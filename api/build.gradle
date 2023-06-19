@@ -2,13 +2,13 @@ apply plugin: 'java-library'
 apply plugin: "com.vanniktech.maven.publish"
 
 dependencies {
-    api 'com.fasterxml.jackson.core:jackson-annotations:2.9.0'
-    api 'com.fasterxml.jackson.core:jackson-databind:2.15.2'
-    compileOnly 'org.projectlombok:lombok:1.18.24'
-    annotationProcessor 'org.projectlombok:lombok:1.18.24'
+    api libs.jacksonAnnotations
+    api libs.jacksonDatabind
+    compileOnly libs.lombok
+    annotationProcessor libs.lombok
 
-    testImplementation 'com.fasterxml.jackson.core:jackson-databind:2.14.2'
-    testImplementation(platform('org.junit:junit-bom:5.8.2'))
+    testImplementation libs.jacksonDatabind
+    testImplementation(platform(libs.junitBom))
     testImplementation('org.junit.jupiter:junit-jupiter')
 }
 

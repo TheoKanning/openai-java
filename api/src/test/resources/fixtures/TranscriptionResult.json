@@ -1,0 +1,27 @@
+{
+  "task": "transcribe",
+  "language": "english",
+  "duration": 1.1,
+  "segments": [
+    {
+      "id": 0,
+      "seek": 0,
+      "start": 0.0,
+      "end": 0.96,
+      "text": " Hello World.",
+      "tokens": [
+        50364,
+        2425,
+        3937,
+        13,
+        50412
+      ],
+      "temperature": 0.0,
+      "avg_logprob": -0.7308251063028971,
+      "compression_ratio": 0.6,
+      "no_speech_prob": 0.015335720032453537,
+      "transient": false
+    }
+  ],
+  "text": "Hello World."
+}

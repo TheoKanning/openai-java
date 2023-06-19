@@ -157,7 +157,7 @@ functionResponseMessage.ifPresentOrElse((response) -> {
 For a more in-depth look, refer to a conversational example that employs functions in: [OpenAiApiFunctionsExample.java](example/src/main/java/example/OpenAiApiFunctionsExample.java).
 
 ### Streaming thread shutdown
-If you want to shut down your process immediately after streaming responses, call `OpenAiService.shutdown()`.  
+If you want to shut down your process immediately after streaming responses, call `OpenAiService.shutdownExecutor()`.  
 This is not necessary for non-streaming calls.
 
 ## Running the example project

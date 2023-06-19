@@ -3,14 +3,14 @@ apply plugin: "com.vanniktech.maven.publish"
 
 dependencies {
     api project(":client")
-    api 'com.squareup.retrofit2:retrofit:2.9.0'
-    implementation 'com.squareup.retrofit2:adapter-rxjava2:2.9.0'
-    implementation 'com.squareup.retrofit2:converter-jackson:2.9.0'
-    implementation 'com.kjetland:mbknor-jackson-jsonschema_2.12:1.0.34'
+    api libs.retrofit
+    implementation libs.retrofitRxJava2
+    implementation libs.retrofitJackson
+    implementation libs.jacksonJsonSchema
 
-    testImplementation(platform('org.junit:junit-bom:5.8.2'))
+    testImplementation(platform(libs.junitBom))
     testImplementation 'org.junit.jupiter:junit-jupiter'
-    testImplementation 'com.squareup.retrofit2:retrofit-mock:2.9.0'
+    testImplementation libs.retrofitMock
 }
 
 compileJava {
