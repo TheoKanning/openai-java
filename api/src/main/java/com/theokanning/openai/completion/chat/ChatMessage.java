@@ -21,7 +21,7 @@ import lombok.*;
 public class ChatMessage {
 
 	/**
-	 * Must be either 'system', 'user', or 'assistant'.<br>
+	 * Must be either 'system', 'user', 'assistant' or 'function'.<br>
 	 * You may use {@link ChatMessageRole} enum.
 	 */
 	@NonNull
