@@ -20,7 +20,7 @@ public class FunctionExecutor {
 
     public FunctionExecutor(List<ChatFunction> functions, ObjectMapper objectMapper) {
         setFunctions(functions);
-        MAPPER = objectMapper;
+        setObjectMapper(objectMapper);
     }
 
     public Optional<ChatMessage> executeAndConvertToMessageSafely(ChatFunctionCall call) {
