@@ -20,7 +20,7 @@ public class ChatMessage {
 
 	/**
 	 * Must be either 'system', 'user', or 'assistant'.<br>
-	 * You may use {@link ChatMessageRole} enum.
+	 * You may use {@link ChatMessageRole} constants.
 	 */
 	@NonNull
 	String role;
