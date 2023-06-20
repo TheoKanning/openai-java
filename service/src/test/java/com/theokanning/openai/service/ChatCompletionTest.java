@@ -16,7 +16,7 @@ class ChatCompletionTest {
     @Test
     void createChatCompletion() {
         final List<ChatMessage> messages = new ArrayList<>();
-        final ChatMessage systemMessage = new ChatMessage(ChatMessageRole.SYSTEM.value(), "You are a dog and will speak as such.");
+        final ChatMessage systemMessage = new ChatMessage(ChatMessageRole.SYSTEM, "You are a dog and will speak as such.");
         messages.add(systemMessage);
 
         ChatCompletionRequest chatCompletionRequest = ChatCompletionRequest
@@ -35,7 +35,7 @@ class ChatCompletionTest {
     @Test
     void streamChatCompletion() {
         final List<ChatMessage> messages = new ArrayList<>();
-        final ChatMessage systemMessage = new ChatMessage(ChatMessageRole.SYSTEM.value(), "You are a dog and will speak as such.");
+        final ChatMessage systemMessage = new ChatMessage(ChatMessageRole.SYSTEM, "You are a dog and will speak as such.");
         messages.add(systemMessage);
 
         ChatCompletionRequest chatCompletionRequest = ChatCompletionRequest

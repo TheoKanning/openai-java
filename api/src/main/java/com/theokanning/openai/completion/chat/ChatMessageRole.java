@@ -3,18 +3,11 @@ package com.theokanning.openai.completion.chat;
 /**
  * see {@link ChatMessage} documentation.
  */
-public enum ChatMessageRole {
-    SYSTEM("system"),
-    USER("user"),
-    ASSISTANT("assistant");
+public class ChatMessageRole {
 
-    private final String value;
+    public final static String SYSTEM = "system", USER = "user", ASSISTANT = "assistant", FUNCTION = "function";
 
-    ChatMessageRole(final String value) {
-        this.value = value;
+    private ChatMessageRole() {
     }
 
-    public String value() {
-        return value;
-    }
 }
