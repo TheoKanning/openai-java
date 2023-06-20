@@ -24,6 +24,20 @@ class OpenAiApiFunctionsExample {
         CELSIUS, FAHRENHEIT;
     }
 
+    public static class WeatherResponse {
+        public String location;
+        public WeatherUnit unit;
+        public int temperature;
+        public String description;
+
+        public WeatherResponse(String location, WeatherUnit unit, int temperature, String description) {
+            this.location = location;
+            this.unit = unit;
+            this.temperature = temperature;
+            this.description = description;
+        }
+    }
+
     public static void main(String... args) {
         String token = System.getenv("OPENAI_TOKEN");
         OpenAiService service = new OpenAiService(token);
@@ -31,10 +45,7 @@ class OpenAiApiFunctionsExample {
         FunctionExecutor functionExecutor = new FunctionExecutor(List.of(ChatFunction.builder()
                 .name("get_weather")
                 .description("Get the current weather of a location")
-                .executor(Weather.class, w -> "{\"location\": \"" + w.location + "\", " +
-                        "\"temperature\": \"" + new Random().nextInt(50) + "\", " +
-                        "\"unit\": \"" + w.unit + "\", " +
-                        "\"description\": \"sunny\"}")
+                .executor(Weather.class, w -> new WeatherResponse(w.location, w.unit, new Random().nextInt(50), "sunny"))
                 .build()));
 
 

@@ -3,12 +3,14 @@ package example;
 import com.theokanning.openai.completion.chat.*;
 import com.theokanning.openai.service.FunctionExecutor;
 import com.theokanning.openai.service.OpenAiService;
+import example.OpenAiApiFunctionsExample.Weather;
+import example.OpenAiApiFunctionsExample.WeatherResponse;
 import io.reactivex.Flowable;
 
 import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-public class OpenAiApiFunctionsWIthStreamExample {
+public class OpenAiApiFunctionsWithStreamExample {
 
     public static void main(String... args) {
         String token = System.getenv("OPENAI_TOKEN");
@@ -17,10 +19,7 @@ public class OpenAiApiFunctionsWIthStreamExample {
         FunctionExecutor functionExecutor = new FunctionExecutor(List.of(ChatFunction.builder()
                 .name("get_weather")
                 .description("Get the current weather of a location")
-                .executor(OpenAiApiFunctionsExample.Weather.class, w -> "{\"location\": \"" + w.location + "\", " +
-                        "\"temperature\": \"" + new Random().nextInt(50) + "\", " +
-                        "\"unit\": \"" + w.unit + "\", " +
-                        "\"description\": \"sunny\"}")
+                .executor(Weather.class, w -> new WeatherResponse(w.location, w.unit, new Random().nextInt(50), "sunny"))
                 .build()));
 
         List<ChatMessage> messages = new ArrayList<>();

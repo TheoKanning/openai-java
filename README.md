@@ -110,6 +110,14 @@ public class Weather {
 public enum WeatherUnit {
     CELSIUS, FAHRENHEIT;
 }
+public static class WeatherResponse {
+    public String location;
+    public WeatherUnit unit;
+    public int temperature;
+    public String description;
+    
+    // constructor
+}
 ```
 
 Next, we declare the function itself and associate it with an executor, in this example we will fake a response from some API:
@@ -117,10 +125,7 @@ Next, we declare the function itself and associate it with an executor, in this 
 ChatFunction.builder()
         .name("get_weather")
         .description("Get the current weather of a location")
-        .executor(Weather.class, w -> "{\"location\": \"" + w.location + "\", " +
-            "\"temperature\": \"" + new Random().nextInt(50) + "\", " +
-            "\"unit\": \"" + w.unit + "\", " +
-            "\"description\": \"sunny\"}")
+        .executor(Weather.class, w -> new WeatherResponse(w.location, w.unit, new Random().nextInt(50), "sunny"))
         .build()
 ```
 
@@ -142,19 +147,17 @@ ChatCompletionRequest chatCompletionRequest = ChatCompletionRequest
         .build();
 
 ChatMessage responseMessage = service.createChatCompletion(chatCompletionRequest).getChoices().get(0).getMessage();
-ChatFunctionCall functionCall = responseMessage.getFunctionCall(); // might be null, but in this case it is a call to our 'get_weather' function.
+ChatFunctionCall functionCall = responseMessage.getFunctionCall(); // might be null, but in this case it is certainly a call to our 'get_weather' function.
 
-// "executeAndConvertToMessageSafely" converts the function's response to your custom object, executes it, gets the response, and then converts it to a ChatMessage object, ready to be added to the current conversation.
-Optional<ChatMessage> functionResponseMessage = functionExecutor.executeAndConvertToMessageSafely(functionCall);
-functionResponseMessage.ifPresentOrElse((response) -> {
-            // messages.add(response);
-        }, () -> {
-            // do something else
-        });
+ChatMessage functionResponseMessage = functionExecutor.executeAndConvertToMessageHandlingExceptions(functionCall);
+messages.add(response);
 ```
 > **Note:** The `FunctionExecutor` class is part of the 'service' module.
 
+You can also create your own function executor. The return object of `ChatFunctionCall.getArguments()` is a JsonNode for simplicity and should be able to help you with that.
+
 For a more in-depth look, refer to a conversational example that employs functions in: [OpenAiApiFunctionsExample.java](example/src/main/java/example/OpenAiApiFunctionsExample.java).
+Or for an example using functions and stream: [OpenAiApiFunctionsWithStreamExample.java](example/src/main/java/example/OpenAiApiFunctionsWithStreamExample.java)
 
 ### Streaming thread shutdown
 If you want to shut down your process immediately after streaming responses, call `OpenAiService.shutdownExecutor()`.  
@@ -173,11 +176,20 @@ And you can also try the new capability of using functions:
 ```bash
 ./gradlew runExampleTwo
 ```
+Or functions with 'stream' mode enabled:
+```bash
+./gradlew runExampleThree
+```
 
 ## FAQ
 ### Does this support GPT-4?
 Yes! GPT-4 uses the ChatCompletion Api, and you can see the latest model options [here](https://platform.openai.com/docs/models/gpt-4).  
 GPT-4 is currently in a limited beta (as of 4/1/23), so make sure you have access before trying to use it.
+
+### Does this support functions?
+Absolutely! It is very easy to use your own functions without worrying about doing the dirty work.
+As mentioned above, you can refer to [OpenAiApiFunctionsExample.java](example/src/main/java/example/OpenAiApiFunctionsExample.java) or 
+[OpenAiApiFunctionsWithStreamExample.java](example/src/main/java/example/OpenAiApiFunctionsWithStreamExample.java) projects for an example. 
 
 ### Why am I getting connection timeouts?
 Make sure that OpenAI is available in your country.
