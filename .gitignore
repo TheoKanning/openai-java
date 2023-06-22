@@ -38,3 +38,6 @@ build
 # Ignore any files in /bin and /obj Folders
 **/bin/*
 **/obj/*
+
+# Ignore the macOS folder attribute file
+**/.DS_Store

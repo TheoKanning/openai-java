@@ -6,6 +6,7 @@ dependencies {
     api libs.retrofit
     implementation libs.retrofitRxJava2
     implementation libs.retrofitJackson
+    implementation libs.jacksonJsonSchema
 
     testImplementation(platform(libs.junitBom))
     testImplementation 'org.junit.jupiter:junit-jupiter'

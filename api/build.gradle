@@ -2,7 +2,8 @@ apply plugin: 'java-library'
 apply plugin: "com.vanniktech.maven.publish"
 
 dependencies {
-    implementation libs.jacksoAnnotations
+    api libs.jacksonAnnotations
+    api libs.jacksonDatabind
     compileOnly libs.lombok
     annotationProcessor libs.lombok
 

@@ -95,6 +95,70 @@ OpenAiApi api = retrofit.create(OpenAiApi.class);
 OpenAiService service = new OpenAiService(api);
 ```
 
+### Functions
+You can create your functions and define their executors easily using the ChatFunction class, along with any of your custom classes that will serve to define their available parameters. You can also process the functions with ease, with the help of an executor called FunctionExecutor.
+
+First we declare our function parameters:
+```java
+public class Weather {
+    @JsonPropertyDescription("City and state, for example: León, Guanajuato")
+    public String location;
+    @JsonPropertyDescription("The temperature unit, can be 'celsius' or 'fahrenheit'")
+    @JsonProperty(required = true)
+    public WeatherUnit unit;
+}
+public enum WeatherUnit {
+    CELSIUS, FAHRENHEIT;
+}
+public static class WeatherResponse {
+    public String location;
+    public WeatherUnit unit;
+    public int temperature;
+    public String description;
+    
+    // constructor
+}
+```
+
+Next, we declare the function itself and associate it with an executor, in this example we will fake a response from some API:
+```java
+ChatFunction.builder()
+        .name("get_weather")
+        .description("Get the current weather of a location")
+        .executor(Weather.class, w -> new WeatherResponse(w.location, w.unit, new Random().nextInt(50), "sunny"))
+        .build()
+```
+
+Then, we employ the FunctionExecutor object from the 'service' module to assist with execution and transformation into an object that is ready for the conversation:
+```java
+List<ChatFunction> functionList = // list with functions
+FunctionExecutor functionExecutor = new FunctionExecutor(functionList);
+
+List<ChatMessage> messages = new ArrayList<>();
+ChatMessage userMessage = new ChatMessage(ChatMessageRole.USER.value(), "Tell me the weather in Barcelona.");
+messages.add(userMessage);
+ChatCompletionRequest chatCompletionRequest = ChatCompletionRequest
+        .builder()
+        .model("gpt-3.5-turbo-0613")
+        .messages(messages)
+        .functions(functionExecutor.getFunctions())
+        .functionCall(new ChatCompletionRequestFunctionCall("auto"))
+        .maxTokens(256)
+        .build();
+
+ChatMessage responseMessage = service.createChatCompletion(chatCompletionRequest).getChoices().get(0).getMessage();
+ChatFunctionCall functionCall = responseMessage.getFunctionCall(); // might be null, but in this case it is certainly a call to our 'get_weather' function.
+
+ChatMessage functionResponseMessage = functionExecutor.executeAndConvertToMessageHandlingExceptions(functionCall);
+messages.add(response);
+```
+> **Note:** The `FunctionExecutor` class is part of the 'service' module.
+
+You can also create your own function executor. The return object of `ChatFunctionCall.getArguments()` is a JsonNode for simplicity and should be able to help you with that.
+
+For a more in-depth look, refer to a conversational example that employs functions in: [OpenAiApiFunctionsExample.java](example/src/main/java/example/OpenAiApiFunctionsExample.java).
+Or for an example using functions and stream: [OpenAiApiFunctionsWithStreamExample.java](example/src/main/java/example/OpenAiApiFunctionsWithStreamExample.java)
+
 ### Streaming thread shutdown
 If you want to shut down your process immediately after streaming responses, call `OpenAiService.shutdownExecutor()`.  
 This is not necessary for non-streaming calls.
@@ -103,13 +167,29 @@ This is not necessary for non-streaming calls.
 All the [example](example/src/main/java/example/OpenAiApiExample.java) project requires is your OpenAI api token
 ```bash
 export OPENAI_TOKEN="sk-XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
-./gradlew example:run
+```
+You can try all the capabilities of this project using:
+```bash
+./gradlew runExampleOne
+```
+And you can also try the new capability of using functions:
+```bash
+./gradlew runExampleTwo
+```
+Or functions with 'stream' mode enabled:
+```bash
+./gradlew runExampleThree
 ```
 
 ## FAQ
 ### Does this support GPT-4?
 Yes! GPT-4 uses the ChatCompletion Api, and you can see the latest model options [here](https://platform.openai.com/docs/models/gpt-4).  
 GPT-4 is currently in a limited beta (as of 4/1/23), so make sure you have access before trying to use it.
+
+### Does this support functions?
+Absolutely! It is very easy to use your own functions without worrying about doing the dirty work.
+As mentioned above, you can refer to [OpenAiApiFunctionsExample.java](example/src/main/java/example/OpenAiApiFunctionsExample.java) or 
+[OpenAiApiFunctionsWithStreamExample.java](example/src/main/java/example/OpenAiApiFunctionsWithStreamExample.java) projects for an example. 
 
 ### Why am I getting connection timeouts?
 Make sure that OpenAI is available in your country.

@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
+import com.fasterxml.jackson.databind.node.TextNode;
 import com.theokanning.openai.DeleteResult;
 import com.theokanning.openai.OpenAiError;
 import com.theokanning.openai.OpenAiHttpException;
@@ -15,9 +16,7 @@ import com.theokanning.openai.client.OpenAiApi;
 import com.theokanning.openai.completion.CompletionChunk;
 import com.theokanning.openai.completion.CompletionRequest;
 import com.theokanning.openai.completion.CompletionResult;
-import com.theokanning.openai.completion.chat.ChatCompletionChunk;
-import com.theokanning.openai.completion.chat.ChatCompletionRequest;
-import com.theokanning.openai.completion.chat.ChatCompletionResult;
+import com.theokanning.openai.completion.chat.*;
 import com.theokanning.openai.edit.EditRequest;
 import com.theokanning.openai.edit.EditResult;
 import com.theokanning.openai.embedding.EmbeddingRequest;
@@ -33,14 +32,13 @@ import com.theokanning.openai.image.ImageResult;
 import com.theokanning.openai.model.Model;
 import com.theokanning.openai.moderation.ModerationRequest;
 import com.theokanning.openai.moderation.ModerationResult;
-
 import io.reactivex.BackpressureStrategy;
 import io.reactivex.Flowable;
 import io.reactivex.Single;
 import okhttp3.*;
+import retrofit2.Call;
 import retrofit2.HttpException;
 import retrofit2.Retrofit;
-import retrofit2.Call;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.jackson.JacksonConverterFactory;
 
@@ -388,6 +386,9 @@ public class OpenAiService {
         mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
         mapper.setPropertyNamingStrategy(PropertyNamingStrategy.SNAKE_CASE);
+        mapper.addMixIn(ChatFunction.class, ChatFunctionMixIn.class);
+        mapper.addMixIn(ChatCompletionRequest.class, ChatCompletionRequestMixIn.class);
+        mapper.addMixIn(ChatFunctionCall.class, ChatFunctionCallMixIn.class);
         return mapper;
     }
 
@@ -407,4 +408,36 @@ public class OpenAiService {
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .build();
     }
+
+    public Flowable<ChatMessageAccumulator> mapStreamToAccumulator(Flowable<ChatCompletionChunk> flowable) {
+        ChatFunctionCall functionCall = new ChatFunctionCall(null, null);
+        ChatMessage accumulatedMessage = new ChatMessage(ChatMessageRole.ASSISTANT.value(), null);
+
+        return flowable.map(chunk -> {
+            ChatMessage messageChunk = chunk.getChoices().get(0).getMessage();
+            if (messageChunk.getFunctionCall() != null) {
+                if (messageChunk.getFunctionCall().getName() != null) {
+                    String namePart = messageChunk.getFunctionCall().getName();
+                    functionCall.setName((functionCall.getName() == null ? "" : functionCall.getName()) + namePart);
+                }
+                if (messageChunk.getFunctionCall().getArguments() != null) {
+                    String argumentsPart = messageChunk.getFunctionCall().getArguments() == null ? "" : messageChunk.getFunctionCall().getArguments().asText();
+                    functionCall.setArguments(new TextNode((functionCall.getArguments() == null ? "" : functionCall.getArguments().asText()) + argumentsPart));
+                }
+                accumulatedMessage.setFunctionCall(functionCall);
+            } else {
+                accumulatedMessage.setContent((accumulatedMessage.getContent() == null ? "" : accumulatedMessage.getContent()) + (messageChunk.getContent() == null ? "" : messageChunk.getContent()));
+            }
+
+            if (chunk.getChoices().get(0).getFinishReason() != null) { // last
+                if (functionCall.getArguments() != null) {
+                    functionCall.setArguments(mapper.readTree(functionCall.getArguments().asText()));
+                    accumulatedMessage.setFunctionCall(functionCall);
+                }
+            }
+
+            return new ChatMessageAccumulator(messageChunk, accumulatedMessage);
+        });
+    }
+
 }
