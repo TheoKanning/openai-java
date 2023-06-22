@@ -10,6 +10,7 @@ import org.junit.jupiter.api.Test;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Collections;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -88,7 +89,7 @@ class ChatCompletionTest {
 
     @Test
     void createChatCompletionWithFunctions() {
-        final List<ChatFunction> functions = List.of(ChatFunction.builder()
+        final List<ChatFunction> functions = Collections.singletonList(ChatFunction.builder()
                 .name("get_weather")
                 .description("Get the current weather in a given location")
                 .executor(Weather.class, w -> new WeatherResponse(w.location, w.unit, 25, "sunny"))
@@ -150,7 +151,7 @@ class ChatCompletionTest {
 
     @Test
     void streamChatCompletionWithFunctions() {
-        final List<ChatFunction> functions = List.of(ChatFunction.builder()
+        final List<ChatFunction> functions = Collections.singletonList(ChatFunction.builder()
                 .name("get_weather")
                 .description("Get the current weather in a given location")
                 .executor(Weather.class, w -> new WeatherResponse(w.location, w.unit, 25, "sunny"))
