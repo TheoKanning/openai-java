@@ -1,11 +1,13 @@
 package com.theokanning.openai.completion.chat;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import lombok.NonNull;
 
 import java.util.function.Function;
+import java.util.function.Supplier;
 
 @Data
 public class ChatFunction {
@@ -42,6 +44,12 @@ public class ChatFunction {
         public <T> Builder executor(Class<T> requestClass, Function<T, Object> executor) {
             this.parameters = requestClass;
             this.executor = (Function<Object, Object>) executor;
+            return this;
+        }
+
+        public Builder executor(Supplier<Object> executor) {
+            this.parameters = Object.class;
+            this.executor = c -> executor.get();
             return this;
         }
 

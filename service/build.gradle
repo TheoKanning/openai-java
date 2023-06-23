@@ -4,9 +4,9 @@ apply plugin: "com.vanniktech.maven.publish"
 dependencies {
     api project(":client")
     api libs.retrofit
+    api libs.jacksonJsonSchema
     implementation libs.retrofitRxJava2
     implementation libs.retrofitJackson
-    implementation libs.jacksonJsonSchema
 
     testImplementation(platform(libs.junitBom))
     testImplementation 'org.junit.jupiter:junit-jupiter'
