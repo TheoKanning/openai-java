@@ -12,6 +12,8 @@ import com.theokanning.openai.audio.CreateTranscriptionRequest;
 import com.theokanning.openai.audio.CreateTranslationRequest;
 import com.theokanning.openai.audio.TranscriptionResult;
 import com.theokanning.openai.audio.TranslationResult;
+import com.theokanning.openai.billing.BillingUsage;
+import com.theokanning.openai.billing.Subscription;
 import com.theokanning.openai.client.OpenAiApi;
 import com.theokanning.openai.completion.CompletionChunk;
 import com.theokanning.openai.completion.CompletionRequest;
@@ -42,8 +44,10 @@ import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.jackson.JacksonConverterFactory;
 
+import javax.validation.constraints.NotNull;
 import java.io.IOException;
 import java.time.Duration;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.ExecutorService;
@@ -438,6 +442,29 @@ public class OpenAiService {
 
             return new ChatMessageAccumulator(messageChunk, accumulatedMessage);
         });
+    }
+
+    /**
+     * Account information inquiry: including total amount and other information.
+     *
+     * @return Account information.
+     */
+    public Subscription subscription() {
+        Single<Subscription> subscription = api.subscription();
+        return subscription.blockingGet();
+    }
+
+    /**
+     * Account API consumption amount information inquiry.
+     * Up to 100 days of inquiry.
+     *
+     * @param starDate
+     * @param endDate
+     * @return Consumption amount information.
+     */
+    public BillingUsage billingUsage(@NotNull LocalDate starDate, @NotNull LocalDate endDate) {
+        Single<BillingUsage> billingUsage = api.billingUsage(starDate, endDate);
+        return billingUsage.blockingGet();
     }
 
 }

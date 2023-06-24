@@ -12,3 +12,4 @@ retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit
 retrofitJackson = { module = "com.squareup.retrofit2:converter-jackson", version.ref = "retrofit" }
 retrofitRxJava2 = { module = "com.squareup.retrofit2:adapter-rxjava2", version.ref = "retrofit" }
 retrofitMock = { module = "com.squareup.retrofit2:retrofit-mock", version.ref = "retrofit" }
+jtokkit = { module = "com.knuddels:jtokkit", version = "0.2.0" }

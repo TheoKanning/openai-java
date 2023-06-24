@@ -4,6 +4,7 @@ apply plugin: "com.vanniktech.maven.publish"
 dependencies {
     api libs.jacksonAnnotations
     api libs.jacksonDatabind
+    api libs.jtokkit
     compileOnly libs.lombok
     annotationProcessor libs.lombok
 
