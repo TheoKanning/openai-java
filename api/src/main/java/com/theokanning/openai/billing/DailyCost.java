@@ -12,12 +12,12 @@ import java.util.List;
 @Data
 public class DailyCost {
     /**
-     * 时间戳
+     *
      */
     @JsonProperty("timestamp")
     private long timestamp;
     /**
-     * 模型消耗金额详情
+     * Model consumption amount details
      */
     @JsonProperty("line_items")
     private List<LineItem> lineItems;

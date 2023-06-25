@@ -14,22 +14,22 @@ public class Datum {
     private String object;
     private String id;
     /**
-     * 赠送金额：美元
+     * Gift amount: US dollars
      */
     @JsonProperty("grant_amount")
     private BigDecimal grantAmount;
     /**
-     * 使用金额：美元
+     * Usage amount: US dollars
      */
     @JsonProperty("used_amount")
     private BigDecimal usedAmount;
     /**
-     * 生效时间戳
+     * Effective timestamp
      */
     @JsonProperty("effective_at")
     private Long effectiveAt;
     /**
-     * 过期时间戳
+     * Expiration timestamp
      */
     @JsonProperty("expires_at")
     private Long expiresAt;

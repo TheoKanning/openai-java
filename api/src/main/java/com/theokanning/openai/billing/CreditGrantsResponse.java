@@ -14,22 +14,22 @@ import java.math.BigDecimal;
 public class CreditGrantsResponse implements Serializable {
     private String object;
     /**
-     * 总金额：美元
+     * Total amount: US dollars
      */
     @JsonProperty("total_granted")
     private BigDecimal totalGranted;
     /**
-     * 总使用金额：美元
+     * Total usage amount: US dollars
      */
     @JsonProperty("total_used")
     private BigDecimal totalUsed;
     /**
-     * 总剩余金额：美元
+     * Total remaining amount: US dollars
      */
     @JsonProperty("total_available")
     private BigDecimal totalAvailable;
     /**
-     * 余额明细
+     * Balance details
      */
     private Grants grants;
 }

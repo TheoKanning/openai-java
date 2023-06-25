@@ -16,12 +16,12 @@ public class BillingUsage {
     @JsonProperty("object")
     private String object;
     /**
-     * 账号金额消耗明细
+     * Account expenditure details
      */
     @JsonProperty("daily_costs")
     private List<DailyCost> dailyCosts;
     /**
-     * 总使用金额：美分
+     * Total usage amount: cents
      */
     @JsonProperty("total_usage")
     private BigDecimal totalUsage;

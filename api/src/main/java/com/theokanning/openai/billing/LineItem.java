@@ -11,11 +11,11 @@ import java.math.BigDecimal;
 @Data
 public class LineItem {
     /**
-     * 模型名称
+     * model name
      */
     private String name;
     /**
-     * 消耗金额
+     * Expenditure amount
      */
     private BigDecimal cost;
 }
