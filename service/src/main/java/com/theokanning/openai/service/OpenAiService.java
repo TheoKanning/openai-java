@@ -373,6 +373,11 @@ public class OpenAiService {
         this.executorService.shutdown();
     }
 
+    public List<Runnable> shutdownExecutorNow() {
+        Objects.requireNonNull(this.executorService, "executorService must be set in order to shut down");
+        return this.executorService.shutdownNow();
+    }
+
     public static OpenAiApi buildApi(String token, Duration timeout) {
         ObjectMapper mapper = defaultObjectMapper();
         OkHttpClient client = defaultClient(token, timeout);
