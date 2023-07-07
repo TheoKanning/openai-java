@@ -19,6 +19,7 @@ as well as an example project using the service.
 - [Chat Completions](https://platform.openai.com/docs/api-reference/chat/create)
 - [Edits](https://platform.openai.com/docs/api-reference/edits)
 - [Embeddings](https://platform.openai.com/docs/api-reference/embeddings)
+- [Audio](https://platform.openai.com/docs/api-reference/audio)
 - [Files](https://platform.openai.com/docs/api-reference/files)
 - [Fine-tunes](https://platform.openai.com/docs/api-reference/fine-tunes)
 - [Images](https://platform.openai.com/docs/api-reference/images)
