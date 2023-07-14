@@ -1,14 +1,11 @@
 package com.theokanning.openai.completion.chat;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import lombok.NonNull;
 
-import java.util.function.Function;
 
 @Data
-public class ChatFunction {
+public class ChatFunctionDynamic {
 
     /**
      * The name of the function being called.
@@ -24,11 +21,7 @@ public class ChatFunction {
     /**
      * The parameters the functions accepts.
      */
-    @JsonProperty("parameters")
-    private Class<?> parametersClass;
-
-    @JsonIgnore
-    private Function<Object, Object> executor;
+    private ChatFunctionParameters parameters;
 
     public static Builder builder() {
         return new Builder();
@@ -37,8 +30,7 @@ public class ChatFunction {
     public static class Builder {
         private String name;
         private String description;
-        private Class<?> parameters;
-        private Function<Object, Object> executor;
+        private ChatFunctionParameters parameters = new ChatFunctionParameters();
 
         public Builder name(String name) {
             this.name = name;
@@ -50,17 +42,20 @@ public class ChatFunction {
             return this;
         }
 
-        public <T> Builder executor(Class<T> requestClass, Function<T, Object> executor) {
-            this.parameters = requestClass;
-            this.executor = (Function<Object, Object>) executor;
+        public Builder parameters(ChatFunctionParameters parameters) {
+            this.parameters = parameters;
             return this;
         }
 
-        public ChatFunction build() {
-            ChatFunction chatFunction = new ChatFunction(name);
+        public Builder addProperty(ChatFunctionProperty property) {
+            this.parameters.addProperty(property);
+            return this;
+        }
+
+        public ChatFunctionDynamic build() {
+            ChatFunctionDynamic chatFunction = new ChatFunctionDynamic(name);
             chatFunction.setDescription(description);
-            chatFunction.setParametersClass(parameters);
-            chatFunction.setExecutor(executor);
+            chatFunction.setParameters(parameters);
             return chatFunction;
         }
     }
