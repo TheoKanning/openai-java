@@ -2,6 +2,7 @@ package com.theokanning.openai.completion.chat;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.JsonNode;
 import lombok.Data;
 import lombok.NonNull;
 
@@ -15,6 +16,9 @@ public class ChatFunction {
     private String description;
     @JsonProperty("parameters")
     private Class<?> parametersClass;
+
+    @JsonProperty("parameters")
+    private JsonNode parametersSchema;
 
     @JsonIgnore
     private Function<Object, Object> executor;
