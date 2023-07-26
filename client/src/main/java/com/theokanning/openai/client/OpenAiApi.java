@@ -4,6 +4,8 @@ import com.theokanning.openai.DeleteResult;
 import com.theokanning.openai.OpenAiResponse;
 import com.theokanning.openai.audio.TranscriptionResult;
 import com.theokanning.openai.audio.TranslationResult;
+import com.theokanning.openai.billing.BillingUsage;
+import com.theokanning.openai.billing.Subscription;
 import com.theokanning.openai.completion.CompletionRequest;
 import com.theokanning.openai.completion.CompletionResult;
 import com.theokanning.openai.completion.chat.ChatCompletionRequest;
@@ -28,6 +30,8 @@ import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.*;
+
+import java.time.LocalDate;
 
 public interface OpenAiApi {
 
@@ -128,4 +132,24 @@ public interface OpenAiApi {
     @Deprecated
     @GET("/v1/engines/{engine_id}")
     Single<Engine> getEngine(@Path("engine_id") String engineId);
+
+    /**
+     * Account information inquiry: It contains total amount (in US dollars) and other information.
+     *
+     * @return
+     */
+    @GET("v1/dashboard/billing/subscription")
+    Single<Subscription> subscription();
+
+    /**
+     * Account call interface consumption amount inquiry.
+     * totalUsage = Total amount used by the account (in US cents).
+     *
+     * @param starDate
+     * @param endDate
+     * @return Consumption amount information.
+     */
+    @GET("v1/dashboard/billing/usage")
+    Single<BillingUsage> billingUsage(@Query("start_date") LocalDate starDate, @Query("end_date") LocalDate endDate);
+
 }
