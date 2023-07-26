@@ -7,6 +7,7 @@ import com.theokanning.openai.service.OpenAiService;
 import com.theokanning.openai.completion.CompletionRequest;
 import com.theokanning.openai.image.CreateImageRequest;
 
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -14,7 +15,7 @@ import java.util.List;
 class OpenAiApiExample {
     public static void main(String... args) {
         String token = System.getenv("OPENAI_TOKEN");
-        OpenAiService service = new OpenAiService(token);
+        OpenAiService service = new OpenAiService(token, Duration.ofSeconds(30));
 
         System.out.println("\nCreating completion...");
         CompletionRequest completionRequest = CompletionRequest.builder()
