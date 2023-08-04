@@ -15,7 +15,7 @@ public class ModerationTest {
     @Test
     void createModeration() {
         ModerationRequest moderationRequest = ModerationRequest.builder()
-                .input("I want to kill them")
+                .input("I want to kill him")
                 .model("text-moderation-latest")
                 .build();
 
