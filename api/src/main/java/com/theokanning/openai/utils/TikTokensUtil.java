@@ -8,14 +8,12 @@ import com.knuddels.jtokkit.api.ModelType;
 import com.theokanning.openai.completion.chat.ChatMessage;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.extern.slf4j.Slf4j;
 
 import java.util.*;
 
 /**
  * Token calculation tool class
  */
-@Slf4j
 public class TikTokensUtil {
     /**
      * Model name corresponds to Encoding

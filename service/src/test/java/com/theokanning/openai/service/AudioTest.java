@@ -52,7 +52,7 @@ public class AudioTest {
                 .build();
 
         String text = service.createTranslation(createTranslationRequest, koreanAudioFilePath).getText();
-        assertEquals("Hello, my name is Yuna. I am Korean voice.", text);
+        assertEquals("Hello, my name is Yoona. I am a Korean native speaker.", text);
     }
 
     @Test
@@ -63,7 +63,7 @@ public class AudioTest {
                 .build();
 
         TranslationResult result = service.createTranslation(createTranslationRequest, koreanAudioFilePath);
-        assertEquals("Hello, my name is Yuna. I am Korean voice.", result.getText());
+        assertEquals("Hello, my name is Yoona. I am a Korean native speaker.", result.getText());
         assertEquals("translate", result.getTask());
         assertEquals("english", result.getLanguage());
         assertTrue(result.getDuration() > 0);
