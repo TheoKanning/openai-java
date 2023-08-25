@@ -120,7 +120,7 @@ public interface OpenAiApi {
     Single<ResponseBody> createTranscription(@Body RequestBody requestBody);
 
     @POST("/v1/audio/translations")
-    Single<TranslationResult> createTranslation(@Body RequestBody requestBody);
+    Single<ResponseBody> createTranslation(@Body RequestBody requestBody);
 
     @POST("/v1/moderations")
     Single<ModerationResult> createModeration(@Body ModerationRequest request);
