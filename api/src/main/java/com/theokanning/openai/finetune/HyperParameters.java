@@ -8,6 +8,7 @@ import lombok.Data;
  *
  * https://beta.openai.com/docs/api-reference/fine-tunes
  */
+@Deprecated
 @Data
 public class HyperParameters {
 

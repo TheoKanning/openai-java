@@ -24,6 +24,9 @@ import com.theokanning.openai.edit.EditResult;
 import com.theokanning.openai.embedding.EmbeddingRequest;
 import com.theokanning.openai.embedding.EmbeddingResult;
 import com.theokanning.openai.file.File;
+import com.theokanning.openai.fine_tuning.FineTuningEvent;
+import com.theokanning.openai.fine_tuning.FineTuningJob;
+import com.theokanning.openai.fine_tuning.FineTuningJobRequest;
 import com.theokanning.openai.finetune.FineTuneEvent;
 import com.theokanning.openai.finetune.FineTuneRequest;
 import com.theokanning.openai.finetune.FineTuneResult;
@@ -170,6 +173,27 @@ public class OpenAiService {
         return execute(api.retrieveFile(fileId));
     }
 
+    public FineTuningJob createFineTuningJob(FineTuningJobRequest request) {
+        return execute(api.createFineTuningJob(request));
+    }
+
+    public List<FineTuningJob> listFineTuningJobs() {
+        return execute(api.listFineTuningJobs()).data;
+    }
+
+    public FineTuningJob retrieveFineTuningJob(String fineTuningJobId) {
+        return execute(api.retrieveFineTuningJob(fineTuningJobId));
+    }
+
+    public FineTuningJob cancelFineTuningJob(String fineTuningJobId) {
+        return execute(api.cancelFineTuningJob(fineTuningJobId));
+    }
+
+    public List<FineTuningEvent> listFineTuningJobEvents(String fineTuningJobId) {
+        return execute(api.listFineTuningJobEvents(fineTuningJobId)).data;
+    }
+
+    @Deprecated
     public FineTuneResult createFineTune(FineTuneRequest request) {
         return execute(api.createFineTune(request));
     }
@@ -178,18 +202,22 @@ public class OpenAiService {
         return execute(api.createFineTuneCompletion(request));
     }
 
+    @Deprecated
     public List<FineTuneResult> listFineTunes() {
         return execute(api.listFineTunes()).data;
     }
 
+    @Deprecated
     public FineTuneResult retrieveFineTune(String fineTuneId) {
         return execute(api.retrieveFineTune(fineTuneId));
     }
 
+    @Deprecated
     public FineTuneResult cancelFineTune(String fineTuneId) {
         return execute(api.cancelFineTune(fineTuneId));
     }
 
+    @Deprecated
     public List<FineTuneEvent> listFineTuneEvents(String fineTuneId) {
         return execute(api.listFineTuneEvents(fineTuneId)).data;
     }

@@ -1,4 +1,4 @@
-package com.theokanning.openai.finetune;
+package com.theokanning.openai.fine_tuning;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
@@ -6,13 +6,12 @@ import lombok.Data;
 /**
  * An object representing an event in the lifecycle of a fine-tuning job
  *
- * https://beta.openai.com/docs/api-reference/fine-tunes
+ * https://platform.openai.com/docs/api-reference/fine-tuning/list-events
  */
-@Deprecated
 @Data
-public class FineTuneEvent {
+public class FineTuningEvent {
     /**
-     * The type of object returned, should be "fine-tune-event".
+     * The type of object returned, should be "fine-tuneing.job.event".
      */
     String object;
 
@@ -31,4 +30,9 @@ public class FineTuneEvent {
      * The event message.
      */
     String message;
+
+    /**
+     * The type of event, i.e. "message"
+     */
+    String type;
 }
