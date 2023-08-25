@@ -138,6 +138,7 @@ public interface OpenAiApi {
      *
      * @return
      */
+    @Deprecated
     @GET("v1/dashboard/billing/subscription")
     Single<Subscription> subscription();
 
@@ -149,6 +150,7 @@ public interface OpenAiApi {
      * @param endDate
      * @return Consumption amount information.
      */
+    @Deprecated
     @GET("v1/dashboard/billing/usage")
     Single<BillingUsage> billingUsage(@Query("start_date") LocalDate starDate, @Query("end_date") LocalDate endDate);
 
