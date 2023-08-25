@@ -21,12 +21,13 @@ as well as an example project using the service.
 - [Embeddings](https://platform.openai.com/docs/api-reference/embeddings)
 - [Audio](https://platform.openai.com/docs/api-reference/audio)
 - [Files](https://platform.openai.com/docs/api-reference/files)
-- [Fine-tunes](https://platform.openai.com/docs/api-reference/fine-tunes)
+- [Fine-tuning](https://platform.openai.com/docs/api-reference/fine-tuning)
 - [Images](https://platform.openai.com/docs/api-reference/images)
 - [Moderations](https://platform.openai.com/docs/api-reference/moderations)
 
 #### Deprecated by OpenAI
 - [Engines](https://platform.openai.com/docs/api-reference/engines)
+- [Legacy Fine-Tunes](https://platform.openai.com/docs/guides/legacy-fine-tuning)
 
 ## Importing
 
