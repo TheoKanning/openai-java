@@ -12,6 +12,8 @@ import com.theokanning.openai.audio.CreateTranscriptionRequest;
 import com.theokanning.openai.audio.CreateTranslationRequest;
 import com.theokanning.openai.audio.TranscriptionResult;
 import com.theokanning.openai.audio.TranslationResult;
+import com.theokanning.openai.billing.BillingUsage;
+import com.theokanning.openai.billing.Subscription;
 import com.theokanning.openai.client.OpenAiApi;
 import com.theokanning.openai.completion.CompletionChunk;
 import com.theokanning.openai.completion.CompletionRequest;
@@ -22,6 +24,9 @@ import com.theokanning.openai.edit.EditResult;
 import com.theokanning.openai.embedding.EmbeddingRequest;
 import com.theokanning.openai.embedding.EmbeddingResult;
 import com.theokanning.openai.file.File;
+import com.theokanning.openai.fine_tuning.FineTuningEvent;
+import com.theokanning.openai.fine_tuning.FineTuningJob;
+import com.theokanning.openai.fine_tuning.FineTuningJobRequest;
 import com.theokanning.openai.finetune.FineTuneEvent;
 import com.theokanning.openai.finetune.FineTuneRequest;
 import com.theokanning.openai.finetune.FineTuneResult;
@@ -42,8 +47,10 @@ import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.jackson.JacksonConverterFactory;
 
+import javax.validation.constraints.NotNull;
 import java.io.IOException;
 import java.time.Duration;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.ExecutorService;
@@ -166,6 +173,27 @@ public class OpenAiService {
         return execute(api.retrieveFile(fileId));
     }
 
+    public FineTuningJob createFineTuningJob(FineTuningJobRequest request) {
+        return execute(api.createFineTuningJob(request));
+    }
+
+    public List<FineTuningJob> listFineTuningJobs() {
+        return execute(api.listFineTuningJobs()).data;
+    }
+
+    public FineTuningJob retrieveFineTuningJob(String fineTuningJobId) {
+        return execute(api.retrieveFineTuningJob(fineTuningJobId));
+    }
+
+    public FineTuningJob cancelFineTuningJob(String fineTuningJobId) {
+        return execute(api.cancelFineTuningJob(fineTuningJobId));
+    }
+
+    public List<FineTuningEvent> listFineTuningJobEvents(String fineTuningJobId) {
+        return execute(api.listFineTuningJobEvents(fineTuningJobId)).data;
+    }
+
+    @Deprecated
     public FineTuneResult createFineTune(FineTuneRequest request) {
         return execute(api.createFineTune(request));
     }
@@ -174,18 +202,22 @@ public class OpenAiService {
         return execute(api.createFineTuneCompletion(request));
     }
 
+    @Deprecated
     public List<FineTuneResult> listFineTunes() {
         return execute(api.listFineTunes()).data;
     }
 
+    @Deprecated
     public FineTuneResult retrieveFineTune(String fineTuneId) {
         return execute(api.retrieveFineTune(fineTuneId));
     }
 
+    @Deprecated
     public FineTuneResult cancelFineTune(String fineTuneId) {
         return execute(api.cancelFineTune(fineTuneId));
     }
 
+    @Deprecated
     public List<FineTuneEvent> listFineTuneEvents(String fineTuneId) {
         return execute(api.listFineTuneEvents(fineTuneId)).data;
     }
@@ -438,6 +470,29 @@ public class OpenAiService {
 
             return new ChatMessageAccumulator(messageChunk, accumulatedMessage);
         });
+    }
+
+    /**
+     * Account information inquiry: including total amount and other information.
+     *
+     * @return Account information.
+     */
+    public Subscription subscription() {
+        Single<Subscription> subscription = api.subscription();
+        return subscription.blockingGet();
+    }
+
+    /**
+     * Account API consumption amount information inquiry.
+     * Up to 100 days of inquiry.
+     *
+     * @param starDate
+     * @param endDate
+     * @return Consumption amount information.
+     */
+    public BillingUsage billingUsage(@NotNull LocalDate starDate, @NotNull LocalDate endDate) {
+        Single<BillingUsage> billingUsage = api.billingUsage(starDate, endDate);
+        return billingUsage.blockingGet();
     }
 
 }
