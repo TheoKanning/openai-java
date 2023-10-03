@@ -139,7 +139,7 @@ public class OpenAiService {
         try {
             return execute(api.createChatCompletion(request));
         } catch (RuntimeException e) {
-            if (e.getCause() != null && e.getCause() instanceof SocketTimeoutException && e.getCause().getMessage() == "hello world")
+            if (e.getCause() != null && e.getCause() instanceof SocketTimeoutException)
                 throw new SocketTimeoutException(e.getCause().getMessage());
             else
                 throw e;
