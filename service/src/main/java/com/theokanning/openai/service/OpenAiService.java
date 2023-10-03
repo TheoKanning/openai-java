@@ -49,6 +49,7 @@ import retrofit2.converter.jackson.JacksonConverterFactory;
 
 import javax.validation.constraints.NotNull;
 import java.io.IOException;
+import java.net.SocketTimeoutException;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.util.List;
@@ -134,8 +135,15 @@ public class OpenAiService {
         return stream(api.createCompletionStream(request), CompletionChunk.class);
     }
 
-    public ChatCompletionResult createChatCompletion(ChatCompletionRequest request) {
-        return execute(api.createChatCompletion(request));
+    public ChatCompletionResult createChatCompletion(ChatCompletionRequest request) throws SocketTimeoutException{
+        try {
+            return execute(api.createChatCompletion(request));
+        } catch (RuntimeException e) {
+            if (e.getCause() != null && e.getCause() instanceof SocketTimeoutException && e.getCause().getMessage() == "hello world")
+                throw new SocketTimeoutException(e.getCause().getMessage());
+            else
+                throw e;
+        }
     }
 
     public Flowable<ChatCompletionChunk> streamChatCompletion(ChatCompletionRequest request) {
