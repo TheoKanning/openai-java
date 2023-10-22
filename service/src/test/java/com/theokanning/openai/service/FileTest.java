@@ -7,6 +7,9 @@ import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -52,6 +55,13 @@ public class FileTest {
 
     @Test
     @Order(4)
+    void retrieveFileContent() throws IOException {
+        String fileBytesToString = service.retrieveFileContent(fileId).string();
+        assertEquals(Files.readString(Path.of(filePath)), fileBytesToString);
+    }
+
+    @Test
+    @Order(5)
     void deleteFile() {
         DeleteResult result = service.deleteFile(fileId);
         assertTrue(result.isDeleted());

@@ -89,6 +89,10 @@ public interface OpenAiApi {
     @GET("/v1/files/{file_id}")
     Single<File> retrieveFile(@Path("file_id") String fileId);
 
+    @Streaming
+    @GET("/v1/files/{file_id}/content")
+    Single<ResponseBody> retrieveFileContent(@Path("file_id") String fileId);
+
     @POST("/v1/fine_tuning/jobs")
     Single<FineTuningJob> createFineTuningJob(@Body FineTuningJobRequest request);
 

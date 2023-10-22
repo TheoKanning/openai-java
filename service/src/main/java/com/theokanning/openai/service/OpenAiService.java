@@ -173,6 +173,10 @@ public class OpenAiService {
         return execute(api.retrieveFile(fileId));
     }
 
+    public ResponseBody retrieveFileContent(String fileId) {
+        return execute(api.retrieveFileContent(fileId));
+    }
+
     public FineTuningJob createFineTuningJob(FineTuningJobRequest request) {
         return execute(api.createFineTuningJob(request));
     }
