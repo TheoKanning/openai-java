@@ -4,5 +4,7 @@
   "bytes": 175,
   "created_at": 1613677385,
   "filename": "train.jsonl",
-  "purpose": "search"
+  "purpose": "search",
+  "status": "error",
+  "status_details": "File is too large."
 }
