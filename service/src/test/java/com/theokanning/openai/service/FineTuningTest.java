@@ -30,7 +30,11 @@ public class FineTuningTest {
 
     @AfterAll
     static void teardown() {
-        service.deleteFile(fileId);
+        try {
+            service.deleteFile(fileId);
+        } catch (Exception e) {
+            // ignore
+        }
     }
 
     @Test
