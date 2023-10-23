@@ -7,6 +7,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.theokanning.openai.completion.chat.*;
 import org.junit.jupiter.api.Test;
 
+import java.net.SocketTimeoutException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -47,7 +48,7 @@ class ChatCompletionTest {
     OpenAiService service = new OpenAiService(token);
 
     @Test
-    void createChatCompletion() {
+    void createChatCompletion() throws SocketTimeoutException {
         final List<ChatMessage> messages = new ArrayList<>();
         final ChatMessage systemMessage = new ChatMessage(ChatMessageRole.SYSTEM.value(), "You are a dog and will speak as such.");
         messages.add(systemMessage);
@@ -88,7 +89,7 @@ class ChatCompletionTest {
     }
 
     @Test
-    void createChatCompletionWithFunctions() {
+    void createChatCompletionWithFunctions() throws SocketTimeoutException {
         final List<ChatFunction> functions = Collections.singletonList(ChatFunction.builder()
                 .name("get_weather")
                 .description("Get the current weather in a given location")

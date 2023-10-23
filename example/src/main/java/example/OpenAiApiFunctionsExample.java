@@ -7,6 +7,7 @@ import com.theokanning.openai.completion.chat.ChatCompletionRequest.ChatCompleti
 import com.theokanning.openai.service.FunctionExecutor;
 import com.theokanning.openai.service.OpenAiService;
 
+import java.net.SocketTimeoutException;
 import java.util.*;
 
 class OpenAiApiFunctionsExample {
@@ -38,7 +39,7 @@ class OpenAiApiFunctionsExample {
         }
     }
 
-    public static void main(String... args) {
+    public static void main(String... args) throws SocketTimeoutException {
         String token = System.getenv("OPENAI_TOKEN");
         OpenAiService service = new OpenAiService(token);
 
