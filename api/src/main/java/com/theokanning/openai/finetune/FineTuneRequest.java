@@ -11,6 +11,7 @@ import java.util.List;
  *
  * https://beta.openai.com/docs/api-reference/fine-tunes/create
  */
+@Deprecated
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor

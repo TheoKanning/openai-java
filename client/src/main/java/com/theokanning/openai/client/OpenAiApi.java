@@ -16,6 +16,9 @@ import com.theokanning.openai.embedding.EmbeddingRequest;
 import com.theokanning.openai.embedding.EmbeddingResult;
 import com.theokanning.openai.engine.Engine;
 import com.theokanning.openai.file.File;
+import com.theokanning.openai.fine_tuning.FineTuningEvent;
+import com.theokanning.openai.fine_tuning.FineTuningJob;
+import com.theokanning.openai.fine_tuning.FineTuningJobRequest;
 import com.theokanning.openai.finetune.FineTuneEvent;
 import com.theokanning.openai.finetune.FineTuneRequest;
 import com.theokanning.openai.finetune.FineTuneResult;
@@ -86,21 +89,45 @@ public interface OpenAiApi {
     @GET("/v1/files/{file_id}")
     Single<File> retrieveFile(@Path("file_id") String fileId);
 
+    @Streaming
+    @GET("/v1/files/{file_id}/content")
+    Single<ResponseBody> retrieveFileContent(@Path("file_id") String fileId);
+
+    @POST("/v1/fine_tuning/jobs")
+    Single<FineTuningJob> createFineTuningJob(@Body FineTuningJobRequest request);
+
+    @GET("/v1/fine_tuning/jobs")
+    Single<OpenAiResponse<FineTuningJob>> listFineTuningJobs();
+
+    @GET("/v1/fine_tuning/jobs/{fine_tuning_job_id}")
+    Single<FineTuningJob> retrieveFineTuningJob(@Path("fine_tuning_job_id") String fineTuningJobId);
+
+    @POST("/v1/fine_tuning/jobs/{fine_tuning_job_id}/cancel")
+    Single<FineTuningJob> cancelFineTuningJob(@Path("fine_tuning_job_id") String fineTuningJobId);
+
+    @GET("/v1/fine_tuning/jobs/{fine_tuning_job_id}/events")
+    Single<OpenAiResponse<FineTuningEvent>> listFineTuningJobEvents(@Path("fine_tuning_job_id") String fineTuningJobId);
+
+    @Deprecated
     @POST("/v1/fine-tunes")
     Single<FineTuneResult> createFineTune(@Body FineTuneRequest request);
 
     @POST("/v1/completions")
     Single<CompletionResult> createFineTuneCompletion(@Body CompletionRequest request);
 
+    @Deprecated
     @GET("/v1/fine-tunes")
     Single<OpenAiResponse<FineTuneResult>> listFineTunes();
 
+    @Deprecated
     @GET("/v1/fine-tunes/{fine_tune_id}")
     Single<FineTuneResult> retrieveFineTune(@Path("fine_tune_id") String fineTuneId);
 
+    @Deprecated
     @POST("/v1/fine-tunes/{fine_tune_id}/cancel")
     Single<FineTuneResult> cancelFineTune(@Path("fine_tune_id") String fineTuneId);
 
+    @Deprecated
     @GET("/v1/fine-tunes/{fine_tune_id}/events")
     Single<OpenAiResponse<FineTuneEvent>> listFineTuneEvents(@Path("fine_tune_id") String fineTuneId);
 
@@ -138,6 +165,7 @@ public interface OpenAiApi {
      *
      * @return
      */
+    @Deprecated
     @GET("v1/dashboard/billing/subscription")
     Single<Subscription> subscription();
 
@@ -149,6 +177,7 @@ public interface OpenAiApi {
      * @param endDate
      * @return Consumption amount information.
      */
+    @Deprecated
     @GET("v1/dashboard/billing/usage")
     Single<BillingUsage> billingUsage(@Query("start_date") LocalDate starDate, @Query("end_date") LocalDate endDate);
 
