@@ -41,4 +41,9 @@ public class CreateImageEditRequest {
      * A unique identifier representing your end-user, which will help OpenAI to monitor and detect abuse.
      */
     String user;
+
+    /**
+     * The model to use for image generation. Only dall-e-2 is supported at this time. Defaults to dall-e-2
+     */
+    String model;
 }
