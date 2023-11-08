@@ -16,6 +16,11 @@ public class FineTuningEvent {
     String object;
 
     /**
+     * The ID of the fine-tuning event.
+     */
+    String id;
+
+    /**
      * The creation time in epoch seconds.
      */
     @JsonProperty("created_at")

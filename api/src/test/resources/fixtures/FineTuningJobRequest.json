@@ -1,0 +1,9 @@
+{
+  "model": "davinci-002",
+  "validation_file": "file-abc123",
+  "training_file": "file-abc123",
+  "hyperparameters": {
+    "n_epochs": 4
+  },
+  "suffix": "test"
+}

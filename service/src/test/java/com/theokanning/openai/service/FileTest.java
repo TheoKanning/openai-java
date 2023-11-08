@@ -7,6 +7,10 @@ import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -18,7 +22,7 @@ public class FileTest {
     static String filePath = "src/test/resources/fine-tuning-data.jsonl";
 
     String token = System.getenv("OPENAI_TOKEN");
-    com.theokanning.openai.service.OpenAiService service = new OpenAiService(token);
+    OpenAiService service = new OpenAiService(token);
     static String fileId;
 
     @Test
@@ -52,6 +56,14 @@ public class FileTest {
 
     @Test
     @Order(4)
+    void retrieveFileContent() throws IOException {
+        String fileBytesToString = service.retrieveFileContent(fileId).string();
+        String contents = new String(Files.readAllBytes(Paths.get(filePath)), StandardCharsets.UTF_8);
+        assertEquals(contents, fileBytesToString);
+    }
+
+    @Test
+    @Order(5)
     void deleteFile() {
         DeleteResult result = service.deleteFile(fileId);
         assertTrue(result.isDeleted());
