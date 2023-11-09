@@ -124,7 +124,15 @@ public class OpenAiService {
         return execute(api.getModel(modelId));
     }
 
+    /**
+     * Creates a text completion request using the OpenAI API.
+     * This is typically used for generating text based on a provided prompt.
+     *
+     * @param request The completion request object, containing parameters like the prompt and settings.
+     * @return CompletionResult The result object with the generated text and other details.
+     */
     public CompletionResult createCompletion(CompletionRequest request) {
+        // Executes the API call to create a completion and returns the response.
         return execute(api.createCompletion(request));
     }
 
@@ -134,7 +142,15 @@ public class OpenAiService {
         return stream(api.createCompletionStream(request), CompletionChunk.class);
     }
 
+    /**
+     * Initiates a chat request using the OpenAI API.
+     * This method is used for interactive chat-like conversations, where the API generates responses.
+     *
+     * @param request The chat request object, containing the initial message or conversation context.
+     * @return ChatCompletionResult The result object with the chat response.
+     */
     public ChatCompletionResult createChatCompletion(ChatCompletionRequest request) {
+        // Executes the API call for a chat completion and returns the response.
         return execute(api.createChatCompletion(request));
     }
 
@@ -144,7 +160,15 @@ public class OpenAiService {
         return stream(api.createChatCompletionStream(request), ChatCompletionChunk.class);
     }
 
+    /**
+     * Creates an edit request using the OpenAI API.
+     * This method is typically used for making small edits to a provided piece of text.
+     *
+     * @param request The edit request object, containing the original text and the desired edit.
+     * @return EditResult The result object with the edited text.
+     */
     public EditResult createEdit(EditRequest request) {
+        // Executes the API call to create an edit and returns the response.
         return execute(api.createEdit(request));
     }
 
@@ -152,7 +176,14 @@ public class OpenAiService {
         return execute(api.createEmbeddings(request));
     }
 
+    /**
+     * Retrieves a list of files that have been uploaded to the OpenAI API.
+     * This method is useful for managing and referencing previously uploaded files.
+     *
+     * @return List<File> A list of File objects representing the uploaded files.
+     */
     public List<File> listFiles() {
+        // Executes the API call to retrieve a list of uploaded files and returns the data.
         return execute(api.listFiles()).data;
     }
 
@@ -165,9 +196,18 @@ public class OpenAiService {
         return execute(api.uploadFile(purposeBody, body));
     }
 
+    /**
+     * Deletes a file that has been uploaded to the OpenAI API.
+     * This method is used to remove files that are no longer needed.
+     *
+     * @param fileId The ID of the file to be deleted.
+     * @return DeleteResult The result of the deletion operation.
+     */
     public DeleteResult deleteFile(String fileId) {
+        // Executes the API call to delete the specified file and returns the response.
         return execute(api.deleteFile(fileId));
     }
+
 
     public File retrieveFile(String fileId) {
         return execute(api.retrieveFile(fileId));
@@ -185,6 +225,7 @@ public class OpenAiService {
         return execute(api.listFineTuningJobs()).data;
     }
 
+    
     public FineTuningJob retrieveFineTuningJob(String fineTuningJobId) {
         return execute(api.retrieveFineTuningJob(fineTuningJobId));
     }
@@ -230,16 +271,36 @@ public class OpenAiService {
         return execute(api.deleteFineTune(fineTuneId));
     }
 
+    /**
+     * Initiates an image generation request using the OpenAI API.
+     * This method is used for creating images based on textual descriptions.
+     *
+     * @param request The image creation request object, containing the description and image parameters.
+     * @return ImageResult The result object with the generated image.
+     */
     public ImageResult createImage(CreateImageRequest request) {
+        // Executes the API call to generate an image and returns the response.
         return execute(api.createImage(request));
     }
 
+    /**
+     * Submits an image editing request to the OpenAI API.
+     * This method is used for making edits to existing images based on textual instructions.
+     *
+     * @param request The image edit request object, containing the original image and edit instructions.
+     * @param imagePath The path to the original image file to be edited.
+     * @param maskPath The path to the mask file, if applicable.
+     * @return ImageResult The result object with the edited image.
+     */
     public ImageResult createImageEdit(CreateImageEditRequest request, String imagePath, String maskPath) {
+        // Converts the image file path to a File object.
         java.io.File image = new java.io.File(imagePath);
+        // Initializes a File object for the mask, if a mask path is provided.
         java.io.File mask = null;
         if (maskPath != null) {
             mask = new java.io.File(maskPath);
         }
+        // Calls the overloaded createImageEdit method with the File objects.
         return createImageEdit(request, image, mask);
     }
 
@@ -265,11 +326,30 @@ public class OpenAiService {
         return execute(api.createImageEdit(builder.build()));
     }
 
+    /**
+     * Initiates a request to the OpenAI API to create variations of a given image.
+     * This method is used for generating different versions of an image based on certain parameters.
+     *
+     * @param request The image variation request object, containing the original image and variation parameters.
+     * @param imagePath The path to the original image file to generate variations from.
+     * @return ImageResult The result object with the generated image variations.
+     */
     public ImageResult createImageVariation(CreateImageVariationRequest request, String imagePath) {
+        // Converts the image file path to a File object.
         java.io.File image = new java.io.File(imagePath);
+        // Calls the overloaded createImageVariation method with the File object.
         return createImageVariation(request, image);
     }
 
+    /**
+     * Initiates a request to the OpenAI API to create variations of a given image.
+     * This method is used for generating different versions of an image based on specified parameters.
+     *
+     * @param request The image variation request object, containing parameters for generating image variations
+     *                such as size, response format, and number of variations (n).
+     * @param image The image file to be used as the basis for generating variations.
+     * @return ImageResult The result object containing the generated image variations.
+     */
     public ImageResult createImageVariation(CreateImageVariationRequest request, java.io.File image) {
         RequestBody imageBody = RequestBody.create(MediaType.parse("image"), image);
 
@@ -286,11 +366,31 @@ public class OpenAiService {
         return execute(api.createImageVariation(builder.build()));
     }
 
+    /**
+     * Submits a transcription request to the OpenAI API.
+     * This method is typically used for converting audio content into text.
+     *
+     * @param request The transcription request object, containing details about the audio to transcribe.
+     * @param audioPath The path to the audio file to be transcribed.
+     * @return TranscriptionResult The result object with the transcribed text.
+     */
     public TranscriptionResult createTranscription(CreateTranscriptionRequest request, String audioPath) {
+        // Converts the audio file path to a File object.
         java.io.File audio = new java.io.File(audioPath);
+        // Calls the overloaded createTranscription method with the File object.
         return createTranscription(request, audio);
     }
 
+    /**
+     * Submits a transcription request to the OpenAI API.
+     * This method is typically used for converting audio content into text.
+     *
+     * @param request The transcription request object, containing parameters such as the model to use,
+     *                optional prompt, response format, temperature, and language for the transcription.
+     * @param audio The path to the audio file to be transcribed.
+     * @return TranscriptionResult The result object containing the transcribed text and potentially other
+     *                             response details.
+     */
     public TranscriptionResult createTranscription(CreateTranscriptionRequest request, java.io.File audio) {
         RequestBody audioBody = RequestBody.create(MediaType.parse("audio"), audio);
 
@@ -315,11 +415,30 @@ public class OpenAiService {
         return execute(api.createTranscription(builder.build()));
     }
 
+    /**
+     * Submits a translation request to the OpenAI API.
+     * This method is used for translating text from one language to another.
+     *
+     * @param request The translation request object, containing the text to translate and target language.
+     * @param audioPath The path to the audio file for translation.
+     * @return TranslationResult The result object with the translated text.
+     */
     public TranslationResult createTranslation(CreateTranslationRequest request, String audioPath) {
+        // Converts the audio file path to a File object.
         java.io.File audio = new java.io.File(audioPath);
+        // Calls the overloaded createTranslation method with the File object.
         return createTranslation(request, audio);
     }
 
+    /**
+     * Submits a translation request to the OpenAI API.
+     * This method is used for translating the content of an audio file from one language to another.
+     *
+     * @param request The translation request object, containing parameters such as the model to use,
+     *                optional prompt, response format, temperature, etc., for the translation process.
+     * @param audio The audio file to be translated.
+     * @return TranslationResult The result object containing the translated text.
+     */
     public TranslationResult createTranslation(CreateTranslationRequest request, java.io.File audio) {
         RequestBody audioBody = RequestBody.create(MediaType.parse("audio"), audio);
 
@@ -445,26 +564,45 @@ public class OpenAiService {
                 .build();
     }
 
+    /**
+     * Transforms a stream of chat completion chunks into a stream of chat message accumulators.
+     * Each chat message accumulator contains the latest chat message chunk and an accumulated chat message.
+     *
+     * @param flowable A Flowable stream of ChatCompletionChunk objects. Each ChatCompletionChunk
+     *                 represents a part of the chat message response.
+     * @return A Flowable stream of ChatMessageAccumulator objects. Each accumulator combines
+     *         information about the current chat message chunk and the overall accumulated message.
+     */
     public Flowable<ChatMessageAccumulator> mapStreamToAccumulator(Flowable<ChatCompletionChunk> flowable) {
+        // Initialize an empty ChatFunctionCall and an empty ChatMessage for accumulation.
         ChatFunctionCall functionCall = new ChatFunctionCall(null, null);
         ChatMessage accumulatedMessage = new ChatMessage(ChatMessageRole.ASSISTANT.value(), null);
 
+        // Process each chunk in the flowable stream.
         return flowable.map(chunk -> {
+            // Extract the first chat message from the chunk.
             ChatMessage messageChunk = chunk.getChoices().get(0).getMessage();
+
+            // If the message chunk contains a function call, accumulate its name and arguments.
             if (messageChunk.getFunctionCall() != null) {
+                // Accumulate function call name.
                 if (messageChunk.getFunctionCall().getName() != null) {
                     String namePart = messageChunk.getFunctionCall().getName();
                     functionCall.setName((functionCall.getName() == null ? "" : functionCall.getName()) + namePart);
                 }
+                // Accumulate function call arguments.
                 if (messageChunk.getFunctionCall().getArguments() != null) {
                     String argumentsPart = messageChunk.getFunctionCall().getArguments() == null ? "" : messageChunk.getFunctionCall().getArguments().asText();
                     functionCall.setArguments(new TextNode((functionCall.getArguments() == null ? "" : functionCall.getArguments().asText()) + argumentsPart));
                 }
+                // Update the accumulated message with the accumulated function call.
                 accumulatedMessage.setFunctionCall(functionCall);
             } else {
+                // If there's no function call, accumulate the message content.
                 accumulatedMessage.setContent((accumulatedMessage.getContent() == null ? "" : accumulatedMessage.getContent()) + (messageChunk.getContent() == null ? "" : messageChunk.getContent()));
             }
 
+            // Check if this is the last chunk and update the function call arguments as necessary.
             if (chunk.getChoices().get(0).getFinishReason() != null) { // last
                 if (functionCall.getArguments() != null) {
                     functionCall.setArguments(mapper.readTree(functionCall.getArguments().asText()));
@@ -472,6 +610,7 @@ public class OpenAiService {
                 }
             }
 
+            // Return a new ChatMessageAccumulator containing the current message chunk and the accumulated message.
             return new ChatMessageAccumulator(messageChunk, accumulatedMessage);
         });
     }
