@@ -213,4 +213,16 @@ public interface OpenAiApi {
     @Headers({"OpenAI-Beta: assistants=v1"})
     @POST("/v1/assistants/{assistant_id}/files")
     Single<AssistantFile> createAssistantFile(@Path("assistant_id") String assistantId, @Body AssistantFileRequest fileRequest);
+
+    @Headers({"OpenAI-Beta: assistants=v1"})
+    @GET("/v1/assistants/{assistant_id}/files/{file_id}")
+    Single<AssistantFile> retrieveAssistantFile(@Path("assistant_id") String assistantId, @Path("file_id") String fileId);
+
+    @Headers({"OpenAI-Beta: assistants=v1"})
+    @DELETE("/v1/assistants/{assistant_id}/files/{file_id}")
+    Single<DeleteResult> deleteAssistantFile(@Path("assistant_id") String assistantId, @Path("file_id") String fileId);
+
+    @Headers({"OpenAI-Beta: assistants=v1"})
+    @GET("/v1/assistants/{assistant_id}/files")
+    Single<ListAssistant<Assistant>> listAssistantFiles(@Path("assistant_id") String assistantId, @QueryMap Map<String, Object> filterRequest);
 }

@@ -13,6 +13,7 @@ import com.theokanning.openai.assistants.ListAssistantQueryRequest;
 import com.theokanning.openai.assistants.Tool;
 import com.theokanning.openai.file.File;
 import com.theokanning.openai.utils.TikTokensUtil;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
@@ -27,16 +28,13 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class AssistantTest {
     public static final String MATH_TUTOR = "Math Tutor";
     public static final String ASSISTANT_INSTRUCTION = "You are a personal Math Tutor.";
+
     static String token = "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";
 
     static OpenAiService service = new OpenAiService(token);
 
     @BeforeAll
     static void initAssistants() {
-        //Done so that listAssistant tests won't fail on initial setup of project
-        for (int i = 0; i < 3; i++) {
-//            createAndValidateAssistant();
-        }
     }
 
 
@@ -133,8 +131,7 @@ public class AssistantTest {
 
     @Test
     void createAssistantFile() {
-        String filePath = "src/test/resources/assistant-file-data.json";
-        File uploadedFile = service.uploadFile("fine-tune", filePath);//uploading with 'purpose=assistants' seem not to be working
+        File uploadedFile = uploadAssistantFile();
 
         Assistant assistant = createAndValidateAssistant();
 
@@ -143,6 +140,46 @@ public class AssistantTest {
         assertNotNull(assistantFile);
         assertEquals(uploadedFile.getId(), assistantFile.getId());
         assertEquals(assistant.getId(), assistantFile.getAssistantId());
+    }
+
+
+
+    @Test
+    void retrieveAssistantFile() {
+        //TODO
+        //There is a bug with uploading assistant files https://community.openai.com/t/possible-bug-with-agent-creation-php-file-upload/484490/5
+        //So this would have to be done later
+    }
+
+    @Test
+    void deleteAssistantFile() {
+        //TODO
+        //There is a bug with uploading assistant files https://community.openai.com/t/possible-bug-with-agent-creation-php-file-upload/484490/5
+        //So this would have to be done later
+    }
+
+    @Test
+    void listAssistantFiles() {
+        //TODO
+        //There is a bug with uploading assistant files https://community.openai.com/t/possible-bug-with-agent-creation-php-file-upload/484490/5
+        //So this would have to be done later
+    }
+
+    @AfterAll
+    static void clean() {
+        //Clean up all data created during this test
+        ListAssistantQueryRequest queryFilter = ListAssistantQueryRequest.builder()
+                .limit(100)
+                .build();
+        ListAssistant<Assistant> assistantListAssistant = service.listAssistants(queryFilter);
+        assistantListAssistant.getData().forEach(assistant ->{
+            service.deleteAssistant(assistant.getId());
+        });
+    }
+
+    private static File uploadAssistantFile() {
+        String filePath = "src/test/resources/assistants-data.html";
+        return service.uploadFile("assistants", filePath);
     }
 
     private static Assistant createAndValidateAssistant() {

@@ -169,7 +169,6 @@ public class OpenAiService {
         RequestBody purposeBody = RequestBody.create(okhttp3.MultipartBody.FORM, purpose);
         RequestBody fileBody = RequestBody.create(MediaType.parse("text"), file);
         MultipartBody.Part body = MultipartBody.Part.createFormData("file", filepath, fileBody);
-        System.out.println(purposeBody.contentType());
 
         return execute(api.uploadFile(purposeBody, body));
     }
@@ -377,6 +376,19 @@ public class OpenAiService {
 
     public AssistantFile createAssistantFile(String assistantId, AssistantFileRequest fileRequest) {
         return execute(api.createAssistantFile(assistantId, fileRequest));
+    }
+
+    public AssistantFile retrieveAssistantFile(String assistantId, String fileId) {
+        return execute(api.retrieveAssistantFile(assistantId, fileId));
+    }
+
+    public DeleteResult deleteAssistantFile(String assistantId, String fileId) {
+        return execute(api.deleteAssistantFile(assistantId, fileId));
+    }
+
+    public ListAssistant<Assistant> listAssistantFiles(String assistantId, ListAssistantQueryRequest filterRequest) {
+        Map<String, Object> queryParameters = mapper.convertValue(filterRequest, new TypeReference<Map<String, Object>>() {});
+        return execute(api.listAssistantFiles(assistantId, queryParameters));
     }
 
 
