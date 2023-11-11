@@ -2,6 +2,8 @@ package com.theokanning.openai.client;
 
 import com.theokanning.openai.DeleteResult;
 import com.theokanning.openai.OpenAiResponse;
+import com.theokanning.openai.assistants.AssistantBase;
+import com.theokanning.openai.assistants.Assistant;
 import com.theokanning.openai.audio.TranscriptionResult;
 import com.theokanning.openai.audio.TranslationResult;
 import com.theokanning.openai.billing.BillingUsage;
@@ -180,5 +182,10 @@ public interface OpenAiApi {
     @Deprecated
     @GET("v1/dashboard/billing/usage")
     Single<BillingUsage> billingUsage(@Query("start_date") LocalDate starDate, @Query("end_date") LocalDate endDate);
+
+
+    @Headers({"OpenAI-Beta: assistants=v1"})
+    @POST("/v1/assistants")
+    Single<Assistant> createAssistant(@Body AssistantBase request);
 
 }
