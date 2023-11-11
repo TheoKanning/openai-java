@@ -1,5 +1,6 @@
 package com.theokanning.openai.service;
 
+import com.theokanning.openai.DeleteResult;
 import com.theokanning.openai.assistants.AssistantBase;
 import com.theokanning.openai.assistants.AssistantRequest;
 import com.theokanning.openai.assistants.Assistant;
@@ -12,6 +13,7 @@ import java.util.Collections;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 public class AssistantTest {
@@ -23,18 +25,12 @@ public class AssistantTest {
 
     @Test
     void createAssistant() {
-        AssistantBase assistantRequest = assistantStub();
-
-        Assistant createAssistantResponse = service.createAssistant(assistantRequest);
-
-        validateAssistantResponse(createAssistantResponse);
+        createAndValidateAssistant();
     }
 
     @Test
     void retrieveAssistant() {
-        AssistantBase assistantRequest = assistantStub();
-        Assistant createAssistantResponse = service.createAssistant(assistantRequest);
-        validateAssistantResponse(createAssistantResponse);
+        Assistant createAssistantResponse = createAndValidateAssistant();
 
         Assistant retrieveAssistantResponse = service.retrieveAssistant(createAssistantResponse.getId());
         validateAssistantResponse(retrieveAssistantResponse);
@@ -42,9 +38,7 @@ public class AssistantTest {
 
     @Test
     void modifyAssistant() {
-        AssistantBase assistantRequest = assistantStub();//original
-        Assistant createAssistantResponse = service.createAssistant(assistantRequest);
-        validateAssistantResponse(createAssistantResponse);
+        Assistant createAssistantResponse = createAndValidateAssistant();
 
         String modifiedName = MATH_TUTOR + " Modified";
         createAssistantResponse.setName(modifiedName);//modify a field
@@ -52,6 +46,25 @@ public class AssistantTest {
         Assistant modifiedAssistantResponse = service.modifyAssistant(createAssistantResponse.getId(), createAssistantResponse);
         assertNotNull(modifiedAssistantResponse);
         assertEquals(modifiedName, modifiedAssistantResponse.getName());
+    }
+
+    @Test
+    void deleteAssistant() {
+        Assistant createAssistantResponse = createAndValidateAssistant();
+
+        DeleteResult deletedAssistant = service.deleteAssistant(createAssistantResponse.getId());
+
+        assertNotNull(deletedAssistant);
+        assertEquals(createAssistantResponse.getId(), deletedAssistant.getId());
+        assertTrue(deletedAssistant.isDeleted());
+    }
+
+    private Assistant createAndValidateAssistant() {
+        AssistantBase assistantRequest = assistantStub();
+        Assistant createAssistantResponse = service.createAssistant(assistantRequest);
+        validateAssistantResponse(createAssistantResponse);
+
+        return createAssistantResponse;
     }
 
 

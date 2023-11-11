@@ -4,6 +4,7 @@ import com.theokanning.openai.DeleteResult;
 import com.theokanning.openai.OpenAiResponse;
 import com.theokanning.openai.assistants.AssistantBase;
 import com.theokanning.openai.assistants.Assistant;
+import com.theokanning.openai.assistants.DeleteAssistantResult;
 import com.theokanning.openai.audio.TranscriptionResult;
 import com.theokanning.openai.audio.TranslationResult;
 import com.theokanning.openai.billing.BillingUsage;
@@ -195,5 +196,9 @@ public interface OpenAiApi {
     @Headers({"OpenAI-Beta: assistants=v1"})
     @POST("/v1/assistants/{assistant_id}")
     Single<Assistant> modifyAssistant(@Path("assistant_id") String assistantId, @Body AssistantBase request);
+
+    @Headers({"OpenAI-Beta: assistants=v1"})
+    @DELETE("/v1/assistants/{assistant_id}")
+    Single<DeleteResult> deleteAssistant(@Path("assistant_id") String assistantId);
 
 }

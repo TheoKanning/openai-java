@@ -359,6 +359,9 @@ public class OpenAiService {
         return execute(api.modifyAssistant(assistantId, request));
     }
 
+    public DeleteResult deleteAssistant(String assistantId) {
+        return execute(api.deleteAssistant(assistantId));
+    }
     /**
      * Calls the Open AI api, returns the response, and parses error messages if the request fails
      */
