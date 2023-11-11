@@ -5,6 +5,8 @@ import com.theokanning.openai.OpenAiResponse;
 import com.theokanning.openai.assistants.AssistantBase;
 import com.theokanning.openai.assistants.Assistant;
 import com.theokanning.openai.assistants.DeleteAssistantResult;
+import com.theokanning.openai.assistants.ListAssistant;
+import com.theokanning.openai.assistants.ListAssistantQueryRequest;
 import com.theokanning.openai.audio.TranscriptionResult;
 import com.theokanning.openai.audio.TranslationResult;
 import com.theokanning.openai.billing.BillingUsage;
@@ -38,6 +40,7 @@ import retrofit2.Call;
 import retrofit2.http.*;
 
 import java.time.LocalDate;
+import java.util.Map;
 
 public interface OpenAiApi {
 
@@ -200,5 +203,9 @@ public interface OpenAiApi {
     @Headers({"OpenAI-Beta: assistants=v1"})
     @DELETE("/v1/assistants/{assistant_id}")
     Single<DeleteResult> deleteAssistant(@Path("assistant_id") String assistantId);
+
+    @Headers({"OpenAI-Beta: assistants=v1"})
+    @GET("/v1/assistants")
+    Single<ListAssistant<Assistant>> listAssistants(@QueryMap Map<String, Object> filterRequest);
 
 }

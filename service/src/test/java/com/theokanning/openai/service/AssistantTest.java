@@ -1,15 +1,20 @@
 package com.theokanning.openai.service;
 
 import com.theokanning.openai.DeleteResult;
+import com.theokanning.openai.assistants.Assistant;
 import com.theokanning.openai.assistants.AssistantBase;
 import com.theokanning.openai.assistants.AssistantRequest;
-import com.theokanning.openai.assistants.Assistant;
+import com.theokanning.openai.assistants.AssistantSortOrder;
 import com.theokanning.openai.assistants.AssistantToolsEnum;
+import com.theokanning.openai.assistants.ListAssistant;
+import com.theokanning.openai.assistants.ListAssistantQueryRequest;
 import com.theokanning.openai.assistants.Tool;
 import com.theokanning.openai.utils.TikTokensUtil;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import java.util.Collections;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -19,14 +24,18 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class AssistantTest {
     public static final String MATH_TUTOR = "Math Tutor";
     public static final String ASSISTANT_INSTRUCTION = "You are a personal Math Tutor.";
-    String token = "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";
+    static String token = "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";
 
-    OpenAiService service = new OpenAiService(token);
+    static OpenAiService service = new OpenAiService(token);
 
-    @Test
-    void createAssistant() {
-        createAndValidateAssistant();
+    @BeforeAll
+    static void initAssistants() {
+        //Done so that listAssistant tests won't fail on initial setup of project
+        for (int i = 0; i < 3; i++) {
+            createAndValidateAssistant();
+        }
     }
+
 
     @Test
     void retrieveAssistant() {
@@ -59,7 +68,67 @@ public class AssistantTest {
         assertTrue(deletedAssistant.isDeleted());
     }
 
-    private Assistant createAndValidateAssistant() {
+    @Test
+    void listAssistants() {
+        ListAssistant<Assistant> assistants = service.listAssistants(ListAssistantQueryRequest.builder().build());
+
+        assertNotNull(assistants);
+        // this should be more than 2 depending on how many times createAndValidateAssistant method is called
+        assertTrue(assistants.getData().size() > 1);
+    }
+
+    @Test
+    void listAssistants_returnsTwoAssistants() {
+        int expectedLimit = 2;
+        ListAssistantQueryRequest queryResult = ListAssistantQueryRequest.builder()
+                .limit(expectedLimit)
+                .build();
+
+        ListAssistant<Assistant> assistants = service.listAssistants(queryResult);
+
+        List<Assistant> data = validateListAssistants(assistants);
+        assertEquals(expectedLimit, data.size());
+    }
+
+
+
+    @Test
+    void listAssistants_returnsAscSortedAssistants() {
+        int expectedLimit = 3;
+
+        ListAssistantQueryRequest queryResult = ListAssistantQueryRequest.builder()
+                .limit(expectedLimit)
+                .order(AssistantSortOrder.ASC)
+                .build();
+
+        ListAssistant<Assistant> assistants = service.listAssistants(queryResult);
+
+        List<Assistant> data = validateListAssistants(assistants);
+
+        boolean firstTwoAscending = data.get(0).getCreatedAt() <= data.get(1).getCreatedAt();
+        boolean lastTwoAscending = data.get(1).getCreatedAt() <= data.get(2).getCreatedAt();
+        assertTrue(firstTwoAscending && lastTwoAscending);
+    }
+
+    @Test
+    void listAssistants_returnsDescSortedAssistants() {
+        int expectedLimit = 3;
+
+        ListAssistantQueryRequest queryResult = ListAssistantQueryRequest.builder()
+                .limit(expectedLimit)
+                .order(AssistantSortOrder.DESC)
+                .build();
+
+        ListAssistant<Assistant> assistants = service.listAssistants(queryResult);
+
+        List<Assistant> data = validateListAssistants(assistants);
+
+        boolean firstTwoDescending = data.get(0).getCreatedAt() >= data.get(1).getCreatedAt();
+        boolean lastTwoDescending = data.get(1).getCreatedAt() >= data.get(2).getCreatedAt();
+        assertTrue(firstTwoDescending && lastTwoDescending);
+    }
+
+    private static Assistant createAndValidateAssistant() {
         AssistantBase assistantRequest = assistantStub();
         Assistant createAssistantResponse = service.createAssistant(assistantRequest);
         validateAssistantResponse(createAssistantResponse);
@@ -84,5 +153,12 @@ public class AssistantTest {
         assertNotNull(assistantResponse.getObject());
         assertEquals(assistantResponse.getTools().get(0).getType(),  AssistantToolsEnum.CODE_INTERPRETER);
         assertEquals(MATH_TUTOR, assistantResponse.getName());
+    }
+
+    private static List<Assistant> validateListAssistants(ListAssistant<Assistant> assistants) {
+        assertNotNull(assistants);
+        List<Assistant> data = assistants.getData();
+        assertNotNull(data);
+        return data;
     }
 }

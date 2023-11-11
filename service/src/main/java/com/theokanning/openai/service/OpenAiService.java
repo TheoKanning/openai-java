@@ -1,6 +1,7 @@
 package com.theokanning.openai.service;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
@@ -10,6 +11,8 @@ import com.theokanning.openai.OpenAiError;
 import com.theokanning.openai.OpenAiHttpException;
 import com.theokanning.openai.assistants.Assistant;
 import com.theokanning.openai.assistants.AssistantBase;
+import com.theokanning.openai.assistants.ListAssistant;
+import com.theokanning.openai.assistants.ListAssistantQueryRequest;
 import com.theokanning.openai.audio.CreateTranscriptionRequest;
 import com.theokanning.openai.audio.CreateTranslationRequest;
 import com.theokanning.openai.audio.TranscriptionResult;
@@ -54,6 +57,7 @@ import java.io.IOException;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -362,6 +366,13 @@ public class OpenAiService {
     public DeleteResult deleteAssistant(String assistantId) {
         return execute(api.deleteAssistant(assistantId));
     }
+
+    public ListAssistant<Assistant> listAssistants(ListAssistantQueryRequest filterRequest) {
+        Map<String, Object> queryParameters = mapper.convertValue(filterRequest, new TypeReference<Map<String, Object>>() {});
+        return execute(api.listAssistants(queryParameters));
+    }
+
+
     /**
      * Calls the Open AI api, returns the response, and parses error messages if the request fails
      */
