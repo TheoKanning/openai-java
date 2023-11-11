@@ -192,4 +192,8 @@ public interface OpenAiApi {
     @GET("/v1/assistants/{assistant_id}")
     Single<Assistant> retrieveAssistant(@Path("assistant_id") String assistantId);
 
+    @Headers({"OpenAI-Beta: assistants=v1"})
+    @POST("/v1/assistants/{assistant_id}")
+    Single<Assistant> modifyAssistant(@Path("assistant_id") String assistantId, @Body AssistantBase request);
+
 }

@@ -355,6 +355,10 @@ public class OpenAiService {
         return execute(api.retrieveAssistant(assistantId));
     }
 
+    public Assistant modifyAssistant(String assistantId, AssistantBase request) {
+        return execute(api.modifyAssistant(assistantId, request));
+    }
+
     /**
      * Calls the Open AI api, returns the response, and parses error messages if the request fails
      */
