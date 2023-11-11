@@ -14,7 +14,6 @@ import com.theokanning.openai.assistants.Tool;
 import com.theokanning.openai.file.File;
 import com.theokanning.openai.utils.TikTokensUtil;
 import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import java.util.Collections;
