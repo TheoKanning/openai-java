@@ -15,27 +15,43 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 
 public class AssistantTest {
+    public static final String MATH_TUTOR = "Math Tutor";
+    public static final String ASSISTANT_INSTRUCTION = "You are a personal Math Tutor.";
     String token = "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";
 
     OpenAiService service = new OpenAiService(token);
 
     @Test
     void createAssistant() {
+        callCreateAssistantAPI();
+    }
+
+    @Test
+    void retrieveAssistant() {
+        Assistant createAssistantResponse = callCreateAssistantAPI();
+        validateAssistantResponse(createAssistantResponse);
+
+        Assistant retrieveAssistantResponse = service.retrieveAssistant(createAssistantResponse.getId());
+        validateAssistantResponse(retrieveAssistantResponse);
+    }
+
+    Assistant callCreateAssistantAPI() {
         AssistantBase assistantRequest = AssistantRequest.builder()
                 .model(TikTokensUtil.ModelEnum.GPT_4_1106_preview.getName())
-                .name("Math Tutor")
-                .instructions("You are a personal Math Tutor.")
+                .name(MATH_TUTOR)
+                .instructions(ASSISTANT_INSTRUCTION)
                 .tools(Collections.singletonList(new Tool(AssistantToolsEnum.CODE_INTERPRETER)))
                 .build();
 
-        Assistant assistantResponse = service.createAssistant(assistantRequest);
-        System.out.println(assistantResponse.getTools().get(0));
+        return service.createAssistant(assistantRequest);
+    }
 
+    private static void validateAssistantResponse(Assistant assistantResponse) {
         assertNotNull(assistantResponse);
         assertNotNull(assistantResponse.getId());
         assertNotNull(assistantResponse.getCreatedAt());
         assertNotNull(assistantResponse.getObject());
         assertEquals(assistantResponse.getTools().get(0).getType(),  AssistantToolsEnum.CODE_INTERPRETER);
-        assertEquals(assistantRequest.getName(), assistantResponse.getName());
+        assertEquals("Math Tutor", assistantResponse.getName());
     }
 }
