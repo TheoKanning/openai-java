@@ -3,12 +3,15 @@ package com.theokanning.openai.service;
 import com.theokanning.openai.DeleteResult;
 import com.theokanning.openai.assistants.Assistant;
 import com.theokanning.openai.assistants.AssistantBase;
+import com.theokanning.openai.assistants.AssistantFile;
+import com.theokanning.openai.assistants.AssistantFileRequest;
 import com.theokanning.openai.assistants.AssistantRequest;
 import com.theokanning.openai.assistants.AssistantSortOrder;
 import com.theokanning.openai.assistants.AssistantToolsEnum;
 import com.theokanning.openai.assistants.ListAssistant;
 import com.theokanning.openai.assistants.ListAssistantQueryRequest;
 import com.theokanning.openai.assistants.Tool;
+import com.theokanning.openai.file.File;
 import com.theokanning.openai.utils.TikTokensUtil;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -32,7 +35,7 @@ public class AssistantTest {
     static void initAssistants() {
         //Done so that listAssistant tests won't fail on initial setup of project
         for (int i = 0; i < 3; i++) {
-            createAndValidateAssistant();
+//            createAndValidateAssistant();
         }
     }
 
@@ -126,6 +129,20 @@ public class AssistantTest {
         boolean firstTwoDescending = data.get(0).getCreatedAt() >= data.get(1).getCreatedAt();
         boolean lastTwoDescending = data.get(1).getCreatedAt() >= data.get(2).getCreatedAt();
         assertTrue(firstTwoDescending && lastTwoDescending);
+    }
+
+    @Test
+    void createAssistantFile() {
+        String filePath = "src/test/resources/assistant-file-data.json";
+        File uploadedFile = service.uploadFile("fine-tune", filePath);//uploading with 'purpose=assistants' seem not to be working
+
+        Assistant assistant = createAndValidateAssistant();
+
+        AssistantFile assistantFile = service.createAssistantFile(assistant.getId(), new AssistantFileRequest(uploadedFile.getId()));
+
+        assertNotNull(assistantFile);
+        assertEquals(uploadedFile.getId(), assistantFile.getId());
+        assertEquals(assistant.getId(), assistantFile.getAssistantId());
     }
 
     private static Assistant createAndValidateAssistant() {

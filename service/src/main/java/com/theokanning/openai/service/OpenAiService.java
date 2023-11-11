@@ -11,6 +11,8 @@ import com.theokanning.openai.OpenAiError;
 import com.theokanning.openai.OpenAiHttpException;
 import com.theokanning.openai.assistants.Assistant;
 import com.theokanning.openai.assistants.AssistantBase;
+import com.theokanning.openai.assistants.AssistantFile;
+import com.theokanning.openai.assistants.AssistantFileRequest;
 import com.theokanning.openai.assistants.ListAssistant;
 import com.theokanning.openai.assistants.ListAssistantQueryRequest;
 import com.theokanning.openai.audio.CreateTranscriptionRequest;
@@ -167,6 +169,7 @@ public class OpenAiService {
         RequestBody purposeBody = RequestBody.create(okhttp3.MultipartBody.FORM, purpose);
         RequestBody fileBody = RequestBody.create(MediaType.parse("text"), file);
         MultipartBody.Part body = MultipartBody.Part.createFormData("file", filepath, fileBody);
+        System.out.println(purposeBody.contentType());
 
         return execute(api.uploadFile(purposeBody, body));
     }
@@ -370,6 +373,10 @@ public class OpenAiService {
     public ListAssistant<Assistant> listAssistants(ListAssistantQueryRequest filterRequest) {
         Map<String, Object> queryParameters = mapper.convertValue(filterRequest, new TypeReference<Map<String, Object>>() {});
         return execute(api.listAssistants(queryParameters));
+    }
+
+    public AssistantFile createAssistantFile(String assistantId, AssistantFileRequest fileRequest) {
+        return execute(api.createAssistantFile(assistantId, fileRequest));
     }
 
 
