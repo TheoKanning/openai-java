@@ -29,13 +29,10 @@ public class AssistantTest {
     public static final String MATH_TUTOR = "Math Tutor";
     public static final String ASSISTANT_INSTRUCTION = "You are a personal Math Tutor.";
 
-    static String token = "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";
+    static String token = System.getenv("OPENAI_TOKEN");;
 
     static OpenAiService service = new OpenAiService(token);
 
-    @BeforeAll
-    static void initAssistants() {
-    }
 
 
     @Test
