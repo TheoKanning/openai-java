@@ -27,6 +27,5 @@ public class ModelTest {
 
         assertEquals("ada", ada.id);
         assertEquals("openai", ada.ownedBy);
-        assertFalse(ada.permission.isEmpty());
     }
 }

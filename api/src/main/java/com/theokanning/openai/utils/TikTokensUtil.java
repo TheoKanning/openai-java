@@ -32,6 +32,7 @@ public class TikTokensUtil {
         modelMap.put(ModelEnum.GPT_4_32K.getName(), registry.getEncodingForModel(ModelType.GPT_4));
         modelMap.put(ModelEnum.GPT_4_32K_0314.getName(), registry.getEncodingForModel(ModelType.GPT_4));
         modelMap.put(ModelEnum.GPT_4_0314.getName(), registry.getEncodingForModel(ModelType.GPT_4));
+        modelMap.put(ModelEnum.GPT_4_1106_preview.getName(), registry.getEncodingForModel(ModelType.GPT_4));
     }
 
     /**
@@ -261,7 +262,11 @@ public class TikTokensUtil {
          * Temporary model, not recommended for use.
          */
         GPT_4_32K_0314("gpt-4-32k-0314"),
-        ;
+
+        /**
+         * Temporary model, not recommended for use.
+         */
+        GPT_4_1106_preview("gpt-4-1106-preview");
         private String name;
     }
 

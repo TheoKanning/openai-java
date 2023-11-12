@@ -29,8 +29,9 @@ public class Model {
     public String ownedBy;
 
     /**
-     * List of permissions for this model
+     * List of permissions for this model. No longer returned by OpenAI
      */
+    @Deprecated
     public List<Permission> permission;
 
     /**
