@@ -6,7 +6,6 @@ import com.theokanning.openai.assistants.AssistantBase;
 import com.theokanning.openai.assistants.Assistant;
 import com.theokanning.openai.assistants.AssistantFile;
 import com.theokanning.openai.assistants.AssistantFileRequest;
-import com.theokanning.openai.assistants.DeleteAssistantResult;
 import com.theokanning.openai.assistants.ListAssistant;
 import com.theokanning.openai.assistants.ListAssistantQueryRequest;
 import com.theokanning.openai.audio.CreateSpeechRequest;
