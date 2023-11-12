@@ -9,6 +9,7 @@ import com.theokanning.openai.assistants.AssistantFileRequest;
 import com.theokanning.openai.assistants.DeleteAssistantResult;
 import com.theokanning.openai.assistants.ListAssistant;
 import com.theokanning.openai.assistants.ListAssistantQueryRequest;
+import com.theokanning.openai.audio.CreateSpeechRequest;
 import com.theokanning.openai.audio.TranscriptionResult;
 import com.theokanning.openai.audio.TranslationResult;
 import com.theokanning.openai.billing.BillingUsage;
@@ -156,6 +157,9 @@ public interface OpenAiApi {
 
     @POST("/v1/audio/translations")
     Single<TranslationResult> createTranslation(@Body RequestBody requestBody);
+
+    @POST("/v1/audio/speech")
+    Single<ResponseBody> createSpeech(@Body CreateSpeechRequest requestBody);
 
     @POST("/v1/moderations")
     Single<ModerationResult> createModeration(@Body ModerationRequest request);

@@ -15,6 +15,7 @@ import com.theokanning.openai.assistants.AssistantFile;
 import com.theokanning.openai.assistants.AssistantFileRequest;
 import com.theokanning.openai.assistants.ListAssistant;
 import com.theokanning.openai.assistants.ListAssistantQueryRequest;
+import com.theokanning.openai.audio.CreateSpeechRequest;
 import com.theokanning.openai.audio.CreateTranscriptionRequest;
 import com.theokanning.openai.audio.CreateTranslationRequest;
 import com.theokanning.openai.audio.TranscriptionResult;
@@ -258,6 +259,7 @@ public class OpenAiService {
                 .setType(MediaType.get("multipart/form-data"))
                 .addFormDataPart("prompt", request.getPrompt())
                 .addFormDataPart("size", request.getSize())
+                .addFormDataPart("model", request.getModel())
                 .addFormDataPart("response_format", request.getResponseFormat())
                 .addFormDataPart("image", "image", imageBody);
 
@@ -284,6 +286,7 @@ public class OpenAiService {
         MultipartBody.Builder builder = new MultipartBody.Builder()
                 .setType(MediaType.get("multipart/form-data"))
                 .addFormDataPart("size", request.getSize())
+                .addFormDataPart("model", request.getModel())
                 .addFormDataPart("response_format", request.getResponseFormat())
                 .addFormDataPart("image", "image", imageBody);
 
@@ -391,6 +394,9 @@ public class OpenAiService {
         return execute(api.listAssistantFiles(assistantId, queryParameters));
     }
 
+    public ResponseBody createSpeech(CreateSpeechRequest request) {
+        return execute(api.createSpeech(request));
+    }
 
     /**
      * Calls the Open AI api, returns the response, and parses error messages if the request fails
