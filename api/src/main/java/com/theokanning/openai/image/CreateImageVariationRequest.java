@@ -21,6 +21,11 @@ public class CreateImageVariationRequest {
     Integer n;
 
     /**
+     * The model to use for image generation. Only dall-e-2 is supported at this time. Defaults to dall-e-2.
+     */
+    String model;
+
+    /**
      * The size of the generated images. Must be one of "256x256", "512x512", or "1024x1024". Defaults to "1024x1024".
      */
     String size;
