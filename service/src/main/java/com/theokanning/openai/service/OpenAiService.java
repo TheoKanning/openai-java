@@ -8,6 +8,7 @@ import com.fasterxml.jackson.databind.node.TextNode;
 import com.theokanning.openai.DeleteResult;
 import com.theokanning.openai.OpenAiError;
 import com.theokanning.openai.OpenAiHttpException;
+import com.theokanning.openai.audio.CreateSpeechRequest;
 import com.theokanning.openai.audio.CreateTranscriptionRequest;
 import com.theokanning.openai.audio.CreateTranslationRequest;
 import com.theokanning.openai.audio.TranscriptionResult;
@@ -345,6 +346,10 @@ public class OpenAiService {
 
     public ModerationResult createModeration(ModerationRequest request) {
         return execute(api.createModeration(request));
+    }
+
+    public ResponseBody createSpeech(CreateSpeechRequest request) {
+        return execute(api.createSpeech(request));
     }
 
     /**

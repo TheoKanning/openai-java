@@ -1,12 +1,17 @@
 package com.theokanning.openai.service;
 
+import com.theokanning.openai.audio.CreateSpeechRequest;
 import com.theokanning.openai.audio.CreateTranscriptionRequest;
 import com.theokanning.openai.audio.CreateTranslationRequest;
 import com.theokanning.openai.audio.TranscriptionResult;
 import com.theokanning.openai.audio.TranslationResult;
 import org.junit.jupiter.api.Test;
 
+import java.io.IOException;
 import java.time.Duration;
+
+import okhttp3.MediaType;
+import okhttp3.ResponseBody;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -68,5 +73,19 @@ public class AudioTest {
         assertEquals("english", result.getLanguage());
         assertTrue(result.getDuration() > 0);
         assertEquals(1, result.getSegments().size());
+    }
+
+    @Test
+    void createSpeech() throws IOException {
+        CreateSpeechRequest createSpeechRequest = CreateSpeechRequest.builder()
+                .model("tts-1")
+                .input("Hello World.")
+                .voice("alloy")
+                .build();
+
+        final ResponseBody speech = service.createSpeech(createSpeechRequest);
+        assertNotNull(speech);
+        assertEquals(MediaType.get("audio/mpeg"), speech.contentType());
+        assertTrue(speech.bytes().length > 0);
     }
 }
