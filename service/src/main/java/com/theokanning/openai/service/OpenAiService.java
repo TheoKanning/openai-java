@@ -259,7 +259,6 @@ public class OpenAiService {
                 .setType(MediaType.get("multipart/form-data"))
                 .addFormDataPart("prompt", request.getPrompt())
                 .addFormDataPart("size", request.getSize())
-                .addFormDataPart("model", request.getModel())
                 .addFormDataPart("response_format", request.getResponseFormat())
                 .addFormDataPart("image", "image", imageBody);
 
@@ -270,6 +269,10 @@ public class OpenAiService {
         if (mask != null) {
             RequestBody maskBody = RequestBody.create(MediaType.parse("image"), mask);
             builder.addFormDataPart("mask", "mask", maskBody);
+        }
+
+        if (request.getModel() != null) {
+            builder.addFormDataPart("model", request.getModel());
         }
 
         return execute(api.createImageEdit(builder.build()));
@@ -286,12 +289,15 @@ public class OpenAiService {
         MultipartBody.Builder builder = new MultipartBody.Builder()
                 .setType(MediaType.get("multipart/form-data"))
                 .addFormDataPart("size", request.getSize())
-                .addFormDataPart("model", request.getModel())
                 .addFormDataPart("response_format", request.getResponseFormat())
                 .addFormDataPart("image", "image", imageBody);
 
         if (request.getN() != null) {
             builder.addFormDataPart("n", request.getN().toString());
+        }
+
+        if (request.getModel() != null) {
+            builder.addFormDataPart("model", request.getModel());
         }
 
         return execute(api.createImageVariation(builder.build()));

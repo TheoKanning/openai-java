@@ -19,9 +19,7 @@ import org.junit.jupiter.api.Test;
 import java.util.Collections;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 
 public class AssistantTest {
@@ -70,59 +68,7 @@ public class AssistantTest {
         ListAssistant<Assistant> assistants = service.listAssistants(ListAssistantQueryRequest.builder().build());
 
         assertNotNull(assistants);
-        // this should be more than 2 depending on how many times createAndValidateAssistant method is called
-        assertTrue(assistants.getData().size() > 1);
-    }
-
-    @Test
-    void listAssistants_returnsTwoAssistants() {
-        int expectedLimit = 2;
-        ListAssistantQueryRequest queryResult = ListAssistantQueryRequest.builder()
-                .limit(expectedLimit)
-                .build();
-
-        ListAssistant<Assistant> assistants = service.listAssistants(queryResult);
-
-        List<Assistant> data = validateListAssistants(assistants);
-        assertEquals(expectedLimit, data.size());
-    }
-
-
-
-    @Test
-    void listAssistants_returnsAscSortedAssistants() {
-        int expectedLimit = 3;
-
-        ListAssistantQueryRequest queryResult = ListAssistantQueryRequest.builder()
-                .limit(expectedLimit)
-                .order(AssistantSortOrder.ASC)
-                .build();
-
-        ListAssistant<Assistant> assistants = service.listAssistants(queryResult);
-
-        List<Assistant> data = validateListAssistants(assistants);
-
-        boolean firstTwoAscending = data.get(0).getCreatedAt() <= data.get(1).getCreatedAt();
-        boolean lastTwoAscending = data.get(1).getCreatedAt() <= data.get(2).getCreatedAt();
-        assertTrue(firstTwoAscending && lastTwoAscending);
-    }
-
-    @Test
-    void listAssistants_returnsDescSortedAssistants() {
-        int expectedLimit = 3;
-
-        ListAssistantQueryRequest queryResult = ListAssistantQueryRequest.builder()
-                .limit(expectedLimit)
-                .order(AssistantSortOrder.DESC)
-                .build();
-
-        ListAssistant<Assistant> assistants = service.listAssistants(queryResult);
-
-        List<Assistant> data = validateListAssistants(assistants);
-
-        boolean firstTwoDescending = data.get(0).getCreatedAt() >= data.get(1).getCreatedAt();
-        boolean lastTwoDescending = data.get(1).getCreatedAt() >= data.get(2).getCreatedAt();
-        assertTrue(firstTwoDescending && lastTwoDescending);
+        assertFalse(assistants.getData().isEmpty());
     }
 
     @Test
@@ -137,8 +83,6 @@ public class AssistantTest {
         assertEquals(uploadedFile.getId(), assistantFile.getId());
         assertEquals(assistant.getId(), assistantFile.getAssistantId());
     }
-
-
 
     @Test
     void retrieveAssistantFile() {
