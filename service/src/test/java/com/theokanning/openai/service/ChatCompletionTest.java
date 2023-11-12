@@ -7,11 +7,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.theokanning.openai.completion.chat.*;
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Set;
-import java.util.Collections;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -164,7 +160,7 @@ class ChatCompletionTest {
                         .name("unit")
                         .type("string")
                         .description("The temperature unit, can be 'celsius' or 'fahrenheit'")
-                        .enumValues(Set.of("celsius", "fahrenheit"))
+                        .enumValues(new HashSet<>(Arrays.asList("celsius", "fahrenheit")))
                         .required(true)
                         .build())
                 .build();
@@ -273,7 +269,7 @@ class ChatCompletionTest {
                         .name("unit")
                         .type("string")
                         .description("The temperature unit, can be 'celsius' or 'fahrenheit'")
-                        .enumValues(Set.of("celsius", "fahrenheit"))
+                        .enumValues(new HashSet<>(Arrays.asList("celsius", "fahrenheit")))
                         .required(true)
                         .build())
                 .build();

@@ -17,14 +17,5 @@ jobs:
         distribution: temurin
         java-version: 8
 
-    - name: Compile Artifacts
-      run: ./gradlew api:compileJava client:compileJava service:compileJava
-
-    - name: Set up JDK 17
-      uses: actions/setup-java@v3
-      with:
-        distribution: temurin
-        java-version: 17
-
-    - name: Compile Tests
-      run: ./gradlew compileTestJava
+    - name: Compile
+      run: ./gradlew compileJava compileTestJava

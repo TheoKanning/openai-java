@@ -36,7 +36,7 @@ public class OpenAiApiDynamicFunctionExample {
                         .name("unit")
                         .type("string")
                         .description("The temperature unit, can be 'celsius' or 'fahrenheit'")
-                        .enumValues(Set.of("celsius", "fahrenheit"))
+                        .enumValues(new HashSet<>(Arrays.asList("celsius", "fahrenheit")))
                         .required(true)
                         .build())
                 .build();
