@@ -2,6 +2,12 @@ package com.theokanning.openai.client;
 
 import com.theokanning.openai.DeleteResult;
 import com.theokanning.openai.OpenAiResponse;
+import com.theokanning.openai.assistants.AssistantBase;
+import com.theokanning.openai.assistants.Assistant;
+import com.theokanning.openai.assistants.AssistantFile;
+import com.theokanning.openai.assistants.AssistantFileRequest;
+import com.theokanning.openai.assistants.ListAssistant;
+import com.theokanning.openai.assistants.ListAssistantQueryRequest;
 import com.theokanning.openai.audio.CreateSpeechRequest;
 import com.theokanning.openai.audio.TranscriptionResult;
 import com.theokanning.openai.audio.TranslationResult;
@@ -36,6 +42,7 @@ import retrofit2.Call;
 import retrofit2.http.*;
 
 import java.time.LocalDate;
+import java.util.Map;
 
 public interface OpenAiApi {
 
@@ -185,4 +192,40 @@ public interface OpenAiApi {
     @GET("v1/dashboard/billing/usage")
     Single<BillingUsage> billingUsage(@Query("start_date") LocalDate starDate, @Query("end_date") LocalDate endDate);
 
+
+    @Headers({"OpenAI-Beta: assistants=v1"})
+    @POST("/v1/assistants")
+    Single<Assistant> createAssistant(@Body AssistantBase request);
+
+    @Headers({"OpenAI-Beta: assistants=v1"})
+    @GET("/v1/assistants/{assistant_id}")
+    Single<Assistant> retrieveAssistant(@Path("assistant_id") String assistantId);
+
+    @Headers({"OpenAI-Beta: assistants=v1"})
+    @POST("/v1/assistants/{assistant_id}")
+    Single<Assistant> modifyAssistant(@Path("assistant_id") String assistantId, @Body AssistantBase request);
+
+    @Headers({"OpenAI-Beta: assistants=v1"})
+    @DELETE("/v1/assistants/{assistant_id}")
+    Single<DeleteResult> deleteAssistant(@Path("assistant_id") String assistantId);
+
+    @Headers({"OpenAI-Beta: assistants=v1"})
+    @GET("/v1/assistants")
+    Single<ListAssistant<Assistant>> listAssistants(@QueryMap Map<String, Object> filterRequest);
+
+    @Headers({"OpenAI-Beta: assistants=v1"})
+    @POST("/v1/assistants/{assistant_id}/files")
+    Single<AssistantFile> createAssistantFile(@Path("assistant_id") String assistantId, @Body AssistantFileRequest fileRequest);
+
+    @Headers({"OpenAI-Beta: assistants=v1"})
+    @GET("/v1/assistants/{assistant_id}/files/{file_id}")
+    Single<AssistantFile> retrieveAssistantFile(@Path("assistant_id") String assistantId, @Path("file_id") String fileId);
+
+    @Headers({"OpenAI-Beta: assistants=v1"})
+    @DELETE("/v1/assistants/{assistant_id}/files/{file_id}")
+    Single<DeleteResult> deleteAssistantFile(@Path("assistant_id") String assistantId, @Path("file_id") String fileId);
+
+    @Headers({"OpenAI-Beta: assistants=v1"})
+    @GET("/v1/assistants/{assistant_id}/files")
+    Single<ListAssistant<Assistant>> listAssistantFiles(@Path("assistant_id") String assistantId, @QueryMap Map<String, Object> filterRequest);
 }
