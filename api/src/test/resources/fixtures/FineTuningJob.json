@@ -1,0 +1,19 @@
+{
+  "id": "ftjob-abc123",
+  "object": "fine_tuning.job",
+  "model": "davinci-002",
+  "status": "succeeded",
+  "hyperparameters": {
+    "n_epochs": 4
+  },
+  "created_at": 1692661014,
+  "finished_at": 1692661190,
+  "fine_tuned_model": "ft:davinci-002:my-org:custom_suffix:7q8mpxmy",
+  "organization_id": "org-123",
+  "training_file": "file-abc123",
+  "result_files": [
+    "file-abc123"
+  ],
+  "validation_file": "validation-file",
+  "trained_tokens": 5768
+}

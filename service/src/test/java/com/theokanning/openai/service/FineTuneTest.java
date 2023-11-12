@@ -10,6 +10,7 @@ import java.util.concurrent.TimeUnit;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+@Deprecated
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class FineTuneTest {
     static com.theokanning.openai.service.OpenAiService service;

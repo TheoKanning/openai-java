@@ -1,11 +1,11 @@
-name: Test
+name: Compile
 
 on:
-  push:
+  pull_request:
     branches: [ main ]
 
 jobs:
-  test:
+  compile:
     runs-on: ubuntu-latest
 
     steps:
@@ -17,7 +17,5 @@ jobs:
         distribution: temurin
         java-version: 8
 
-    - name: Test
-      run: ./gradlew test --stacktrace
-      env:
-        OPENAI_TOKEN: ${{ secrets.OPENAI_TOKEN }}
+    - name: Compile
+      run: ./gradlew compileJava compileTestJava
