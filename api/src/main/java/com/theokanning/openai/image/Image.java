@@ -21,4 +21,10 @@ public class Image {
      */
     @JsonProperty("b64_json")
     String b64Json;
+
+    /**
+     * The prompt that was used to generate the image, if there was any revision to the prompt.
+     */
+    @JsonProperty("revised_prompt")
+    String revisedPrompt;
 }

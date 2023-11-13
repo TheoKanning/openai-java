@@ -7,10 +7,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.theokanning.openai.completion.chat.*;
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Collections;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -150,6 +147,50 @@ class ChatCompletionTest {
     }
 
     @Test
+    void createChatCompletionWithDynamicFunctions() {
+        ChatFunctionDynamic function = ChatFunctionDynamic.builder()
+                .name("get_weather")
+                .description("Get the current weather of a location")
+                .addProperty(ChatFunctionProperty.builder()
+                        .name("location")
+                        .type("string")
+                        .description("City and state, for example: León, Guanajuato")
+                        .build())
+                .addProperty(ChatFunctionProperty.builder()
+                        .name("unit")
+                        .type("string")
+                        .description("The temperature unit, can be 'celsius' or 'fahrenheit'")
+                        .enumValues(new HashSet<>(Arrays.asList("celsius", "fahrenheit")))
+                        .required(true)
+                        .build())
+                .build();
+
+        final List<ChatMessage> messages = new ArrayList<>();
+        final ChatMessage systemMessage = new ChatMessage(ChatMessageRole.SYSTEM.value(), "You are a helpful assistant.");
+        final ChatMessage userMessage = new ChatMessage(ChatMessageRole.USER.value(), "What is the weather in Monterrey, Nuevo León?");
+        messages.add(systemMessage);
+        messages.add(userMessage);
+
+        ChatCompletionRequest chatCompletionRequest = ChatCompletionRequest
+                .builder()
+                .model("gpt-3.5-turbo-0613")
+                .messages(messages)
+                .functions(Collections.singletonList(function))
+                .n(1)
+                .maxTokens(100)
+                .logitBias(new HashMap<>())
+                .build();
+
+        ChatCompletionChoice choice = service.createChatCompletion(chatCompletionRequest).getChoices().get(0);
+        assertEquals("function_call", choice.getFinishReason());
+        assertNotNull(choice.getMessage().getFunctionCall());
+        assertEquals("get_weather", choice.getMessage().getFunctionCall().getName());
+        assertInstanceOf(ObjectNode.class, choice.getMessage().getFunctionCall().getArguments());
+        assertNotNull(choice.getMessage().getFunctionCall().getArguments().get("location"));
+        assertNotNull(choice.getMessage().getFunctionCall().getArguments().get("unit"));
+    }
+
+    @Test
     void streamChatCompletionWithFunctions() {
         final List<ChatFunction> functions = Collections.singletonList(ChatFunction.builder()
                 .name("get_weather")
@@ -212,6 +253,51 @@ class ChatCompletionTest {
                 .getAccumulatedMessage();
         assertNull(accumulatedMessage2.getFunctionCall());
         assertNotNull(accumulatedMessage2.getContent());
+    }
+
+    @Test
+    void streamChatCompletionWithDynamicFunctions() {
+        ChatFunctionDynamic function = ChatFunctionDynamic.builder()
+                .name("get_weather")
+                .description("Get the current weather of a location")
+                .addProperty(ChatFunctionProperty.builder()
+                        .name("location")
+                        .type("string")
+                        .description("City and state, for example: León, Guanajuato")
+                        .build())
+                .addProperty(ChatFunctionProperty.builder()
+                        .name("unit")
+                        .type("string")
+                        .description("The temperature unit, can be 'celsius' or 'fahrenheit'")
+                        .enumValues(new HashSet<>(Arrays.asList("celsius", "fahrenheit")))
+                        .required(true)
+                        .build())
+                .build();
+
+        final List<ChatMessage> messages = new ArrayList<>();
+        final ChatMessage systemMessage = new ChatMessage(ChatMessageRole.SYSTEM.value(), "You are a helpful assistant.");
+        final ChatMessage userMessage = new ChatMessage(ChatMessageRole.USER.value(), "What is the weather in Monterrey, Nuevo León?");
+        messages.add(systemMessage);
+        messages.add(userMessage);
+
+        ChatCompletionRequest chatCompletionRequest = ChatCompletionRequest
+                .builder()
+                .model("gpt-3.5-turbo-0613")
+                .messages(messages)
+                .functions(Collections.singletonList(function))
+                .n(1)
+                .maxTokens(100)
+                .logitBias(new HashMap<>())
+                .build();
+
+        ChatMessage accumulatedMessage = service.mapStreamToAccumulator(service.streamChatCompletion(chatCompletionRequest))
+                .blockingLast()
+                .getAccumulatedMessage();
+        assertNotNull(accumulatedMessage.getFunctionCall());
+        assertEquals("get_weather", accumulatedMessage.getFunctionCall().getName());
+        assertInstanceOf(ObjectNode.class, accumulatedMessage.getFunctionCall().getArguments());
+        assertNotNull(accumulatedMessage.getFunctionCall().getArguments().get("location"));
+        assertNotNull(accumulatedMessage.getFunctionCall().getArguments().get("unit"));
     }
 
 }
