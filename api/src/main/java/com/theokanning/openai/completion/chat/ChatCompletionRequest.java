@@ -16,11 +16,6 @@ import java.util.Map;
 public class ChatCompletionRequest {
 
     /**
-     * ID of the model to use.
-     */
-    String model;
-
-    /**
      * The messages to generate chat completions for, in the <a
      * href="https://platform.openai.com/docs/guides/chat/introduction">chat format</a>.<br>
      * see {@link ChatMessage}
@@ -28,50 +23,9 @@ public class ChatCompletionRequest {
     List<ChatMessage> messages;
 
     /**
-     * What sampling temperature to use, between 0 and 2. Higher values like 0.8 will make the output more random, while lower
-     * values like 0.2 will make it more focused and deterministic.<br>
-     * We generally recommend altering this or top_p but not both.
+     * ID of the model to use.
      */
-    Double temperature;
-
-    /**
-     * An alternative to sampling with temperature, called nucleus sampling, where the model considers the results of the tokens
-     * with top_p probability mass. So 0.1 means only the tokens comprising the top 10% probability mass are considered.<br>
-     * We generally recommend altering this or temperature but not both.
-     */
-    @JsonProperty("top_p")
-    Double topP;
-
-    /**
-     * How many chat completion chatCompletionChoices to generate for each input message.
-     */
-    Integer n;
-
-    /**
-     * If set, partial message deltas will be sent, like in ChatGPT. Tokens will be sent as data-only <a
-     * href="https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events/Using_server-sent_events#Event_stream_format">server-sent
-     * events</a> as they become available, with the stream terminated by a data: [DONE] message.
-     */
-    Boolean stream;
-
-    /**
-     * Up to 4 sequences where the API will stop generating further tokens.
-     */
-    List<String> stop;
-
-    /**
-     * The maximum number of tokens allowed for the generated answer. By default, the number of tokens the model can return will
-     * be (4096 - prompt tokens).
-     */
-    @JsonProperty("max_tokens")
-    Integer maxTokens;
-
-    /**
-     * Number between -2.0 and 2.0. Positive values penalize new tokens based on whether they appear in the text so far,
-     * increasing the model's likelihood to talk about new topics.
-     */
-    @JsonProperty("presence_penalty")
-    Double presencePenalty;
+    String model;
 
     /**
      * Number between -2.0 and 2.0. Positive values penalize new tokens based on their existing frequency in the text so far,
@@ -89,6 +43,51 @@ public class ChatCompletionRequest {
     @JsonProperty("logit_bias")
     Map<String, Integer> logitBias;
 
+    /**
+     * The maximum number of tokens allowed for the generated answer. By default, the number of tokens the model can return will
+     * be (4096 - prompt tokens).
+     */
+    @JsonProperty("max_tokens")
+    Integer maxTokens;
+
+    /**
+     * How many chat completion chatCompletionChoices to generate for each input message.
+     */
+    Integer n;
+
+    /**
+     * Number between -2.0 and 2.0. Positive values penalize new tokens based on whether they appear in the text so far,
+     * increasing the model's likelihood to talk about new topics.
+     */
+    @JsonProperty("presence_penalty")
+    Double presencePenalty;
+
+    /**
+     * Up to 4 sequences where the API will stop generating further tokens.
+     */
+    List<String> stop;
+
+    /**
+     * If set, partial message deltas will be sent, like in ChatGPT. Tokens will be sent as data-only <a
+     * href="https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events/Using_server-sent_events#Event_stream_format">server-sent
+     * events</a> as they become available, with the stream terminated by a data: [DONE] message.
+     */
+    Boolean stream;
+
+    /**
+     * What sampling temperature to use, between 0 and 2. Higher values like 0.8 will make the output more random, while lower
+     * values like 0.2 will make it more focused and deterministic.<br>
+     * We generally recommend altering this or top_p but not both.
+     */
+    Double temperature;
+
+    /**
+     * An alternative to sampling with temperature, called nucleus sampling, where the model considers the results of the tokens
+     * with top_p probability mass. So 0.1 means only the tokens comprising the top 10% probability mass are considered.<br>
+     * We generally recommend altering this or temperature but not both.
+     */
+    @JsonProperty("top_p")
+    Double topP;
 
     /**
      * A unique identifier representing your end-user, which will help OpenAI to monitor and detect abuse.
@@ -96,15 +95,15 @@ public class ChatCompletionRequest {
     String user;
 
     /**
-     * A list of the available functions.
-     */
-    List<?> functions;
-
-    /**
      * Controls how the model responds to function calls, as specified in the <a href="https://platform.openai.com/docs/api-reference/chat/create#chat/create-function_call">OpenAI documentation</a>.
      */
     @JsonProperty("function_call")
     ChatCompletionRequestFunctionCall functionCall;
+
+    /**
+     * A list of the available functions.
+     */
+    List<?> functions;
 
     @Data
     @Builder
