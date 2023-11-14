@@ -7,9 +7,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.fasterxml.jackson.databind.node.TextNode;
 import com.sun.org.apache.xpath.internal.operations.Mod;
-import com.theokanning.openai.DeleteResult;
-import com.theokanning.openai.OpenAiError;
-import com.theokanning.openai.OpenAiHttpException;
+import com.theokanning.openai.*;
 import com.theokanning.openai.assistants.*;
 import com.theokanning.openai.audio.CreateSpeechRequest;
 import com.theokanning.openai.audio.CreateTranscriptionRequest;
@@ -38,9 +36,15 @@ import com.theokanning.openai.image.CreateImageEditRequest;
 import com.theokanning.openai.image.CreateImageRequest;
 import com.theokanning.openai.image.CreateImageVariationRequest;
 import com.theokanning.openai.image.ImageResult;
+import com.theokanning.openai.messages.Message;
+import com.theokanning.openai.messages.MessageFile;
+import com.theokanning.openai.messages.MessageRequest;
+import com.theokanning.openai.messages.ModifyMessageRequest;
 import com.theokanning.openai.model.Model;
 import com.theokanning.openai.moderation.ModerationRequest;
 import com.theokanning.openai.moderation.ModerationResult;
+import com.theokanning.openai.threads.Thread;
+import com.theokanning.openai.threads.ThreadRequest;
 import io.reactivex.BackpressureStrategy;
 import io.reactivex.Flowable;
 import io.reactivex.Single;
@@ -358,6 +362,10 @@ public class OpenAiService {
         return execute(api.createModeration(request));
     }
 
+    public ResponseBody createSpeech(CreateSpeechRequest request) {
+        return execute(api.createSpeech(request));
+    }
+    
     public Assistant createAssistant(AssistantRequest request) {
         return execute(api.createAssistant(request));
     }
@@ -396,9 +404,44 @@ public class OpenAiService {
         return execute(api.listAssistantFiles(assistantId, queryParameters));
     }
 
-    public ResponseBody createSpeech(CreateSpeechRequest request) {
-        return execute(api.createSpeech(request));
+    public Thread createThread(ThreadRequest request) {
+        return execute(api.createThread(request));
     }
+
+    public Message createMessage(String threadId, MessageRequest request) {
+        return execute(api.createMessage(threadId, request));
+    }
+
+    public Message retrieveMessage(String threadId, String messageId) {
+        return execute(api.retrieveMessage(threadId,messageId));
+    }
+
+    public Message modifyMessage(String threadId, String messageId, ModifyMessageRequest request) {
+        return execute(api.modifyMessage(threadId,messageId, request));
+    }
+
+    public OpenAiResponse<Message> listMessages(String threadId) {
+        return execute(api.listMessages(threadId));
+    }
+
+    public OpenAiResponse<Message> listMessages(String threadId, ListSearchParameters params) {
+        Map<String, Object> queryParameters = mapper.convertValue(params, new TypeReference<Map<String, Object>>() {});
+        return execute(api.listMessages(threadId,queryParameters));
+    }
+
+    public MessageFile retrieveMessageFile(String threadId, String messageId, String fileId) {
+        return execute(api.retrieveMessageFile(threadId,messageId, fileId));
+    }
+
+    public OpenAiResponse<MessageFile> listMessageFiles(String threadId, String messageId) {
+        return execute(api.listMessageFiles(threadId,messageId));
+    }
+
+    public OpenAiResponse<MessageFile> listMessageFiles(String threadId, String messageId, ListSearchParameters params) {
+        Map<String, Object> queryParameters = mapper.convertValue(params, new TypeReference<Map<String, Object>>() {});
+        return execute(api.listMessageFiles(threadId,messageId, queryParameters));
+    }
+
 
     /**
      * Calls the Open AI api, returns the response, and parses error messages if the request fails
