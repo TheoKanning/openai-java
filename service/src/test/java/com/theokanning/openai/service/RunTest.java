@@ -54,7 +54,8 @@ class RunTest {
             retrievedRun = service.retrieveRun(thread.getId(), run.getId());
             assertEquals(run.getId(), retrievedRun.getId());
         }
-        while (!List.of("completed", "failed").contains(retrievedRun.getStatus()));
+        while (!(retrievedRun.getStatus().equals("completed")) && !(retrievedRun.getStatus().equals("failed")));
+
 
         assertNotNull(retrievedRun);
 
