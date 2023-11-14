@@ -407,6 +407,18 @@ public class OpenAiService {
         return execute(api.createThread(request));
     }
 
+    public Thread retrieveThread(String threadId) {
+        return execute(api.retrieveThread(threadId));
+    }
+
+    public Thread modifyThread(String threadId, ThreadRequest request) {
+        return execute(api.modifyThread(threadId, request));
+    }
+
+    public DeleteResult deleteThread(String threadId) {
+        return execute(api.deleteThread(threadId));
+    }
+
     public Message createMessage(String threadId, MessageRequest request) {
         return execute(api.createMessage(threadId, request));
     }
