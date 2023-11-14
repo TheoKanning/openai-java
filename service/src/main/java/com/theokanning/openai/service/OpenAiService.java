@@ -6,7 +6,6 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.fasterxml.jackson.databind.node.TextNode;
-import com.sun.org.apache.xpath.internal.operations.Mod;
 import com.theokanning.openai.*;
 import com.theokanning.openai.assistants.*;
 import com.theokanning.openai.audio.CreateSpeechRequest;
@@ -406,6 +405,18 @@ public class OpenAiService {
 
     public Thread createThread(ThreadRequest request) {
         return execute(api.createThread(request));
+    }
+
+    public Thread retrieveThread(String threadId) {
+        return execute(api.retrieveThread(threadId));
+    }
+
+    public Thread modifyThread(String threadId, ThreadRequest request) {
+        return execute(api.modifyThread(threadId, request));
+    }
+
+    public DeleteResult deleteThread(String threadId) {
+        return execute(api.deleteThread(threadId));
     }
 
     public Message createMessage(String threadId, MessageRequest request) {

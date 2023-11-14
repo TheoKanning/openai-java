@@ -234,6 +234,19 @@ public interface OpenAiApi {
     Single<Thread> createThread(@Body ThreadRequest request);
 
     @Headers({"OpenAI-Beta: assistants=v1"})
+    @GET("/v1/threads/{thread_id}")
+    Single<Thread> retrieveThread(@Path("thread_id") String threadId);
+
+    @Headers({"OpenAI-Beta: assistants=v1"})
+    @POST("/v1/threads/{thread_id}")
+    Single<Thread> modifyThread(@Path("thread_id") String threadId, @Body ThreadRequest request);
+
+    @Headers({"OpenAI-Beta: assistants=v1"})
+    @DELETE("/v1/threads/{thread_id}")
+    Single<DeleteResult> deleteThread(@Path("thread_id") String threadId);
+
+
+    @Headers({"OpenAI-Beta: assistants=v1"})
     @POST("/v1/threads/{thread_id}/messages")
     Single<Message> createMessage(@Path("thread_id") String threadId, @Body MessageRequest request);
 
