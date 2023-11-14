@@ -35,6 +35,6 @@ public class OpenAiResponse<T> {
     /**
      * True if there are objects after lastId
      */
-    @JsonProperty("hasMore")
+    @JsonProperty("has_more")
     public boolean hasMore;
 }

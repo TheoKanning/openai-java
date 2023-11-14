@@ -23,7 +23,6 @@ public class ThreadRequest {
     /**
      * A list of messages to start the thread with. Optional.
      */
-    @JsonProperty("messages")
     List<MessageRequest> messages;
 
     /**
@@ -31,6 +30,5 @@ public class ThreadRequest {
      * This can be useful for storing additional information about the object in a structured format.
      * Keys can be a maximum of 64 characters long, and values can be a maximum of 512 characters long.
      */
-    @JsonProperty("metadata")
     Map<String, String> metadata;
 }
