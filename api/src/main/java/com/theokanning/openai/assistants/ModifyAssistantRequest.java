@@ -1,11 +1,8 @@
 package com.theokanning.openai.assistants;
 
+
 import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.NonNull;
+import lombok.*;
 
 import java.util.List;
 import java.util.Map;
@@ -14,12 +11,11 @@ import java.util.Map;
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
-public class AssistantBase {
+public class ModifyAssistantRequest {
 
     /**
      * ID of the model to use
      */
-    @NonNull
     String model;
 
     /**
@@ -46,7 +42,7 @@ public class AssistantBase {
      * A list of file IDs attached to this assistant.
      */
     @JsonProperty("file_ids")
-    List<String> fields;
+    List<String> fileIds;
 
     /**
      * Set of 16 key-value pairs that can be attached to an object.

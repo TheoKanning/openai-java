@@ -1,16 +1,7 @@
 package com.theokanning.openai.service;
 
 import com.theokanning.openai.DeleteResult;
-import com.theokanning.openai.assistants.Assistant;
-import com.theokanning.openai.assistants.AssistantBase;
-import com.theokanning.openai.assistants.AssistantFile;
-import com.theokanning.openai.assistants.AssistantFileRequest;
-import com.theokanning.openai.assistants.AssistantRequest;
-import com.theokanning.openai.assistants.AssistantSortOrder;
-import com.theokanning.openai.assistants.AssistantToolsEnum;
-import com.theokanning.openai.assistants.ListAssistant;
-import com.theokanning.openai.assistants.ListAssistantQueryRequest;
-import com.theokanning.openai.assistants.Tool;
+import com.theokanning.openai.assistants.*;
 import com.theokanning.openai.file.File;
 import com.theokanning.openai.utils.TikTokensUtil;
 import org.junit.jupiter.api.AfterAll;
@@ -44,10 +35,12 @@ public class AssistantTest {
     void modifyAssistant() {
         Assistant createAssistantResponse = createAndValidateAssistant();
 
-        String modifiedName = MATH_TUTOR + " Modified";
-        createAssistantResponse.setName(modifiedName);//modify a field
+        String modifiedName = MATH_TUTOR + "Modified";
+        ModifyAssistantRequest modifyRequest = ModifyAssistantRequest.builder()
+                .name(modifiedName)
+                .build();
 
-        Assistant modifiedAssistantResponse = service.modifyAssistant(createAssistantResponse.getId(), createAssistantResponse);
+        Assistant modifiedAssistantResponse = service.modifyAssistant(createAssistantResponse.getId(), modifyRequest);
         assertNotNull(modifiedAssistantResponse);
         assertEquals(modifiedName, modifiedAssistantResponse.getName());
     }
@@ -123,20 +116,19 @@ public class AssistantTest {
     }
 
     private static Assistant createAndValidateAssistant() {
-        AssistantBase assistantRequest = assistantStub();
+        AssistantRequest assistantRequest = assistantStub();
         Assistant createAssistantResponse = service.createAssistant(assistantRequest);
         validateAssistantResponse(createAssistantResponse);
 
         return createAssistantResponse;
     }
 
-
-    private static AssistantBase assistantStub() {
+    private static AssistantRequest assistantStub() {
         return AssistantRequest.builder()
                 .model(TikTokensUtil.ModelEnum.GPT_4_1106_preview.getName())
                 .name(MATH_TUTOR)
                 .instructions(ASSISTANT_INSTRUCTION)
-                .tools(Collections.singletonList(new Tool(AssistantToolsEnum.CODE_INTERPRETER)))
+                .tools(Collections.singletonList(new Tool(AssistantToolsEnum.CODE_INTERPRETER, null)))
                 .build();
     }
 
@@ -147,12 +139,5 @@ public class AssistantTest {
         assertNotNull(assistantResponse.getObject());
         assertEquals(assistantResponse.getTools().get(0).getType(),  AssistantToolsEnum.CODE_INTERPRETER);
         assertEquals(MATH_TUTOR, assistantResponse.getName());
-    }
-
-    private static List<Assistant> validateListAssistants(ListAssistant<Assistant> assistants) {
-        assertNotNull(assistants);
-        List<Assistant> data = assistants.getData();
-        assertNotNull(data);
-        return data;
     }
 }

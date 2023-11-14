@@ -2,12 +2,7 @@ package com.theokanning.openai.client;
 
 import com.theokanning.openai.DeleteResult;
 import com.theokanning.openai.OpenAiResponse;
-import com.theokanning.openai.assistants.AssistantBase;
-import com.theokanning.openai.assistants.Assistant;
-import com.theokanning.openai.assistants.AssistantFile;
-import com.theokanning.openai.assistants.AssistantFileRequest;
-import com.theokanning.openai.assistants.ListAssistant;
-import com.theokanning.openai.assistants.ListAssistantQueryRequest;
+import com.theokanning.openai.assistants.*;
 import com.theokanning.openai.audio.CreateSpeechRequest;
 import com.theokanning.openai.audio.TranscriptionResult;
 import com.theokanning.openai.audio.TranslationResult;
@@ -195,7 +190,7 @@ public interface OpenAiApi {
 
     @Headers({"OpenAI-Beta: assistants=v1"})
     @POST("/v1/assistants")
-    Single<Assistant> createAssistant(@Body AssistantBase request);
+    Single<Assistant> createAssistant(@Body AssistantRequest request);
 
     @Headers({"OpenAI-Beta: assistants=v1"})
     @GET("/v1/assistants/{assistant_id}")
@@ -203,7 +198,7 @@ public interface OpenAiApi {
 
     @Headers({"OpenAI-Beta: assistants=v1"})
     @POST("/v1/assistants/{assistant_id}")
-    Single<Assistant> modifyAssistant(@Path("assistant_id") String assistantId, @Body AssistantBase request);
+    Single<Assistant> modifyAssistant(@Path("assistant_id") String assistantId, @Body ModifyAssistantRequest request);
 
     @Headers({"OpenAI-Beta: assistants=v1"})
     @DELETE("/v1/assistants/{assistant_id}")

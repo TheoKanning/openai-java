@@ -6,15 +6,11 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.fasterxml.jackson.databind.node.TextNode;
+import com.sun.org.apache.xpath.internal.operations.Mod;
 import com.theokanning.openai.DeleteResult;
 import com.theokanning.openai.OpenAiError;
 import com.theokanning.openai.OpenAiHttpException;
-import com.theokanning.openai.assistants.Assistant;
-import com.theokanning.openai.assistants.AssistantBase;
-import com.theokanning.openai.assistants.AssistantFile;
-import com.theokanning.openai.assistants.AssistantFileRequest;
-import com.theokanning.openai.assistants.ListAssistant;
-import com.theokanning.openai.assistants.ListAssistantQueryRequest;
+import com.theokanning.openai.assistants.*;
 import com.theokanning.openai.audio.CreateSpeechRequest;
 import com.theokanning.openai.audio.CreateTranscriptionRequest;
 import com.theokanning.openai.audio.CreateTranslationRequest;
@@ -362,7 +358,7 @@ public class OpenAiService {
         return execute(api.createModeration(request));
     }
 
-    public Assistant createAssistant(AssistantBase request) {
+    public Assistant createAssistant(AssistantRequest request) {
         return execute(api.createAssistant(request));
     }
 
@@ -370,7 +366,7 @@ public class OpenAiService {
         return execute(api.retrieveAssistant(assistantId));
     }
 
-    public Assistant modifyAssistant(String assistantId, AssistantBase request) {
+    public Assistant modifyAssistant(String assistantId, ModifyAssistantRequest request) {
         return execute(api.modifyAssistant(assistantId, request));
     }
 
