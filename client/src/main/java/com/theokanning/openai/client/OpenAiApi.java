@@ -33,6 +33,8 @@ import com.theokanning.openai.messages.ModifyMessageRequest;
 import com.theokanning.openai.model.Model;
 import com.theokanning.openai.moderation.ModerationRequest;
 import com.theokanning.openai.moderation.ModerationResult;
+import com.theokanning.openai.runs.Run;
+import com.theokanning.openai.runs.RunCreateRequest;
 import com.theokanning.openai.threads.Thread;
 import com.theokanning.openai.threads.ThreadRequest;
 import io.reactivex.Single;
@@ -277,5 +279,13 @@ public interface OpenAiApi {
     @Headers({"OpenAI-Beta: assistants=v1"})
     @GET("/v1/threads/{thread_id}/messages/{message_id}/files")
     Single<OpenAiResponse<MessageFile>> listMessageFiles(@Path("thread_id") String threadId, @Path("message_id") String messageId, @QueryMap Map<String, Object> filterRequest);
+
+    @Headers("OpenAI-Beta: assistants=v1")
+    @POST("/v1/threads/{thread_id}/runs")
+    Single<Run> createRun(@Path("thread_id") String threadId, @Body RunCreateRequest runCreateRequest);
+
+    @Headers("OpenAI-Beta: assistants=v1")
+    @GET("/v1/threads/{thread_id}/runs/{run_id}")
+    Single<Run> retrieveRun(@Path("thread_id") String threadId, @Path("run_id") String runId);
 
 }
