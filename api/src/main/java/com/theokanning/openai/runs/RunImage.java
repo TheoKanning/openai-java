@@ -6,20 +6,19 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
+/**
+ * @description:
+ * @author: vacuity
+ * @create: 2023-11-16 22:33
+ **/
+
 
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class StepDetails {
+public class RunImage {
 
-    
-    private String type;
-
-    @JsonProperty("message_creation")
-    private MessageCreation messageCreation;
-
-    @JsonProperty("tool_calls")
-    private List<ToolCall> toolCalls;
+    @JsonProperty("file_id")
+    private String fileId;
 }

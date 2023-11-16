@@ -1,5 +1,6 @@
 package com.theokanning.openai.runs;
 
+import com.theokanning.openai.assistants.Tool;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -17,7 +18,10 @@ public class RunCreateRequest {
 
     // Optional
     String model;
+    
     String instructions;
+    
     List<Tool> tools;
+    
     Map<String, String> metadata;
 }
