@@ -1,6 +1,8 @@
 package com.theokanning.openai.runs;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.theokanning.openai.assistants.Tool;
+import com.theokanning.openai.common.LastError;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -9,37 +11,56 @@ import lombok.NoArgsConstructor;
 import java.util.List;
 import java.util.Map;
 
+@Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Data
 public class Run {
 
-    @JsonProperty("assistant_id")
-    String assistantId;
-    @JsonProperty("cancelled_at")
-    Long cancelledAt;
-    @JsonProperty("completed_at")
-    Long completedAt;
+    private String id;
+
+    private String object;
+
     @JsonProperty("created_at")
-    Long createdAt;
-    @JsonProperty("expires_at")
-    Long expiresAt;
-    @JsonProperty("failed_at")
-    Long failedAt;
-    @JsonProperty("file_ids")
-    List<String> fileIds;
-    String id;
-    String instructions;
-    @JsonProperty("last_error")
-    String lastError;
-    Map<String, String> metadata;
-    String model;
-    String object;
-    @JsonProperty("started_at")
-    Long startedAt;
-    String status;
+    private Integer createdAt;
+
     @JsonProperty("thread_id")
-    String threadId;
-    List<Tool> tools;
+    private String threadId;
+
+    @JsonProperty("assistant_id")
+    private String assistantId;
+
+    private String status;
+
+    @JsonProperty("required_action")
+    private RequiredAction requiredAction;
+
+    @JsonProperty("last_error")
+    private LastError lastError;
+
+    @JsonProperty("expires_at")
+    private Integer expiresAt;
+
+    @JsonProperty("started_at")
+    private Integer startedAt;
+    
+    @JsonProperty("cancelled_at")
+    private Integer cancelledAt;
+
+    @JsonProperty("failed_at")
+    private Integer failedAt;
+    
+    @JsonProperty("completed_at")
+    private Integer completedAt;
+
+    private String model;
+
+    private String instructions;
+
+    private List<Tool> tools;
+    
+    @JsonProperty("file_ids")
+    private List<String> fileIds;
+
+    private Map<String, String> metadata;
 }

@@ -38,8 +38,11 @@ import com.theokanning.openai.messages.ModifyMessageRequest;
 import com.theokanning.openai.model.Model;
 import com.theokanning.openai.moderation.ModerationRequest;
 import com.theokanning.openai.moderation.ModerationResult;
+import com.theokanning.openai.runs.CreateThreadAndRunRequest;
 import com.theokanning.openai.runs.Run;
 import com.theokanning.openai.runs.RunCreateRequest;
+import com.theokanning.openai.runs.RunStep;
+import com.theokanning.openai.runs.SubmitToolOutputsRequest;
 import com.theokanning.openai.threads.Thread;
 import com.theokanning.openai.threads.ThreadRequest;
 import io.reactivex.BackpressureStrategy;
@@ -461,6 +464,34 @@ public class OpenAiService {
 
     public Run retrieveRun(String threadId, String runId) {
         return execute(api.retrieveRun(threadId, runId));
+    }
+
+    public Run modifyRun(String threadId, String runId, Map<String, String> metadata) {
+        return execute(api.modifyRun(threadId, runId, metadata));
+    }
+
+    public OpenAiResponse<Run> listRuns(String threadId, ListSearchParameters listSearchParameters) {
+        return execute(api.listRuns(threadId, listSearchParameters));
+    }
+
+    public Run submitToolOutputs(String threadId, String runId, SubmitToolOutputsRequest submitToolOutputsRequest) {
+        return execute(api.submitToolOutputs(threadId, runId, submitToolOutputsRequest));
+    }
+
+    public Run cancelRun(String threadId, String runId) {
+        return execute(api.cancelRun(threadId, runId));
+    }
+
+    public Run createThreadAndRun(CreateThreadAndRunRequest createThreadAndRunRequest) {
+        return execute(api.createThreadAndRun(createThreadAndRunRequest));
+    }
+
+    public RunStep retrieveRunStep(String threadId, String runId, String stepId) {
+        return execute(api.retrieveRunStep(threadId, runId, stepId));
+    }
+
+    public OpenAiResponse<RunStep> listRunSteps(String threadId, String runId, ListSearchParameters listSearchParameters) {
+        return execute(api.listRunSteps(threadId, runId, listSearchParameters));
     }
 
     /**

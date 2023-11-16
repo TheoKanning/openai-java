@@ -1,17 +1,26 @@
 package com.theokanning.openai.runs;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * @description:
+ * @author: vacuity
+ * @create: 2023-11-16 22:34
+ **/
+
+
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class MessageCreation {
+public class ToolCallCodeInterpreterOutput {
     
-    @JsonProperty("message_id")
-    String messageId;
+    private String type;
+    
+    private String logs;
+    
+    private RunImage image;
 }
