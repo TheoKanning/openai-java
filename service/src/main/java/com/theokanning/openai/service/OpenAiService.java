@@ -379,8 +379,8 @@ public class OpenAiService {
         return execute(api.deleteAssistant(assistantId));
     }
 
-    public ListAssistant<Assistant> listAssistants(ListAssistantQueryRequest filterRequest) {
-        Map<String, Object> queryParameters = mapper.convertValue(filterRequest, new TypeReference<Map<String, Object>>() {
+    public OpenAiResponse<Assistant> listAssistants(ListSearchParameters params) {
+        Map<String, Object> queryParameters = mapper.convertValue(params, new TypeReference<Map<String, Object>>() {
         });
         return execute(api.listAssistants(queryParameters));
     }
@@ -397,8 +397,8 @@ public class OpenAiService {
         return execute(api.deleteAssistantFile(assistantId, fileId));
     }
 
-    public ListAssistant<Assistant> listAssistantFiles(String assistantId, ListAssistantQueryRequest filterRequest) {
-        Map<String, Object> queryParameters = mapper.convertValue(filterRequest, new TypeReference<Map<String, Object>>() {
+    public OpenAiResponse<Assistant> listAssistantFiles(String assistantId, ListSearchParameters params) {
+        Map<String, Object> queryParameters = mapper.convertValue(params, new TypeReference<Map<String, Object>>() {
         });
         return execute(api.listAssistantFiles(assistantId, queryParameters));
     }

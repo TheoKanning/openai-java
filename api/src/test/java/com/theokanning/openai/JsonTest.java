@@ -18,6 +18,7 @@ import com.theokanning.openai.fine_tuning.FineTuningJobRequest;
 import com.theokanning.openai.finetune.FineTuneEvent;
 import com.theokanning.openai.finetune.FineTuneResult;
 import com.theokanning.openai.image.ImageResult;
+import com.theokanning.openai.messages.Message;
 import com.theokanning.openai.model.Model;
 import com.theokanning.openai.moderation.ModerationRequest;
 import com.theokanning.openai.moderation.ModerationResult;
@@ -50,6 +51,7 @@ public class JsonTest {
             ImageResult.class,
             TranscriptionResult.class,
             TranslationResult.class,
+            Message.class,
             Model.class,
             ModerationRequest.class,
             ModerationResult.class
