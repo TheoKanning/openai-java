@@ -50,7 +50,7 @@ public class Message {
     /**
      * The content of the message in an array of text and/or images.
      */
-    List<Object> content;
+    List<MessageContent> content;
 
     /**
      * If applicable, the ID of the assistant that authored this message.

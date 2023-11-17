@@ -1,6 +1,8 @@
 package com.theokanning.openai.service;
 
 import com.theokanning.openai.DeleteResult;
+import com.theokanning.openai.ListSearchParameters;
+import com.theokanning.openai.OpenAiResponse;
 import com.theokanning.openai.assistants.*;
 import com.theokanning.openai.file.File;
 import com.theokanning.openai.utils.TikTokensUtil;
@@ -20,8 +22,6 @@ public class AssistantTest {
     static String token = System.getenv("OPENAI_TOKEN");;
 
     static OpenAiService service = new OpenAiService(token);
-
-
 
     @Test
     void retrieveAssistant() {
@@ -58,7 +58,7 @@ public class AssistantTest {
 
     @Test
     void listAssistants() {
-        ListAssistant<Assistant> assistants = service.listAssistants(ListAssistantQueryRequest.builder().build());
+        OpenAiResponse<Assistant> assistants = service.listAssistants(ListSearchParameters.builder().build());
 
         assertNotNull(assistants);
         assertFalse(assistants.getData().isEmpty());
@@ -101,10 +101,10 @@ public class AssistantTest {
     @AfterAll
     static void clean() {
         //Clean up all data created during this test
-        ListAssistantQueryRequest queryFilter = ListAssistantQueryRequest.builder()
+        ListSearchParameters queryFilter = ListSearchParameters.builder()
                 .limit(100)
                 .build();
-        ListAssistant<Assistant> assistantListAssistant = service.listAssistants(queryFilter);
+        OpenAiResponse<Assistant> assistantListAssistant = service.listAssistants(queryFilter);
         assistantListAssistant.getData().forEach(assistant ->{
             service.deleteAssistant(assistant.getId());
         });

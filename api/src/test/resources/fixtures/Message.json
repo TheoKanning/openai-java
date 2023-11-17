@@ -1,0 +1,46 @@
+{
+  "id": "msg_abc123",
+  "object": "thread.message",
+  "created_at": 1698983503,
+  "thread_id": "thread_abc123",
+  "role": "assistant",
+  "content": [
+    {
+      "type": "text",
+      "text": {
+        "value": "Hi! How can I help you today?",
+        "annotations": [
+          {
+            "type": "file_citation",
+            "text": "file citation text",
+            "file_citation": {
+              "file_id": "file citation id",
+              "quote": "Enough, Reggie"
+            },
+            "start_index": 0,
+            "end_index": 1
+          },
+          {
+            "type": "file_path",
+            "text": "file path text",
+            "file_path": {
+              "file_id": "file id"
+            },
+            "start_index": 1,
+            "end_index": 2
+          }
+        ]
+      }
+    },
+    {
+      "type": "image_file",
+      "image_file": {
+        "file_id": "image file id"
+      }
+    }
+  ],
+  "file_ids": [],
+  "assistant_id": "asst_abc123",
+  "run_id": "run_abc123",
+  "metadata": {}
+}
