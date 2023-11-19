@@ -39,7 +39,11 @@ public class MessageTest {
 
     @AfterAll
     static void teardown() {
-        // todo delete thread
+        try {
+            service.deleteThread(threadId);
+        } catch (Exception e) {
+            // ignore
+        }
     }
 
     @Test

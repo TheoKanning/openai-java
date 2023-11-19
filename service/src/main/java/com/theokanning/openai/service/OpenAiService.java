@@ -38,6 +38,11 @@ import com.theokanning.openai.messages.ModifyMessageRequest;
 import com.theokanning.openai.model.Model;
 import com.theokanning.openai.moderation.ModerationRequest;
 import com.theokanning.openai.moderation.ModerationResult;
+import com.theokanning.openai.runs.CreateThreadAndRunRequest;
+import com.theokanning.openai.runs.Run;
+import com.theokanning.openai.runs.RunCreateRequest;
+import com.theokanning.openai.runs.RunStep;
+import com.theokanning.openai.runs.SubmitToolOutputsRequest;
 import com.theokanning.openai.threads.Thread;
 import com.theokanning.openai.threads.ThreadRequest;
 import io.reactivex.BackpressureStrategy;
@@ -162,7 +167,7 @@ public class OpenAiService {
 
     public File uploadFile(String purpose, String filepath) {
         java.io.File file = new java.io.File(filepath);
-        RequestBody purposeBody = RequestBody.create(okhttp3.MultipartBody.FORM, purpose);
+        RequestBody purposeBody = RequestBody.create(MultipartBody.FORM, purpose);
         RequestBody fileBody = RequestBody.create(MediaType.parse("text"), file);
         MultipartBody.Part body = MultipartBody.Part.createFormData("file", filepath, fileBody);
 
@@ -360,7 +365,7 @@ public class OpenAiService {
     public ResponseBody createSpeech(CreateSpeechRequest request) {
         return execute(api.createSpeech(request));
     }
-    
+
     public Assistant createAssistant(AssistantRequest request) {
         return execute(api.createAssistant(request));
     }
@@ -377,8 +382,9 @@ public class OpenAiService {
         return execute(api.deleteAssistant(assistantId));
     }
 
-    public ListAssistant<Assistant> listAssistants(ListAssistantQueryRequest filterRequest) {
-        Map<String, Object> queryParameters = mapper.convertValue(filterRequest, new TypeReference<Map<String, Object>>() {});
+    public OpenAiResponse<Assistant> listAssistants(ListSearchParameters params) {
+        Map<String, Object> queryParameters = mapper.convertValue(params, new TypeReference<Map<String, Object>>() {
+        });
         return execute(api.listAssistants(queryParameters));
     }
 
@@ -394,8 +400,9 @@ public class OpenAiService {
         return execute(api.deleteAssistantFile(assistantId, fileId));
     }
 
-    public ListAssistant<Assistant> listAssistantFiles(String assistantId, ListAssistantQueryRequest filterRequest) {
-        Map<String, Object> queryParameters = mapper.convertValue(filterRequest, new TypeReference<Map<String, Object>>() {});
+    public OpenAiResponse<Assistant> listAssistantFiles(String assistantId, ListSearchParameters params) {
+        Map<String, Object> queryParameters = mapper.convertValue(params, new TypeReference<Map<String, Object>>() {
+        });
         return execute(api.listAssistantFiles(assistantId, queryParameters));
     }
 
@@ -420,11 +427,11 @@ public class OpenAiService {
     }
 
     public Message retrieveMessage(String threadId, String messageId) {
-        return execute(api.retrieveMessage(threadId,messageId));
+        return execute(api.retrieveMessage(threadId, messageId));
     }
 
     public Message modifyMessage(String threadId, String messageId, ModifyMessageRequest request) {
-        return execute(api.modifyMessage(threadId,messageId, request));
+        return execute(api.modifyMessage(threadId, messageId, request));
     }
 
     public OpenAiResponse<Message> listMessages(String threadId) {
@@ -432,23 +439,60 @@ public class OpenAiService {
     }
 
     public OpenAiResponse<Message> listMessages(String threadId, ListSearchParameters params) {
-        Map<String, Object> queryParameters = mapper.convertValue(params, new TypeReference<Map<String, Object>>() {});
-        return execute(api.listMessages(threadId,queryParameters));
+        Map<String, Object> queryParameters = mapper.convertValue(params, new TypeReference<Map<String, Object>>() {
+        });
+        return execute(api.listMessages(threadId, queryParameters));
     }
 
     public MessageFile retrieveMessageFile(String threadId, String messageId, String fileId) {
-        return execute(api.retrieveMessageFile(threadId,messageId, fileId));
+        return execute(api.retrieveMessageFile(threadId, messageId, fileId));
     }
 
     public OpenAiResponse<MessageFile> listMessageFiles(String threadId, String messageId) {
-        return execute(api.listMessageFiles(threadId,messageId));
+        return execute(api.listMessageFiles(threadId, messageId));
     }
 
     public OpenAiResponse<MessageFile> listMessageFiles(String threadId, String messageId, ListSearchParameters params) {
-        Map<String, Object> queryParameters = mapper.convertValue(params, new TypeReference<Map<String, Object>>() {});
-        return execute(api.listMessageFiles(threadId,messageId, queryParameters));
+        Map<String, Object> queryParameters = mapper.convertValue(params, new TypeReference<Map<String, Object>>() {
+        });
+        return execute(api.listMessageFiles(threadId, messageId, queryParameters));
     }
 
+    public Run createRun(String threadId, RunCreateRequest runCreateRequest) {
+        return execute(api.createRun(threadId, runCreateRequest));
+    }
+
+    public Run retrieveRun(String threadId, String runId) {
+        return execute(api.retrieveRun(threadId, runId));
+    }
+
+    public Run modifyRun(String threadId, String runId, Map<String, String> metadata) {
+        return execute(api.modifyRun(threadId, runId, metadata));
+    }
+
+    public OpenAiResponse<Run> listRuns(String threadId, ListSearchParameters listSearchParameters) {
+        return execute(api.listRuns(threadId, listSearchParameters));
+    }
+
+    public Run submitToolOutputs(String threadId, String runId, SubmitToolOutputsRequest submitToolOutputsRequest) {
+        return execute(api.submitToolOutputs(threadId, runId, submitToolOutputsRequest));
+    }
+
+    public Run cancelRun(String threadId, String runId) {
+        return execute(api.cancelRun(threadId, runId));
+    }
+
+    public Run createThreadAndRun(CreateThreadAndRunRequest createThreadAndRunRequest) {
+        return execute(api.createThreadAndRun(createThreadAndRunRequest));
+    }
+
+    public RunStep retrieveRunStep(String threadId, String runId, String stepId) {
+        return execute(api.retrieveRunStep(threadId, runId, stepId));
+    }
+
+    public OpenAiResponse<RunStep> listRunSteps(String threadId, String runId, ListSearchParameters listSearchParameters) {
+        return execute(api.listRunSteps(threadId, runId, listSearchParameters));
+    }
 
     /**
      * Calls the Open AI api, returns the response, and parses error messages if the request fails
