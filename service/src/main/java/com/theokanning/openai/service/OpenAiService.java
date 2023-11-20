@@ -59,6 +59,7 @@ import javax.validation.constraints.NotNull;
 import java.io.IOException;
 import java.time.Duration;
 import java.time.LocalDate;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -471,7 +472,12 @@ public class OpenAiService {
     }
 
     public OpenAiResponse<Run> listRuns(String threadId, ListSearchParameters listSearchParameters) {
-        return execute(api.listRuns(threadId, listSearchParameters));
+        Map<String, String> search = new HashMap<>();
+        if (listSearchParameters != null) {
+            ObjectMapper mapper = defaultObjectMapper();
+            search = mapper.convertValue(listSearchParameters, Map.class);
+        }
+        return execute(api.listRuns(threadId, search));
     }
 
     public Run submitToolOutputs(String threadId, String runId, SubmitToolOutputsRequest submitToolOutputsRequest) {
@@ -491,7 +497,12 @@ public class OpenAiService {
     }
 
     public OpenAiResponse<RunStep> listRunSteps(String threadId, String runId, ListSearchParameters listSearchParameters) {
-        return execute(api.listRunSteps(threadId, runId, listSearchParameters));
+        Map<String, String> search = new HashMap<>();
+        if (listSearchParameters != null) {
+            ObjectMapper mapper = defaultObjectMapper();
+            search = mapper.convertValue(listSearchParameters, Map.class);
+        }
+        return execute(api.listRunSteps(threadId, runId, search));
     }
 
     /**

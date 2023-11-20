@@ -1,7 +1,6 @@
 package com.theokanning.openai.client;
 
 import com.theokanning.openai.DeleteResult;
-import com.theokanning.openai.ListSearchParameters;
 import com.theokanning.openai.OpenAiResponse;
 import com.theokanning.openai.assistants.*;
 import com.theokanning.openai.audio.CreateSpeechRequest;
@@ -298,7 +297,7 @@ public interface OpenAiApi {
 
     @Headers("OpenAI-Beta: assistants=v1")
     @GET("/v1/threads/{thread_id}/runs")
-    Single<OpenAiResponse<Run>> listRuns(@Path("thread_id") String threadId, @Body ListSearchParameters listSearchParameters);
+    Single<OpenAiResponse<Run>> listRuns(@Path("thread_id") String threadId, @QueryMap Map<String, String> listSearchParameters);
 
     @Headers("OpenAI-Beta: assistants=v1")
     @POST("/v1/threads/{thread_id}/runs/{run_id}/submit_tool_outputs")
@@ -319,5 +318,5 @@ public interface OpenAiApi {
 
     @Headers("OpenAI-Beta: assistants=v1")
     @GET("/v1/threads/{thread_id}/runs/{run_id}/steps")
-    Single<OpenAiResponse<RunStep>> listRunSteps(@Path("thread_id") String threadId, @Path("run_id") String runId, @Body ListSearchParameters listSearchParameters);
+    Single<OpenAiResponse<RunStep>> listRunSteps(@Path("thread_id") String threadId, @Path("run_id") String runId, @QueryMap Map<String, String> listSearchParameters);
 }
