@@ -22,5 +22,5 @@ import java.util.List;
 public class SubmitToolOutputsRequest {
     
     @JsonProperty("tool_outputs")
-    private List<SubmitToolOutputRequestItem> tool_outputs;
+    private List<SubmitToolOutputRequestItem> toolOutputs;
 }
