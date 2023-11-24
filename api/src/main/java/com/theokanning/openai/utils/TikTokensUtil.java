@@ -9,7 +9,11 @@ import com.theokanning.openai.completion.chat.ChatMessage;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 
 /**
  * Token calculation tool class
@@ -173,12 +177,12 @@ public class TikTokensUtil {
         Encoding encoding = getEncoding(modelName);
         int tokensPerMessage = 0;
         int tokensPerName = 0;
-        //3.5统一处理
+        //3.5
         if (modelName.equals("gpt-3.5-turbo-0301") || modelName.equals("gpt-3.5-turbo")) {
             tokensPerMessage = 4;
             tokensPerName = -1;
         }
-        //4.0统一处理
+        //4.0
         if (modelName.equals("gpt-4") || modelName.equals("gpt-4-0314")) {
             tokensPerMessage = 3;
             tokensPerName = 1;

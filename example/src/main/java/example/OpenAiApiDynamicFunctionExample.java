@@ -1,17 +1,30 @@
 package example;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import com.theokanning.openai.completion.chat.*;
+import com.theokanning.openai.completion.chat.ChatCompletionRequest;
+import com.theokanning.openai.completion.chat.ChatFunctionCall;
+import com.theokanning.openai.completion.chat.ChatFunctionDynamic;
+import com.theokanning.openai.completion.chat.ChatFunctionProperty;
+import com.theokanning.openai.completion.chat.ChatMessage;
+import com.theokanning.openai.completion.chat.ChatMessageRole;
 import com.theokanning.openai.service.OpenAiService;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Random;
+import java.util.Scanner;
 
 public class OpenAiApiDynamicFunctionExample {
-
+    static ObjectMapper mapper = new ObjectMapper();
     private static JsonNode getWeather(String location, String unit) {
-        ObjectMapper mapper = new ObjectMapper();
+
         ObjectNode response = mapper.createObjectNode();
         response.put("location", location);
         response.put("unit", unit);
@@ -20,7 +33,7 @@ public class OpenAiApiDynamicFunctionExample {
         return response;
     }
 
-    public static void main(String... args) {
+    public static void main(String... args) throws JsonProcessingException {
         String token = System.getenv("OPENAI_TOKEN");
         OpenAiService service = new OpenAiService(token);
 
@@ -68,8 +81,9 @@ public class OpenAiApiDynamicFunctionExample {
             ChatFunctionCall functionCall = responseMessage.getFunctionCall();
             if (functionCall != null) {
                 if (functionCall.getName().equals("get_weather")) {
-                    String location = functionCall.getArguments().get("location").asText();
-                    String unit = functionCall.getArguments().get("unit").asText();
+                    JsonNode arguments = mapper.readTree(functionCall.getArguments());
+                    String location = arguments.get("location").asText();
+                    String unit = arguments.get("unit").asText();
                     JsonNode weather = getWeather(location, unit);
                     ChatMessage weatherMessage = new ChatMessage(ChatMessageRole.FUNCTION.value(), weather.toString(), "get_weather");
                     messages.add(weatherMessage);

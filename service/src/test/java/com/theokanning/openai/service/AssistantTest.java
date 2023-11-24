@@ -3,14 +3,19 @@ package com.theokanning.openai.service;
 import com.theokanning.openai.DeleteResult;
 import com.theokanning.openai.ListSearchParameters;
 import com.theokanning.openai.OpenAiResponse;
-import com.theokanning.openai.assistants.*;
+import com.theokanning.openai.assistants.Assistant;
+import com.theokanning.openai.assistants.AssistantFile;
+import com.theokanning.openai.assistants.AssistantFileRequest;
+import com.theokanning.openai.assistants.AssistantRequest;
+import com.theokanning.openai.assistants.AssistantToolsEnum;
+import com.theokanning.openai.assistants.ModifyAssistantRequest;
+import com.theokanning.openai.assistants.Tool;
 import com.theokanning.openai.file.File;
 import com.theokanning.openai.utils.TikTokensUtil;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Test;
 
 import java.util.Collections;
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -19,7 +24,7 @@ public class AssistantTest {
     public static final String MATH_TUTOR = "Math Tutor";
     public static final String ASSISTANT_INSTRUCTION = "You are a personal Math Tutor.";
 
-    static String token = System.getenv("OPENAI_TOKEN");;
+    static String token = System.getenv("OPENAI_TOKEN");
 
     static OpenAiService service = new OpenAiService(token);
 
@@ -105,9 +110,7 @@ public class AssistantTest {
                 .limit(100)
                 .build();
         OpenAiResponse<Assistant> assistantListAssistant = service.listAssistants(queryFilter);
-        assistantListAssistant.getData().forEach(assistant ->{
-            service.deleteAssistant(assistant.getId());
-        });
+        assistantListAssistant.getData().forEach(assistant -> service.deleteAssistant(assistant.getId()));
     }
 
     private static File uploadAssistantFile() {
@@ -137,7 +140,7 @@ public class AssistantTest {
         assertNotNull(assistantResponse.getId());
         assertNotNull(assistantResponse.getCreatedAt());
         assertNotNull(assistantResponse.getObject());
-        assertEquals(assistantResponse.getTools().get(0).getType(),  AssistantToolsEnum.CODE_INTERPRETER);
+        assertEquals(AssistantToolsEnum.CODE_INTERPRETER, assistantResponse.getTools().get(0).getType());
         assertEquals(MATH_TUTOR, assistantResponse.getName());
     }
 }

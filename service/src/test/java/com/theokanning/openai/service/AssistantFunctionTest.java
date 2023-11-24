@@ -6,7 +6,6 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
-import com.theokanning.openai.ListSearchParameters;
 import com.theokanning.openai.OpenAiResponse;
 import com.theokanning.openai.assistants.Assistant;
 import com.theokanning.openai.assistants.AssistantFunction;
@@ -15,15 +14,12 @@ import com.theokanning.openai.assistants.AssistantToolsEnum;
 import com.theokanning.openai.assistants.Tool;
 import com.theokanning.openai.completion.chat.ChatCompletionRequest;
 import com.theokanning.openai.completion.chat.ChatFunction;
-import com.theokanning.openai.completion.chat.ChatFunctionCall;
 import com.theokanning.openai.messages.Message;
 import com.theokanning.openai.messages.MessageRequest;
 import com.theokanning.openai.runs.RequiredAction;
 import com.theokanning.openai.runs.Run;
 import com.theokanning.openai.runs.RunCreateRequest;
-import com.theokanning.openai.runs.RunStep;
 import com.theokanning.openai.runs.SubmitToolOutputRequestItem;
-import com.theokanning.openai.runs.SubmitToolOutputs;
 import com.theokanning.openai.runs.SubmitToolOutputsRequest;
 import com.theokanning.openai.runs.ToolCall;
 import com.theokanning.openai.threads.Thread;
@@ -35,9 +31,7 @@ import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 class AssistantFunctionTest {
@@ -53,8 +47,7 @@ class AssistantFunctionTest {
         mapper.setPropertyNamingStrategy(PropertyNamingStrategy.SNAKE_CASE);
         mapper.addMixIn(ChatFunction.class, ChatFunctionMixIn.class);
         mapper.addMixIn(ChatCompletionRequest.class, ChatCompletionRequestMixIn.class);
-        mapper.addMixIn(ChatFunctionCall.class, ChatFunctionCallMixIn.class);
-        
+
         String funcDef = "{\n" +
                 "  \"type\": \"object\",\n" +
                 "  \"properties\": {\n" +
@@ -79,8 +72,8 @@ class AssistantFunctionTest {
         List<Tool> toolList = new ArrayList<>();
         Tool funcTool = new Tool(AssistantToolsEnum.FUNCTION, function);
         toolList.add(funcTool);
-        
-        
+
+
         AssistantRequest assistantRequest = AssistantRequest.builder()
                 .model(TikTokensUtil.ModelEnum.GPT_4_1106_preview.getName())
                 .name("MATH_TUTOR")
@@ -107,8 +100,8 @@ class AssistantFunctionTest {
         assertNotNull(run);
 
         Run retrievedRun = service.retrieveRun(thread.getId(), run.getId());
-        while (!(retrievedRun.getStatus().equals("completed")) 
-                && !(retrievedRun.getStatus().equals("failed")) 
+        while (!(retrievedRun.getStatus().equals("completed"))
+                && !(retrievedRun.getStatus().equals("failed"))
                 && !(retrievedRun.getStatus().equals("requires_action"))){
             retrievedRun = service.retrieveRun(thread.getId(), run.getId());
         }
@@ -142,7 +135,7 @@ class AssistantFunctionTest {
             List<Message> messages = response.getData();
 
             System.out.println(mapper.writeValueAsString(messages));
-            
+
         }
     }
 }
