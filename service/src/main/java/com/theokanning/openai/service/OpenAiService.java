@@ -5,17 +5,34 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
-import com.fasterxml.jackson.databind.node.TextNode;
-import com.theokanning.openai.*;
-import com.theokanning.openai.assistants.*;
-import com.theokanning.openai.audio.*;
+import com.theokanning.openai.DeleteResult;
+import com.theokanning.openai.ListSearchParameters;
+import com.theokanning.openai.OpenAiError;
+import com.theokanning.openai.OpenAiHttpException;
+import com.theokanning.openai.OpenAiResponse;
+import com.theokanning.openai.assistants.Assistant;
+import com.theokanning.openai.assistants.AssistantFile;
+import com.theokanning.openai.assistants.AssistantFileRequest;
+import com.theokanning.openai.assistants.AssistantRequest;
+import com.theokanning.openai.assistants.ModifyAssistantRequest;
+import com.theokanning.openai.audio.CreateSpeechRequest;
+import com.theokanning.openai.audio.CreateTranscriptionRequest;
+import com.theokanning.openai.audio.CreateTranslationRequest;
+import com.theokanning.openai.audio.TranscriptionResult;
+import com.theokanning.openai.audio.TranslationResult;
 import com.theokanning.openai.billing.BillingUsage;
 import com.theokanning.openai.billing.Subscription;
 import com.theokanning.openai.client.OpenAiApi;
 import com.theokanning.openai.completion.CompletionChunk;
 import com.theokanning.openai.completion.CompletionRequest;
 import com.theokanning.openai.completion.CompletionResult;
-import com.theokanning.openai.completion.chat.*;
+import com.theokanning.openai.completion.chat.ChatCompletionChunk;
+import com.theokanning.openai.completion.chat.ChatCompletionRequest;
+import com.theokanning.openai.completion.chat.ChatCompletionResult;
+import com.theokanning.openai.completion.chat.ChatFunction;
+import com.theokanning.openai.completion.chat.ChatFunctionCall;
+import com.theokanning.openai.completion.chat.ChatMessage;
+import com.theokanning.openai.completion.chat.ChatMessageRole;
 import com.theokanning.openai.edit.EditRequest;
 import com.theokanning.openai.edit.EditResult;
 import com.theokanning.openai.embedding.EmbeddingRequest;
@@ -48,7 +65,12 @@ import com.theokanning.openai.threads.ThreadRequest;
 import io.reactivex.BackpressureStrategy;
 import io.reactivex.Flowable;
 import io.reactivex.Single;
-import okhttp3.*;
+import okhttp3.ConnectionPool;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.OkHttpClient;
+import okhttp3.RequestBody;
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.HttpException;
 import retrofit2.Retrofit;
@@ -584,7 +606,6 @@ public class OpenAiService {
         mapper.setPropertyNamingStrategy(PropertyNamingStrategy.SNAKE_CASE);
         mapper.addMixIn(ChatFunction.class, ChatFunctionMixIn.class);
         mapper.addMixIn(ChatCompletionRequest.class, ChatCompletionRequestMixIn.class);
-        mapper.addMixIn(ChatFunctionCall.class, ChatFunctionCallMixIn.class);
         return mapper;
     }
 
@@ -617,8 +638,8 @@ public class OpenAiService {
                     functionCall.setName((functionCall.getName() == null ? "" : functionCall.getName()) + namePart);
                 }
                 if (messageChunk.getFunctionCall().getArguments() != null) {
-                    String argumentsPart = messageChunk.getFunctionCall().getArguments() == null ? "" : messageChunk.getFunctionCall().getArguments().asText();
-                    functionCall.setArguments(new TextNode((functionCall.getArguments() == null ? "" : functionCall.getArguments().asText()) + argumentsPart));
+                    String argumentsPart = messageChunk.getFunctionCall().getArguments() == null ? "" : messageChunk.getFunctionCall().getArguments();
+                    functionCall.setArguments((functionCall.getArguments() == null ? "" : functionCall.getArguments()) + argumentsPart);
                 }
                 accumulatedMessage.setFunctionCall(functionCall);
             } else {
@@ -627,7 +648,6 @@ public class OpenAiService {
 
             if (chunk.getChoices().get(0).getFinishReason() != null) { // last
                 if (functionCall.getArguments() != null) {
-                    functionCall.setArguments(mapper.readTree(functionCall.getArguments().asText()));
                     accumulatedMessage.setFunctionCall(functionCall);
                 }
             }

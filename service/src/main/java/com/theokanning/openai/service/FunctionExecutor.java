@@ -10,7 +10,11 @@ import com.theokanning.openai.completion.chat.ChatFunctionCall;
 import com.theokanning.openai.completion.chat.ChatMessage;
 import com.theokanning.openai.completion.chat.ChatMessageRole;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 public class FunctionExecutor {
 
@@ -81,8 +85,8 @@ public class FunctionExecutor {
         ChatFunction function = FUNCTIONS.get(call.getName());
         Object obj;
         try {
-            JsonNode arguments = call.getArguments();
-            obj = MAPPER.readValue(arguments instanceof TextNode ? arguments.asText() : arguments.toPrettyString(), function.getParametersClass());
+            String arguments = call.getArguments();
+            obj = MAPPER.readValue(arguments, function.getParametersClass());
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }

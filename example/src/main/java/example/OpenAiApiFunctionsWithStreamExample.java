@@ -1,13 +1,22 @@
 package example;
 
-import com.theokanning.openai.completion.chat.*;
+import com.theokanning.openai.completion.chat.ChatCompletionChunk;
+import com.theokanning.openai.completion.chat.ChatCompletionRequest;
+import com.theokanning.openai.completion.chat.ChatFunction;
+import com.theokanning.openai.completion.chat.ChatMessage;
+import com.theokanning.openai.completion.chat.ChatMessageRole;
 import com.theokanning.openai.service.FunctionExecutor;
 import com.theokanning.openai.service.OpenAiService;
 import example.OpenAiApiFunctionsExample.Weather;
 import example.OpenAiApiFunctionsExample.WeatherResponse;
 import io.reactivex.Flowable;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Random;
+import java.util.Scanner;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class OpenAiApiFunctionsWithStreamExample {
@@ -34,7 +43,7 @@ public class OpenAiApiFunctionsWithStreamExample {
         while (true) {
             ChatCompletionRequest chatCompletionRequest = ChatCompletionRequest
                     .builder()
-                    .model("gpt-3.5-turbo-0613")
+                    .model("gpt-4-1106-preview")
                     .messages(messages)
                     .functions(functionExecutor.getFunctions())
                     .functionCall(ChatCompletionRequest.ChatCompletionRequestFunctionCall.of("auto"))
@@ -48,6 +57,7 @@ public class OpenAiApiFunctionsWithStreamExample {
             ChatMessage chatMessage = service.mapStreamToAccumulator(flowable)
                     .doOnNext(accumulator -> {
                         if (accumulator.isFunctionCall()) {
+                            System.out.println("Trying to execute " + accumulator.getAccumulatedChatFunctionCall().getArguments());
                             if (isFirst.getAndSet(false)) {
                                 System.out.println("Executing function " + accumulator.getAccumulatedChatFunctionCall().getName() + "...");
                             }

@@ -2,16 +2,31 @@ package com.theokanning.openai.service;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyDescription;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import com.theokanning.openai.completion.chat.*;
+import com.theokanning.openai.completion.chat.ChatCompletionChoice;
+import com.theokanning.openai.completion.chat.ChatCompletionChunk;
+import com.theokanning.openai.completion.chat.ChatCompletionRequest;
+import com.theokanning.openai.completion.chat.ChatFunction;
+import com.theokanning.openai.completion.chat.ChatFunctionDynamic;
+import com.theokanning.openai.completion.chat.ChatFunctionProperty;
+import com.theokanning.openai.completion.chat.ChatMessage;
+import com.theokanning.openai.completion.chat.ChatMessageRole;
 import org.junit.jupiter.api.Test;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class ChatCompletionTest {
+    ObjectMapper mapper = new ObjectMapper();
 
     static class Weather {
         @JsonPropertyDescription("City and state, for example: León, Guanajuato")
@@ -113,7 +128,7 @@ class ChatCompletionTest {
         assertEquals("function_call", choice.getFinishReason());
         assertNotNull(choice.getMessage().getFunctionCall());
         assertEquals("get_weather", choice.getMessage().getFunctionCall().getName());
-        assertInstanceOf(ObjectNode.class, choice.getMessage().getFunctionCall().getArguments());
+        assertInstanceOf(String.class, choice.getMessage().getFunctionCall().getArguments());
 
         ChatMessage callResponse = functionExecutor.executeAndConvertToMessageHandlingExceptions(choice.getMessage().getFunctionCall());
         assertNotEquals("error", callResponse.getName());
@@ -147,7 +162,7 @@ class ChatCompletionTest {
     }
 
     @Test
-    void createChatCompletionWithDynamicFunctions() {
+    void createChatCompletionWithDynamicFunctions() throws JsonProcessingException {
         ChatFunctionDynamic function = ChatFunctionDynamic.builder()
                 .name("get_weather")
                 .description("Get the current weather of a location")
@@ -185,13 +200,14 @@ class ChatCompletionTest {
         assertEquals("function_call", choice.getFinishReason());
         assertNotNull(choice.getMessage().getFunctionCall());
         assertEquals("get_weather", choice.getMessage().getFunctionCall().getName());
-        assertInstanceOf(ObjectNode.class, choice.getMessage().getFunctionCall().getArguments());
-        assertNotNull(choice.getMessage().getFunctionCall().getArguments().get("location"));
-        assertNotNull(choice.getMessage().getFunctionCall().getArguments().get("unit"));
+        JsonNode arguments = this.mapper.readTree(choice.getMessage().getFunctionCall().getArguments());
+        assertInstanceOf(ObjectNode.class, arguments);
+        assertNotNull(arguments.get("location"));
+        assertNotNull(arguments.get("unit"));
     }
 
     @Test
-    void streamChatCompletionWithFunctions() {
+    void streamChatCompletionWithFunctions() throws JsonProcessingException {
         final List<ChatFunction> functions = Collections.singletonList(ChatFunction.builder()
                 .name("get_weather")
                 .description("Get the current weather in a given location")
@@ -220,7 +236,8 @@ class ChatCompletionTest {
                 .getAccumulatedMessage();
         assertNotNull(accumulatedMessage.getFunctionCall());
         assertEquals("get_weather", accumulatedMessage.getFunctionCall().getName());
-        assertInstanceOf(ObjectNode.class, accumulatedMessage.getFunctionCall().getArguments());
+        JsonNode arguments = this.mapper.readTree(accumulatedMessage.getFunctionCall().getArguments());
+        assertInstanceOf(ObjectNode.class, arguments);
 
         ChatMessage callResponse = functionExecutor.executeAndConvertToMessageHandlingExceptions(accumulatedMessage.getFunctionCall());
         assertNotEquals("error", callResponse.getName());
@@ -256,7 +273,7 @@ class ChatCompletionTest {
     }
 
     @Test
-    void streamChatCompletionWithDynamicFunctions() {
+    void streamChatCompletionWithDynamicFunctions() throws JsonProcessingException {
         ChatFunctionDynamic function = ChatFunctionDynamic.builder()
                 .name("get_weather")
                 .description("Get the current weather of a location")
@@ -295,9 +312,10 @@ class ChatCompletionTest {
                 .getAccumulatedMessage();
         assertNotNull(accumulatedMessage.getFunctionCall());
         assertEquals("get_weather", accumulatedMessage.getFunctionCall().getName());
-        assertInstanceOf(ObjectNode.class, accumulatedMessage.getFunctionCall().getArguments());
-        assertNotNull(accumulatedMessage.getFunctionCall().getArguments().get("location"));
-        assertNotNull(accumulatedMessage.getFunctionCall().getArguments().get("unit"));
+        JsonNode arguments = this.mapper.readTree(accumulatedMessage.getFunctionCall().getArguments());
+        assertInstanceOf(ObjectNode.class, arguments);
+        assertNotNull(arguments.get("location"));
+        assertNotNull(arguments.get("unit"));
     }
 
 }
