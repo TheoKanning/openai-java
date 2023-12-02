@@ -6,8 +6,7 @@ import com.theokanning.openai.OpenAiResponse;
 import com.theokanning.openai.assistants.*;
 import com.theokanning.openai.file.File;
 import com.theokanning.openai.utils.TikTokensUtil;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 
 import java.util.Collections;
 import java.util.List;
@@ -15,48 +14,60 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class AssistantTest {
-    public static final String MATH_TUTOR = "Math Tutor";
-    public static final String ASSISTANT_INSTRUCTION = "You are a personal Math Tutor.";
 
-    static String token = System.getenv("OPENAI_TOKEN");;
+    static OpenAiService service = new OpenAiService(System.getenv("OPENAI_TOKEN"));
+    static String assistantId;
+    static String fileId;
 
-    static OpenAiService service = new OpenAiService(token);
+
+    @AfterAll
+    static void teardown() {
+        try {
+            service.deleteAssistantFile(assistantId, fileId);
+        } catch (Exception e) {
+            // do nothing
+        }
+        try {
+            service.deleteAssistant(assistantId);
+        } catch (Exception e) {
+            // do nothing
+        }
+    }
 
     @Test
+    @Order(1)
+    void createAssistant() {
+        AssistantRequest assistantRequest = AssistantRequest.builder().model(TikTokensUtil.ModelEnum.GPT_4_1106_preview.getName()).name("Math Tutor").instructions("You are a personal Math Tutor.").tools(Collections.singletonList(new Tool(AssistantToolsEnum.CODE_INTERPRETER, null))).build();
+        Assistant assistant = service.createAssistant(assistantRequest);
+
+        assistantId = assistant.getId();
+
+        assertEquals(assistant.getName(), "Math Tutor");
+        assertEquals(assistant.getTools().get(0).getType(), AssistantToolsEnum.CODE_INTERPRETER);
+    }
+
+    @Test
+    @Order(2)
     void retrieveAssistant() {
-        Assistant createAssistantResponse = createAndValidateAssistant();
+        Assistant assistant = service.retrieveAssistant(assistantId);
 
-        Assistant retrieveAssistantResponse = service.retrieveAssistant(createAssistantResponse.getId());
-        validateAssistantResponse(retrieveAssistantResponse);
+        assertEquals(assistant.getName(), "Math Tutor");
     }
 
     @Test
+    @Order(3)
     void modifyAssistant() {
-        Assistant createAssistantResponse = createAndValidateAssistant();
+        String modifiedName = "Science Tutor";
+        ModifyAssistantRequest modifyRequest = ModifyAssistantRequest.builder().name(modifiedName).build();
 
-        String modifiedName = MATH_TUTOR + "Modified";
-        ModifyAssistantRequest modifyRequest = ModifyAssistantRequest.builder()
-                .name(modifiedName)
-                .build();
-
-        Assistant modifiedAssistantResponse = service.modifyAssistant(createAssistantResponse.getId(), modifyRequest);
-        assertNotNull(modifiedAssistantResponse);
-        assertEquals(modifiedName, modifiedAssistantResponse.getName());
+        Assistant modifiedAssistant = service.modifyAssistant(assistantId, modifyRequest);
+        assertEquals(modifiedName, modifiedAssistant.getName());
     }
 
     @Test
-    void deleteAssistant() {
-        Assistant createAssistantResponse = createAndValidateAssistant();
-
-        DeleteResult deletedAssistant = service.deleteAssistant(createAssistantResponse.getId());
-
-        assertNotNull(deletedAssistant);
-        assertEquals(createAssistantResponse.getId(), deletedAssistant.getId());
-        assertTrue(deletedAssistant.isDeleted());
-    }
-
-    @Test
+    @Order(4)
     void listAssistants() {
         OpenAiResponse<Assistant> assistants = service.listAssistants(ListSearchParameters.builder().build());
 
@@ -65,79 +76,53 @@ public class AssistantTest {
     }
 
     @Test
+    @Order(5)
     void createAssistantFile() {
-        File uploadedFile = uploadAssistantFile();
+        String filePath = "src/test/resources/assistants-data.html";
+        File uploadedFile = service.uploadFile("assistants", filePath);
 
-        Assistant assistant = createAndValidateAssistant();
+        AssistantFile assistantFile = service.createAssistantFile(assistantId, new AssistantFileRequest(uploadedFile.getId()));
 
-        AssistantFile assistantFile = service.createAssistantFile(assistant.getId(), new AssistantFileRequest(uploadedFile.getId()));
-
+        fileId = assistantFile.getId();
         assertNotNull(assistantFile);
         assertEquals(uploadedFile.getId(), assistantFile.getId());
-        assertEquals(assistant.getId(), assistantFile.getAssistantId());
+        assertEquals(assistantId, assistantFile.getAssistantId());
     }
 
     @Test
+    @Order(6)
     void retrieveAssistantFile() {
-        //TODO
-        //There is a bug with uploading assistant files https://community.openai.com/t/possible-bug-with-agent-creation-php-file-upload/484490/5
-        //So this would have to be done later
+        AssistantFile file = service.retrieveAssistantFile(assistantId, fileId);
+
+        assertEquals(file.getId(), fileId);
     }
 
-    @Test
-    void deleteAssistantFile() {
-        //TODO
-        //There is a bug with uploading assistant files https://community.openai.com/t/possible-bug-with-agent-creation-php-file-upload/484490/5
-        //So this would have to be done later
-    }
 
     @Test
+    @Order(7)
     void listAssistantFiles() {
-        //TODO
-        //There is a bug with uploading assistant files https://community.openai.com/t/possible-bug-with-agent-creation-php-file-upload/484490/5
-        //So this would have to be done later
+        List<AssistantFile> files = service.listAssistantFiles(assistantId, new ListSearchParameters()).data;
+
+        assertFalse(files.isEmpty());
+        assertEquals(files.get(0).getId(), fileId);
+        assertEquals(files.get(0).getObject(), "assistant.file");
     }
 
-    @AfterAll
-    static void clean() {
-        //Clean up all data created during this test
-        ListSearchParameters queryFilter = ListSearchParameters.builder()
-                .limit(100)
-                .build();
-        OpenAiResponse<Assistant> assistantListAssistant = service.listAssistants(queryFilter);
-        assistantListAssistant.getData().forEach(assistant ->{
-            service.deleteAssistant(assistant.getId());
-        });
+    @Test
+    @Order(8)
+    void deleteAssistantFile() {
+        DeleteResult deletedFile = service.deleteAssistantFile(assistantId, fileId);
+
+        assertEquals(deletedFile.getId(), fileId);
+        assertTrue(deletedFile.isDeleted());
     }
 
-    private static File uploadAssistantFile() {
-        String filePath = "src/test/resources/assistants-data.html";
-        return service.uploadFile("assistants", filePath);
-    }
+    @Test
+    @Order(9)
+    void deleteAssistant() {
+        DeleteResult deletedAssistant = service.deleteAssistant(assistantId);
 
-    private static Assistant createAndValidateAssistant() {
-        AssistantRequest assistantRequest = assistantStub();
-        Assistant createAssistantResponse = service.createAssistant(assistantRequest);
-        validateAssistantResponse(createAssistantResponse);
-
-        return createAssistantResponse;
-    }
-
-    private static AssistantRequest assistantStub() {
-        return AssistantRequest.builder()
-                .model(TikTokensUtil.ModelEnum.GPT_4_1106_preview.getName())
-                .name(MATH_TUTOR)
-                .instructions(ASSISTANT_INSTRUCTION)
-                .tools(Collections.singletonList(new Tool(AssistantToolsEnum.CODE_INTERPRETER, null)))
-                .build();
-    }
-
-    private static void validateAssistantResponse(Assistant assistantResponse) {
-        assertNotNull(assistantResponse);
-        assertNotNull(assistantResponse.getId());
-        assertNotNull(assistantResponse.getCreatedAt());
-        assertNotNull(assistantResponse.getObject());
-        assertEquals(assistantResponse.getTools().get(0).getType(),  AssistantToolsEnum.CODE_INTERPRETER);
-        assertEquals(MATH_TUTOR, assistantResponse.getName());
+        assertEquals(assistantId, deletedAssistant.getId());
+        assertTrue(deletedAssistant.isDeleted());
     }
 }
