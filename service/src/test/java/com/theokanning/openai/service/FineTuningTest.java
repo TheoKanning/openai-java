@@ -80,10 +80,13 @@ public class FineTuningTest {
     }
 
     @Test
-    @Order(2)
-    void cancelFineTuningJob() {
+    @Order(3)
+    void cancelFineTuningJob() throws Exception {
         FineTuningJob fineTuningJob = service.cancelFineTuningJob(fineTuningJobId);
 
         assertEquals("cancelled", fineTuningJob.getStatus());
+
+        // wait before cleaning up to prevent job failure emails
+        TimeUnit.SECONDS.sleep(3);
     }
 }
