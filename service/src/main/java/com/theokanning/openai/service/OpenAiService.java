@@ -401,7 +401,7 @@ public class OpenAiService {
         return execute(api.deleteAssistantFile(assistantId, fileId));
     }
 
-    public OpenAiResponse<Assistant> listAssistantFiles(String assistantId, ListSearchParameters params) {
+    public OpenAiResponse<AssistantFile> listAssistantFiles(String assistantId, ListSearchParameters params) {
         Map<String, Object> queryParameters = mapper.convertValue(params, new TypeReference<Map<String, Object>>() {
         });
         return execute(api.listAssistantFiles(assistantId, queryParameters));
