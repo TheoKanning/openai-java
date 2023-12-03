@@ -25,4 +25,10 @@ public class ChatCompletionChoice {
      */
     @JsonProperty("finish_reason")
     String finishReason;
+
+    /**
+     * When use the GPT-4V model, this will be return, for example {"type":"stop","stop":"<|fim_suffix|>"}.
+     */
+    @JsonProperty("finish_details")
+    FinishDetails finishDetails;
 }
