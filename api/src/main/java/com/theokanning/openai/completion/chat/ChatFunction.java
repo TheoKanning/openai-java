@@ -3,16 +3,29 @@ package com.theokanning.openai.completion.chat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.NonNull;
 
 import java.util.function.Function;
 
 @Data
+@NoArgsConstructor
 public class ChatFunction {
 
+    /**
+     * The name of the function being called.
+     */
     @NonNull
     private String name;
+
+    /**
+     * A description of what the function does, used by the model to choose when and how to call the function.
+     */
     private String description;
+
+    /**
+     * The parameters the functions accepts.
+     */
     @JsonProperty("parameters")
     private Class<?> parametersClass;
 
@@ -46,7 +59,8 @@ public class ChatFunction {
         }
 
         public ChatFunction build() {
-            ChatFunction chatFunction = new ChatFunction(name);
+            ChatFunction chatFunction = new ChatFunction();
+            chatFunction.setName(name);
             chatFunction.setDescription(description);
             chatFunction.setParametersClass(parameters);
             chatFunction.setExecutor(executor);

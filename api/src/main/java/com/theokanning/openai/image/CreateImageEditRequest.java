@@ -22,6 +22,11 @@ public class CreateImageEditRequest {
     String prompt;
 
     /**
+     * The model to use for image generation. Only dall-e-2 is supported at this time. Defaults to dall-e-2.
+     */
+    String model;
+
+    /**
      * The number of images to generate. Must be between 1 and 10. Defaults to 1.
      */
     Integer n;

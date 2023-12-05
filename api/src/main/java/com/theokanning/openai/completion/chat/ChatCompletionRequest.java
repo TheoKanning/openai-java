@@ -98,7 +98,7 @@ public class ChatCompletionRequest {
     /**
      * A list of the available functions.
      */
-    List<ChatFunction> functions;
+    List<?> functions;
 
     /**
      * Controls how the model responds to function calls, as specified in the <a href="https://platform.openai.com/docs/api-reference/chat/create#chat/create-function_call">OpenAI documentation</a>.
