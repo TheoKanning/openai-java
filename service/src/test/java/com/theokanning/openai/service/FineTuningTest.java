@@ -12,7 +12,7 @@ import java.util.concurrent.TimeUnit;
 import static org.junit.jupiter.api.Assertions.*;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-public class FineTuningTest {
+class FineTuningTest {
     static OpenAiService service;
     static String fileId;
     static String fineTuningJobId;

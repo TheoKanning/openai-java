@@ -11,7 +11,7 @@ import retrofit2.Response;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class OpenAiServiceTest {
+class OpenAiServiceTest {
 
     @Test
     void assertTokenNotNull() {

@@ -13,7 +13,7 @@ import retrofit2.mock.Calls;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class ResponseBodyCallbackTest {
+class ResponseBodyCallbackTest {
 
     @Test
     void testHappyPath() {

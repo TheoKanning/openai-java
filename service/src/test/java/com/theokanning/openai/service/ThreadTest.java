@@ -14,7 +14,7 @@ import java.util.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-public class ThreadTest {
+class ThreadTest {
 
     String token = System.getenv("OPENAI_TOKEN");
     OpenAiService service = new OpenAiService(token);
