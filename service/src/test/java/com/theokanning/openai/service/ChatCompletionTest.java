@@ -2,11 +2,14 @@ package com.theokanning.openai.service;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyDescription;
+import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.theokanning.openai.completion.chat.*;
 import org.junit.jupiter.api.Test;
 
+import java.io.IOException;
 import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -23,7 +26,7 @@ class ChatCompletionTest {
     }
 
     enum WeatherUnit {
-        CELSIUS, FAHRENHEIT;
+        CELSIUS, FAHRENHEIT
     }
 
     static class WeatherResponse {
@@ -298,6 +301,48 @@ class ChatCompletionTest {
         assertInstanceOf(ObjectNode.class, accumulatedMessage.getFunctionCall().getArguments());
         assertNotNull(accumulatedMessage.getFunctionCall().getArguments().get("location"));
         assertNotNull(accumulatedMessage.getFunctionCall().getArguments().get("unit"));
+    }
+
+    @Test
+    void streamChatCompletionWithJsonResponseFormat() {
+        final List<ChatMessage> messages = new ArrayList<>();
+
+        // The system message is deliberately vague in order to not give too much of a direction of how response should look like.
+        // The main gist there is that chat competition should always contain JSON content.
+        final ChatMessage systemMessage = new ChatMessage(
+                ChatMessageRole.SYSTEM.value(),
+                "You are a dog and will speak as such - but please do it in JSON."
+        );
+
+        messages.add(systemMessage);
+
+        ChatCompletionRequest chatCompletionRequest = ChatCompletionRequest
+                .builder()
+                .model("gpt-4-1106-preview")
+                .messages(messages)
+                .n(1)
+                .maxTokens(256)
+                .responseFormat(ChatCompletionRequest.ResponseFormat.of("json_object"))
+                .build();
+
+        ChatCompletionResult chatCompletion = service.createChatCompletion(chatCompletionRequest);
+
+        ChatCompletionChoice chatCompletionChoice = chatCompletion.getChoices().get(0);
+        String expectedJsonContent = chatCompletionChoice.getMessage().getContent();
+
+        assertTrue(isValidJSON(expectedJsonContent), "Invalid JSON response:\n\n" + expectedJsonContent);
+    }
+
+    private boolean isValidJSON(String json) {
+        try (final JsonParser parser = new ObjectMapper().createParser(json)) {
+            while (parser.nextToken() != null) {
+                // Just try to read all tokens in order to verify whether this is valid json.
+            }
+            return true;
+        } catch (IOException ioe) {
+            ioe.printStackTrace();
+            return false;
+        }
     }
 
 }
