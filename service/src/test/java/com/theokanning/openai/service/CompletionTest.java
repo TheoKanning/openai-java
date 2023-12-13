@@ -21,7 +21,7 @@ public class CompletionTest {
     @Test
     void createCompletion() {
         CompletionRequest completionRequest = CompletionRequest.builder()
-                .model("ada")
+                .model("babbage-002")
                 .prompt("Somebody once told me the world is gonna roll me")
                 .echo(true)
                 .n(5)
@@ -39,7 +39,7 @@ public class CompletionTest {
     @Test
     void streamCompletion() {
         CompletionRequest completionRequest = CompletionRequest.builder()
-                .model("ada")
+                .model("babbage-002")
                 .prompt("Somebody once told me the world is gonna roll me")
                 .echo(true)
                 .n(1)
