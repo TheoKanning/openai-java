@@ -83,7 +83,6 @@ class ChatCompletionTest {
         assertTrue(chunks.size() > 0);
         assertNotNull(chunks.get(0).getChoices().get(0));
     }
-
     @Test
     void createChatCompletionWithFunctions() {
         final List<ChatFunction> functions = Collections.singletonList(ChatFunction.builder()
@@ -298,6 +297,81 @@ class ChatCompletionTest {
         assertInstanceOf(ObjectNode.class, accumulatedMessage.getFunctionCall().getArguments());
         assertNotNull(accumulatedMessage.getFunctionCall().getArguments().get("location"));
         assertNotNull(accumulatedMessage.getFunctionCall().getArguments().get("unit"));
+    }
+
+    @Test
+    void createChatCompletionWithToolFunctions() {
+        final List<ChatFunction> functions = Collections.singletonList(ChatFunction.builder()
+                .name("get_weather")
+                .description("Get the current weather in a given location")
+                .executor(Weather.class, w -> new WeatherResponse(w.location, w.unit, 25, "sunny"))
+                .build());
+
+        final FunctionExecutor functionExecutor = new FunctionExecutor(functions);
+        final ChatTool tool = new ChatTool();
+        //tool.setType("function");
+        tool.setFunction(functionExecutor.getFunctions().get(0));
+
+        final List<ChatMessage> messages = new ArrayList<>();
+        final ChatMessage systemMessage = new ChatMessage(ChatMessageRole.SYSTEM.value(), "You are a helpful assistant.");
+        final ChatMessage userMessage = new ChatMessage(ChatMessageRole.USER.value(), "What is the weather in Monterrey, Nuevo León?");
+        messages.add(systemMessage);
+        messages.add(userMessage);
+
+        ChatCompletionRequest chatCompletionRequest = ChatCompletionRequest
+                .builder()
+                .model("gpt-3.5-turbo-0613")
+                .messages(messages)
+                .tools(List.of(tool))
+                .toolChoice("auto")
+
+                .n(1)
+                .maxTokens(100)
+                .logitBias(new HashMap<>())
+                .build();
+
+        ChatCompletionResult result = service.createChatCompletion(chatCompletionRequest);
+        ChatCompletionChoice choice = result.getChoices().get(0);
+        assertEquals("tool_calls", choice.getFinishReason());
+
+        assertEquals("get_weather", choice.getMessage().getToolCalls().get(0).getFunction().getName());
+        assertInstanceOf(ObjectNode.class, choice.getMessage().getToolCalls().get(0).getFunction().getArguments());
+
+        ChatMessage callResponse = functionExecutor.executeAndConvertToMessageHandlingExceptions(choice.getMessage().getToolCalls().get(0).getFunction());
+        assertNotEquals("error", callResponse.getName());
+
+        // this performs an unchecked cast
+        WeatherResponse functionExecutionResponse = functionExecutor.execute(choice.getMessage().getToolCalls().get(0).getFunction());
+        assertInstanceOf(WeatherResponse.class, functionExecutionResponse);
+        assertEquals(25, functionExecutionResponse.temperature);
+
+        JsonNode jsonFunctionExecutionResponse = functionExecutor.executeAndConvertToJson(choice.getMessage().getToolCalls().get(0).getFunction());
+        assertInstanceOf(ObjectNode.class, jsonFunctionExecutionResponse);
+        assertEquals("25", jsonFunctionExecutionResponse.get("temperature").asText());
+
+        //Construct message for tool_calls
+        ChatMessageTool chatMessageTool = new ChatMessageTool(choice.getMessage().getToolCalls().get(0).getId(),
+                ChatMessageRole.TOOL.value(),jsonFunctionExecutionResponse.toString(),
+                    choice.getMessage().getToolCalls().get(0).getFunction().getName());
+
+        messages.add(choice.getMessage());
+        messages.add(chatMessageTool);
+
+        ChatCompletionRequest chatCompletionRequest2 = ChatCompletionRequest
+                .builder()
+                .model("gpt-3.5-turbo-0613")
+                .messages(messages)
+                .tools(List.of(tool))
+                .toolChoice("auto")
+                .n(1)
+                .maxTokens(100)
+                .logitBias(new HashMap<>())
+                .build();
+
+        ChatCompletionChoice choice2 = service.createChatCompletion(chatCompletionRequest2).getChoices().get(0);
+        assertNotEquals("tool_calls", choice2.getFinishReason()); // could be stop or length, but should not be function_call
+        assertNull(choice2.getMessage().getFunctionCall());
+        assertNotNull(choice2.getMessage().getContent());
     }
 
 }
