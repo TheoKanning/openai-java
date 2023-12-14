@@ -301,17 +301,15 @@ class ChatCompletionTest {
 
     @Test
     void createChatCompletionWithToolFunctions() {
+
         final List<ChatFunction> functions = Collections.singletonList(ChatFunction.builder()
                 .name("get_weather")
                 .description("Get the current weather in a given location")
                 .executor(Weather.class, w -> new WeatherResponse(w.location, w.unit, 25, "sunny"))
                 .build());
-
         final FunctionExecutor functionExecutor = new FunctionExecutor(functions);
         final ChatTool tool = new ChatTool();
-        //tool.setType("function");
         tool.setFunction(functionExecutor.getFunctions().get(0));
-
         final List<ChatMessage> messages = new ArrayList<>();
         final ChatMessage systemMessage = new ChatMessage(ChatMessageRole.SYSTEM.value(), "You are a helpful assistant.");
         final ChatMessage userMessage = new ChatMessage(ChatMessageRole.USER.value(), "What is the weather in Monterrey, Nuevo León?");
@@ -324,14 +322,12 @@ class ChatCompletionTest {
                 .messages(messages)
                 .tools(List.of(tool))
                 .toolChoice("auto")
-
                 .n(1)
                 .maxTokens(100)
                 .logitBias(new HashMap<>())
                 .build();
 
-        ChatCompletionResult result = service.createChatCompletion(chatCompletionRequest);
-        ChatCompletionChoice choice = result.getChoices().get(0);
+        ChatCompletionChoice choice = service.createChatCompletion(chatCompletionRequest).getChoices().get(0);
         assertEquals("tool_calls", choice.getFinishReason());
 
         assertEquals("get_weather", choice.getMessage().getToolCalls().get(0).getFunction().getName());
@@ -351,8 +347,9 @@ class ChatCompletionTest {
 
         //Construct message for tool_calls
         ChatMessageTool chatMessageTool = new ChatMessageTool(choice.getMessage().getToolCalls().get(0).getId(),
-                ChatMessageRole.TOOL.value(),jsonFunctionExecutionResponse.toString(),
-                    choice.getMessage().getToolCalls().get(0).getFunction().getName());
+                ChatMessageRole.TOOL.value(),
+                    jsonFunctionExecutionResponse.toString(),
+                        choice.getMessage().getToolCalls().get(0).getFunction().getName());
 
         messages.add(choice.getMessage());
         messages.add(chatMessageTool);
