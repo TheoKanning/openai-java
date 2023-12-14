@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 
+import java.util.List;
+
 /**
  * <p>Each object has a role (either "system", "user", or "assistant") and content (the content of the message). Conversations can be as short as 1 message or fill many pages.</p>
  * <p>Typically, a conversation is formatted with a system message first, followed by alternating user and assistant messages.</p>
@@ -30,6 +32,10 @@ public class ChatMessage {
 	String content;
 	//name is optional, The name of the author of this message. May contain a-z, A-Z, 0-9, and underscores, with a maximum length of 64 characters.
 	String name;
+
+	@JsonProperty("tool_calls")
+	List<ChatToolCalls> toolCalls;
+
 	@JsonProperty("function_call")
 	ChatFunctionCall functionCall;
 
