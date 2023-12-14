@@ -15,7 +15,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-public class AssistantTest {
+class AssistantTest {
 
     static OpenAiService service = new OpenAiService(System.getenv("OPENAI_TOKEN"));
     static String assistantId;
@@ -44,8 +44,8 @@ public class AssistantTest {
 
         assistantId = assistant.getId();
 
-        assertEquals(assistant.getName(), "Math Tutor");
-        assertEquals(assistant.getTools().get(0).getType(), AssistantToolsEnum.CODE_INTERPRETER);
+        assertEquals("Math Tutor", assistant.getName());
+        assertEquals(AssistantToolsEnum.CODE_INTERPRETER, assistant.getTools().get(0).getType());
     }
 
     @Test
@@ -53,7 +53,7 @@ public class AssistantTest {
     void retrieveAssistant() {
         Assistant assistant = service.retrieveAssistant(assistantId);
 
-        assertEquals(assistant.getName(), "Math Tutor");
+        assertEquals("Math Tutor", assistant.getName());
     }
 
     @Test
@@ -105,7 +105,7 @@ public class AssistantTest {
 
         assertFalse(files.isEmpty());
         assertEquals(files.get(0).getId(), fileId);
-        assertEquals(files.get(0).getObject(), "assistant.file");
+        assertEquals("assistant.file", files.get(0).getObject());
     }
 
     @Test

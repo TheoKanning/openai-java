@@ -9,7 +9,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
 
-public class ModelTest {
+class ModelTest {
 
     String token = System.getenv("OPENAI_TOKEN");
     com.theokanning.openai.service.OpenAiService service = new OpenAiService(token);

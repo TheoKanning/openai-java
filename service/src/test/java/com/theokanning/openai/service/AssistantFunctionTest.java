@@ -6,7 +6,6 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
-import com.theokanning.openai.ListSearchParameters;
 import com.theokanning.openai.OpenAiResponse;
 import com.theokanning.openai.assistants.Assistant;
 import com.theokanning.openai.assistants.AssistantFunction;
@@ -21,9 +20,7 @@ import com.theokanning.openai.messages.MessageRequest;
 import com.theokanning.openai.runs.RequiredAction;
 import com.theokanning.openai.runs.Run;
 import com.theokanning.openai.runs.RunCreateRequest;
-import com.theokanning.openai.runs.RunStep;
 import com.theokanning.openai.runs.SubmitToolOutputRequestItem;
-import com.theokanning.openai.runs.SubmitToolOutputs;
 import com.theokanning.openai.runs.SubmitToolOutputsRequest;
 import com.theokanning.openai.runs.ToolCall;
 import com.theokanning.openai.threads.Thread;
@@ -35,9 +32,7 @@ import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 class AssistantFunctionTest {

@@ -30,7 +30,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import static org.junit.jupiter.api.Assertions.*;
 
-public class JsonTest {
+class JsonTest {
 
     @ParameterizedTest
     @ValueSource(classes = {

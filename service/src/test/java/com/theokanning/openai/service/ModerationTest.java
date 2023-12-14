@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
-public class ModerationTest {
+class ModerationTest {
 
     String token = System.getenv("OPENAI_TOKEN");
     com.theokanning.openai.service.OpenAiService service = new OpenAiService(token);

@@ -1,7 +1,6 @@
 package com.theokanning.openai.client;
 
 import com.theokanning.openai.DeleteResult;
-import com.theokanning.openai.ListSearchParameters;
 import com.theokanning.openai.OpenAiResponse;
 import com.theokanning.openai.assistants.*;
 import com.theokanning.openai.audio.CreateSpeechRequest;

@@ -1,6 +1,5 @@
 package com.theokanning.openai.threads;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.theokanning.openai.messages.MessageRequest;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
