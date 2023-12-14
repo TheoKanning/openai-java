@@ -61,7 +61,7 @@ If you're looking for the fastest solution, import the `service` module and use 
 OpenAiService service = new OpenAiService("your_token");
 CompletionRequest completionRequest = CompletionRequest.builder()
         .prompt("Somebody once told me the world is gonna roll me")
-        .model("ada")
+        .model("babbage-002"")
         .echo(true)
         .build();
 service.createCompletion(completionRequest).getChoices().forEach(System.out::println);
