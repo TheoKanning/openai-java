@@ -300,4 +300,46 @@ class ChatCompletionTest {
         assertNotNull(accumulatedMessage.getFunctionCall().getArguments().get("unit"));
     }
 
+    @Test
+    void createChatCompletionWithImageInput() {
+        final List<ChatMessage> messages = new ArrayList<>();
+        List<ChatMessageContent> content = new ArrayList<>();
+        content.add(new ChatMessageContent("What’s in this image?"));
+        content.add(new ChatMessageContent(new ImageUrl(
+            "https://upload.wikimedia.org/wikipedia/commons/thumb/d/dd/Gfp-wisconsin-madison-the-nature-boardwalk.jpg/2560px-Gfp-wisconsin-madison-the-nature-boardwalk.jpg")));
+        messages.add(new ChatMessage<>(ChatMessageRole.USER.value(), content));
+
+        ChatCompletionRequest chatCompletionRequest = ChatCompletionRequest
+            .builder()
+            .model("gpt-4-vision-preview")
+            .messages(messages)
+            .maxTokens(300)
+            .build();
+
+        List<ChatCompletionChoice> choices = service.createChatCompletion(chatCompletionRequest).getChoices();
+        assertFalse(choices.isEmpty());
+    }
+
+    @Test
+    void streamChatCompletionWithImageInput() {
+        final List<ChatMessage> messages = new ArrayList<>();
+        List<ChatMessageContent> content = new ArrayList<>();
+        content.add(new ChatMessageContent("What’s in this image?"));
+        content.add(new ChatMessageContent(new ImageUrl(
+            "https://upload.wikimedia.org/wikipedia/commons/thumb/d/dd/Gfp-wisconsin-madison-the-nature-boardwalk.jpg/2560px-Gfp-wisconsin-madison-the-nature-boardwalk.jpg")));
+        messages.add(new ChatMessage<>(ChatMessageRole.USER.value(), content));
+
+        ChatCompletionRequest chatCompletionRequest = ChatCompletionRequest
+            .builder()
+            .model("gpt-4-vision-preview")
+            .messages(messages)
+            .maxTokens(300)
+            .build();
+
+        List<ChatCompletionChunk> chunks = new ArrayList<>();
+        service.streamChatCompletion(chatCompletionRequest).blockingForEach(chunks::add);
+        assertFalse(chunks.isEmpty());
+        assertNotNull(chunks.get(0).getChoices().get(0));
+    }
+
 }

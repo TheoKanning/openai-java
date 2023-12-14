@@ -15,10 +15,10 @@ public class ChatCompletionChoice {
     Integer index;
 
     /**
-     * The {@link ChatMessageRole#assistant} message or delta (when streaming) which was generated
+     * The {@link ChatMessageRole#ASSISTANT} message or delta (when streaming) which was generated
      */
     @JsonAlias("delta")
-    ChatMessage message;
+    ChatMessage<String> message;
 
     /**
      * The reason why GPT stopped generating, for example "length".
