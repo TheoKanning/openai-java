@@ -585,6 +585,7 @@ public class OpenAiService {
         mapper.addMixIn(ChatFunction.class, ChatFunctionMixIn.class);
         mapper.addMixIn(ChatCompletionRequest.class, ChatCompletionRequestMixIn.class);
         mapper.addMixIn(ChatFunctionCall.class, ChatFunctionCallMixIn.class);
+        mapper.addMixIn(ChatMessage.class, ChatMessageMixIn.class);
         return mapper;
     }
 
@@ -607,10 +608,10 @@ public class OpenAiService {
 
     public Flowable<ChatMessageAccumulator> mapStreamToAccumulator(Flowable<ChatCompletionChunk> flowable) {
         ChatFunctionCall functionCall = new ChatFunctionCall(null, null);
-        ChatMessage accumulatedMessage = new ChatMessage(ChatMessageRole.ASSISTANT.value(), null);
+        ChatMessage<String> accumulatedMessage = new ChatMessage<>(ChatMessageRole.ASSISTANT.value(), "");
 
         return flowable.map(chunk -> {
-            ChatMessage messageChunk = chunk.getChoices().get(0).getMessage();
+            ChatMessage<String> messageChunk = chunk.getChoices().get(0).getMessage();
             if (messageChunk.getFunctionCall() != null) {
                 if (messageChunk.getFunctionCall().getName() != null) {
                     String namePart = messageChunk.getFunctionCall().getName();
