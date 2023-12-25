@@ -33,7 +33,7 @@ final class OpenAiAssistantExample {
     } while (!Objects.equals(run.getStatus(), "completed"));
   }
 
-  private static void print(OpenAiResponse<Message> messages) {
+  private static void printMessages(OpenAiResponse<Message> messages) {
     for (Message message : messages.getData()) {
       StringBuilder sb = new StringBuilder();
       for(MessageContent content : message.getContent()) {
@@ -76,7 +76,7 @@ final class OpenAiAssistantExample {
     System.out.println(
         "\nGet the latest messages list, should contain a single message from the assistant...");
     OpenAiResponse<Message> messages = service.listMessages(threadId);
-    print(messages);
+    printMessages(messages);
 
     System.out.println("\nAdd a new user message to the thread...");
     service.createMessage(
@@ -90,6 +90,6 @@ final class OpenAiAssistantExample {
 
     System.out.println("\nObserve the latest messages after the second run...");
     messages = service.listMessages(threadId);
-    print(messages);
+    printMessages(messages);
   }
 }
