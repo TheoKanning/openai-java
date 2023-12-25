@@ -16,7 +16,7 @@ import java.util.concurrent.TimeUnit;
 
 /** Example code to use the assistant feature:
  * 1. Create a new assistant
- * 2. Attach a thread
+ * 2. Create a new thread and attach it to the assistant
  * 3. Wait for messages to process
  * 4. Attach a new user message
  * 5. Wait for messages to process
