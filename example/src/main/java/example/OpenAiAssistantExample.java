@@ -40,7 +40,7 @@ final class OpenAiAssistantExample {
         sb.append(content);
       }
 
-      System.out.printf("[%s] %s%n", message.getRole(), sb);
+      System.out.printf("[%s] %s", message.getRole(), sb);
     }
   }
 
