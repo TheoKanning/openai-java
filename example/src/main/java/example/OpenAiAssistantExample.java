@@ -14,6 +14,13 @@ import java.time.Duration;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
+/** Example code to use the assistant feature:
+ * 1. Create a new assistant
+ * 2. Attach a thread
+ * 3. Wait for messages to process
+ * 4. Attach a new user message
+ * 5. Wait for messages to process
+ */
 final class OpenAiAssistantExample {
   private static void waitForRunToComplete(OpenAiService service, String runId, String threadId)
       throws InterruptedException {
