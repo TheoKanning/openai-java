@@ -48,7 +48,7 @@ final class OpenAiAssistantExample {
     String token = System.getenv("OPENAI_TOKEN");
     OpenAiService service = new OpenAiService(token, Duration.ofSeconds(30));
 
-    System.out.println("\nCreate a new assistant....");
+    System.out.println("\nCreating a new assistant....");
     Assistant assistant =
         service.createAssistant(
             AssistantRequest.builder()
@@ -59,37 +59,39 @@ final class OpenAiAssistantExample {
     String assistantId = assistant.getId();
 
     System.out.println(
-        "\nAttach a new thread to the assistant, and run it to create the first message from the\n"
+        "\nAttaching a new thread to the assistant, and run it to create the first message from the\n"
             + " assistant...");
     CreateThreadAndRunRequest createThreadAndRunRequest =
         CreateThreadAndRunRequest.builder().assistantId(assistantId).build();
     Run run = service.createThreadAndRun(createThreadAndRunRequest);
 
     System.out.println(
-        "\nKeep the thread id which is a persistent id for the conversation between the user and the\n"
+        "\nKeeping the thread id which is a persistent id for the conversation between the user and the\n"
             + " assistant...");
     String threadId = run.getThreadId();
 
-    System.out.println("\nWait for GPT to process the new thread...");
+    System.out.println("\nWaiting for GPT to process the new thread...");
     waitForRunToComplete(service, run.getId(), threadId);
 
     System.out.println(
-        "\nGet the latest messages list, should contain a single message from the assistant...");
+        "\nGetting the latest messages list, should contain a single message from the assistant...");
     OpenAiResponse<Message> messages = service.listMessages(threadId);
     printMessages(messages);
 
-    System.out.println("\nAdd a new user message to the thread...");
+    System.out.println("\nAdding a new user message to the thread...");
     service.createMessage(
         threadId, MessageRequest.builder().content("Can you solve 1+1?").role("user").build());
 
-    System.out.println("\nCreate a new run for GPT to response to the message...");
+    System.out.println("\nCreating a new run for GPT to response to the message...");
     run = service.createRun(threadId, RunCreateRequest.builder().assistantId(assistantId).build());
 
-    System.out.println("\nWait again to the run to complete...");
+    System.out.println("\nWaiting again to the run to complete...");
     waitForRunToComplete(service, run.getId(), threadId);
 
-    System.out.println("\nObserve the latest messages after the second run...");
+    System.out.println("\nObserving the latest messages after the second run...");
     messages = service.listMessages(threadId);
     printMessages(messages);
+
+    service.shutdownExecutor();
   }
 }
