@@ -101,10 +101,7 @@ class ChatCompletionTest {
                 .logitBias(new HashMap<>())
                 .build();
 
-        System.out.println(chatCompletionRequest);
-
         ChatCompletionChoice choice = service.createChatCompletion(chatCompletionRequest).getChoices().get(0);
-        System.out.println(choice.getMessage().getContent());
         assertTrue(isValidJson(choice.getMessage().getContent()), "Response is not valid JSON");
     }
 
