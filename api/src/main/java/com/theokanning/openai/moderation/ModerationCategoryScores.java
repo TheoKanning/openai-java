@@ -16,8 +16,19 @@ public class ModerationCategoryScores {
     @JsonProperty("hate/threatening")
     public double hateThreatening;
 
+    public double harassment;
+
+    @JsonProperty("harassment/threatening")
+    public double harassment/threatening;
+
     @JsonProperty("self-harm")
     public double selfHarm;
+
+    @JsonProperty("self-harm/intent")
+    public double selfHarmIntent;
+
+    @JsonProperty("self-harm/instructions")
+    public double selfHarmInstructions;
 
     public double sexual;
 
