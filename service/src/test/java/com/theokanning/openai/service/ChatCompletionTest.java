@@ -2,7 +2,9 @@ package com.theokanning.openai.service;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyDescription;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.theokanning.openai.completion.chat.*;
 import org.junit.jupiter.api.Test;
@@ -82,6 +84,38 @@ class ChatCompletionTest {
         service.streamChatCompletion(chatCompletionRequest).blockingForEach(chunks::add);
         assertTrue(chunks.size() > 0);
         assertNotNull(chunks.get(0).getChoices().get(0));
+    }
+
+    @Test
+    void createChatCompletionWithJsonMode() {
+        final List<ChatMessage> messages = new ArrayList<>();
+        final ChatMessage systemMessage = new ChatMessage(ChatMessageRole.SYSTEM.value(), "You will generate a random name and return it in JSON format.");
+        messages.add(systemMessage);
+
+        ChatCompletionRequest chatCompletionRequest = ChatCompletionRequest
+                .builder()
+                .model("gpt-3.5-turbo-1106")
+                .messages(messages)
+                .responseFormat(ChatResponseFormat.builder().type(ChatResponseFormat.ResponseFormat.JSON).build())
+                .maxTokens(50)
+                .logitBias(new HashMap<>())
+                .build();
+
+        System.out.println(chatCompletionRequest);
+
+        ChatCompletionChoice choice = service.createChatCompletion(chatCompletionRequest).getChoices().get(0);
+        System.out.println(choice.getMessage().getContent());
+        assertTrue(isValidJson(choice.getMessage().getContent()), "Response is not valid JSON");
+    }
+
+    private boolean isValidJson(String jsonString) {
+        ObjectMapper objectMapper = new ObjectMapper();
+        try {
+            objectMapper.readTree(jsonString);
+            return true;
+        } catch (JsonProcessingException e) {
+            return false;
+        }
     }
 
     @Test

@@ -1,19 +1,30 @@
 package com.theokanning.openai.completion.chat;
 
+import com.fasterxml.jackson.annotation.JsonValue;
+import lombok.Builder;
+import lombok.Data;
+
 /**
  * see {@link ChatCompletionRequest} documentation.
  */
-public enum ChatResponseFormat {
-    TEXT("text"),
-    JSON("json");
+@Data
+@Builder
+public class ChatResponseFormat {
+    private ResponseFormat type;
 
-    private final String value;
+    public enum ResponseFormat {
+        TEXT("text"),
+        JSON("json_object");
 
-    ChatResponseFormat(final String value) {
-        this.value = value;
-    }
+        private final String value;
 
-    public String value() {
-        return value;
+        ResponseFormat(final String value) {
+            this.value = value;
+        }
+
+        @JsonValue
+        public String value() {
+            return value;
+        }
     }
 }
