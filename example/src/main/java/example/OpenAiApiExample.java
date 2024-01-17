@@ -19,7 +19,7 @@ class OpenAiApiExample {
 
         System.out.println("\nCreating completion...");
         CompletionRequest completionRequest = CompletionRequest.builder()
-                .model("ada")
+                .model("babbage-002")
                 .prompt("Somebody once told me the world is gonna roll me")
                 .echo(true)
                 .user("testing")

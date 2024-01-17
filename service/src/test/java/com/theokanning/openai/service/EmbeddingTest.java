@@ -18,7 +18,7 @@ public class EmbeddingTest {
     @Test
     void createEmbeddings() {
         EmbeddingRequest embeddingRequest = EmbeddingRequest.builder()
-                .model("text-similarity-babbage-001")
+                .model("text-embedding-ada-002")
                 .input(Collections.singletonList("The food was delicious and the waiter..."))
                 .build();
 
