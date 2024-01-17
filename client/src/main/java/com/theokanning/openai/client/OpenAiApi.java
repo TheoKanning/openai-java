@@ -159,10 +159,10 @@ public interface OpenAiApi {
     Single<ImageResult> createImageVariation(@Body RequestBody requestBody);
 
     @POST("/v1/audio/transcriptions")
-    Single<TranscriptionResult> createTranscription(@Body RequestBody requestBody);
+    Single<ResponseBody> createTranscription(@Body RequestBody requestBody);
 
     @POST("/v1/audio/translations")
-    Single<TranslationResult> createTranslation(@Body RequestBody requestBody);
+    Single<ResponseBody> createTranslation(@Body RequestBody requestBody);
 
     @POST("/v1/audio/speech")
     Single<ResponseBody> createSpeech(@Body CreateSpeechRequest requestBody);
