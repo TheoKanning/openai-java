@@ -48,6 +48,14 @@ public class ChatCompletionRequest {
     Integer n;
 
     /**
+     * For consistent results, use the same seed and parameters in your request.
+     * Set the seed parameter to an integer of your choice and maintain its value across requests for deterministic outputs.
+     *
+     * Determinism cannot be guaranteed, so please refer to the {@link ChatCompletionResult#fingerprint} to track any changes in the backend.
+     */
+    Integer seed;
+
+    /**
      * If set, partial message deltas will be sent, like in ChatGPT. Tokens will be sent as data-only <a
      * href="https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events/Using_server-sent_events#Event_stream_format">server-sent
      * events</a> as they become available, with the stream terminated by a data: [DONE] message.
