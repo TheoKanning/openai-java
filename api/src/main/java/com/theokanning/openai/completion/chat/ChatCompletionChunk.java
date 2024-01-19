@@ -1,4 +1,5 @@
 package com.theokanning.openai.completion.chat;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
 import java.util.List;
@@ -27,6 +28,13 @@ public class ChatCompletionChunk {
      * The model used.
      */
     String model;
+
+    /**
+     * The fingerprint denotes the backend configuration used by the model.
+     * Learn more at: https://platform.openai.com/docs/api-reference/chat/streaming#chat/streaming-system_fingerprint
+     */
+    @JsonProperty("system_fingerprint")
+    String fingerprint;
 
     /**
      * A list of all generated completions.
