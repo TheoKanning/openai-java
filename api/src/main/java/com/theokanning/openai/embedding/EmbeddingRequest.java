@@ -36,4 +36,9 @@ public class EmbeddingRequest {
      * A unique identifier representing your end-user, which will help OpenAI to monitor and detect abuse.
      */
     String user;
+
+    /**
+     * The number of dimensions for the embedding. Default value, is not provided, is 1536
+     */
+    int dimensions = 1536;
 }
