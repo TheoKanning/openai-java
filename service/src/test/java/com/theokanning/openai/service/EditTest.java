@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
+@Deprecated
 public class EditTest {
 
     String token = System.getenv("OPENAI_TOKEN");
