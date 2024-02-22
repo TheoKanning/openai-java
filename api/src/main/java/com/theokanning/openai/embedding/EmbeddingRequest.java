@@ -38,7 +38,25 @@ public class EmbeddingRequest {
     String user;
 
     /**
-     * The number of dimensions for the embedding. Default value, is not provided, is 1536
+     * The number of dimensions to be used by the model to represent each input text as the feature
+     * vector.
      */
-    int dimensions = 1536;
+    @Setter(AccessLevel.NONE)
+    Integer dimensions = null;
+
+    /**
+     * Set the number of dimensions to be used by the model to represent each input text as the feature vector.
+     *
+     * @param dimensions The number of dimensions to be used by the model. Only supported for models from or after
+     *                   third generation.
+     */
+    public void setDimensions(Integer dimensions) {
+        EmbeddingModel embeddingModel = EmbeddingModel.fromValue(this.model);
+
+        if (embeddingModel.getGeneration() > 2) {
+            this.dimensions = dimensions;
+        } else {
+            this.dimensions = null;
+        }
+    }
 }
