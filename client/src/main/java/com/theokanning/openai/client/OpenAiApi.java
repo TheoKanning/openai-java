@@ -53,7 +53,7 @@ import java.util.Map;
 
 public interface OpenAiApi {
 
-    @GET("v1/models")
+    @GET("/v1/models")
     Single<OpenAiResponse<Model>> listModels();
 
     @GET("/v1/models/{model_id}")
