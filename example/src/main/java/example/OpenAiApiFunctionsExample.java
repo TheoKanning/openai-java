@@ -2,10 +2,10 @@ package example;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyDescription;
-import com.theokanning.openai.completion.chat.*;
-import com.theokanning.openai.completion.chat.ChatCompletionRequest.ChatCompletionRequestFunctionCall;
-import com.theokanning.openai.service.FunctionExecutor;
-import com.theokanning.openai.service.OpenAiService;
+import io.github.panghy.openai.completion.chat.*;
+import io.github.panghy.openai.completion.chat.ChatCompletionRequest.ChatCompletionRequestFunctionCall;
+import io.github.panghy.openai.service.FunctionExecutor;
+import io.github.panghy.openai.service.OpenAiService;
 
 import java.util.*;
 
