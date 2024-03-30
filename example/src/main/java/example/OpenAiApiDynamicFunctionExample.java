@@ -3,8 +3,8 @@ package example;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import com.theokanning.openai.completion.chat.*;
-import com.theokanning.openai.service.OpenAiService;
+import io.github.panghy.openai.completion.chat.*;
+import io.github.panghy.openai.service.OpenAiService;
 
 import java.util.*;
 

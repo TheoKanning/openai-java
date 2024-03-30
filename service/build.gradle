@@ -11,11 +11,13 @@ dependencies {
     testImplementation(platform(libs.junitBom))
     testImplementation 'org.junit.jupiter:junit-jupiter'
     testImplementation libs.retrofitMock
+    testImplementation libs.mockito
+    testImplementation libs.assertj
 }
 
 compileJava {
-    sourceCompatibility = '1.8'
-    targetCompatibility = '1.8'
+    sourceCompatibility = '17'
+    targetCompatibility = '17'
 }
 
 test {

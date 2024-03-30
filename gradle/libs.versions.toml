@@ -13,3 +13,5 @@ retrofitJackson = { module = "com.squareup.retrofit2:converter-jackson", version
 retrofitRxJava2 = { module = "com.squareup.retrofit2:adapter-rxjava2", version.ref = "retrofit" }
 retrofitMock = { module = "com.squareup.retrofit2:retrofit-mock", version.ref = "retrofit" }
 jtokkit = { module = "com.knuddels:jtokkit", version = "0.5.1" }
+mockito = { module = "org.mockito:mockito-core", version = "3.12.4" }
+assertj = { module = "org.assertj:assertj-core", version = "3.21.0" }
