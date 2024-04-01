@@ -32,7 +32,7 @@ class ChatCompletionTest {
     }
 
     enum WeatherUnit {
-        CELSIUS, FAHRENHEIT;
+        CELSIUS, FAHRENHEIT
     }
 
     static class WeatherResponse {
@@ -138,11 +138,15 @@ class ChatCompletionTest {
         when(mockApi.createChatCompletionStream(chatCompletionRequest)).
             // fake SSE Response
                 thenReturn(new FakeCall<>(ResponseBody.create(MediaType.parse("text/event-stream"),
-                "data: {\"choices\": [{\"finish_reason\": \"length\", \"message\": {\"role\": \"system\", \"content\": \"You are a dog and will speak as such.\"}}]}\n\n" +
-                    "data: {\"choices\": [{\"finish_reason\": \"length\", \"message\": {\"role\": \"user\", \"content\": \"Woof woof!\"}}]}\n\n")));
+                """
+                    data: {"choices": [{"finish_reason": "length", "message": {"role": "system", "content": "You are a dog and will speak as such."}}]}
+
+                    data: {"choices": [{"finish_reason": "length", "message": {"role": "user", "content": "Woof woof!"}}]}
+
+                    """)));
         service.streamChatCompletion(chatCompletionRequest).blockingForEach(chunks::add);
         verify(mockApi, times(1)).createChatCompletionStream(chatCompletionRequest);
-        assertTrue(chunks.size() > 0);
+        assertFalse(chunks.isEmpty());
         assertNotNull(chunks.get(0).getChoices().get(0));
     }
 
@@ -280,7 +284,7 @@ class ChatCompletionTest {
                         .build())
                     .build())
                 .build())).build();
-        ObjectMapper om = new ObjectMapper();
+
         when(mockApi.createChatCompletion(chatCompletionRequest)).thenReturn(just(result));
         ChatCompletionChoice choice = service.createChatCompletion(chatCompletionRequest).getChoices().get(0);
         assertEquals("function_call", choice.getFinishReason());
@@ -441,4 +445,23 @@ class ChatCompletionTest {
         assertNotNull(accumulatedMessage.getFunctionCall().getArguments().get("unit"));
     }
 
+    @Test
+    void testJsonMode() {
+        ChatResponseFormat json = ChatResponseFormat.JSON;
+        assertEquals("json_object", json.getType());
+
+        ChatCompletionRequest request = ChatCompletionRequest.builder()
+            .model("gpt-3.5-turbo")
+            .messages(Collections.singletonList(ChatMessage.builder()
+                .role(ChatMessageRole.USER.value())
+                .content("What is the weather in Monterrey, Nuevo León?")
+                .build()))
+            .responseFormat(ChatResponseFormat.JSON)
+            .build();
+
+        when(mockApi.createChatCompletion(request)).thenReturn(just(ChatCompletionResult.builder().build()));
+        ChatCompletionResult result = service.createChatCompletion(request);
+        verify(mockApi, times(1)).createChatCompletion(request);
+        assertNotNull(result);
+    }
 }

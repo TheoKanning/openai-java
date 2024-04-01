@@ -106,6 +106,12 @@ public class ChatCompletionRequest {
     @JsonProperty("function_call")
     ChatCompletionRequestFunctionCall functionCall;
 
+    /**
+     * Controls the format of the response as specified in the <a href="https://platform.openai.com/docs/api-reference/chat/create#chat-create-response_format">OpenAI documentation</a>.
+     */
+    @JsonProperty("response_format")
+    ChatResponseFormat responseFormat;
+
     @Data
     @Builder
     @AllArgsConstructor
