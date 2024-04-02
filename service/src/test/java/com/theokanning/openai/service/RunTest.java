@@ -26,7 +26,7 @@ class RunTest {
     @Timeout(10)
     void createRetrieveRun() {
         AssistantRequest assistantRequest = AssistantRequest.builder()
-                .model(TikTokensUtil.ModelEnum.GPT_4_1106_preview.getName())
+                .model(TikTokensUtil.ModelEnum.GPT_3_5_TURBO.getName())
                 .name("MATH_TUTOR")
                 .instructions("You are a personal Math Tutor.")
                 .build();

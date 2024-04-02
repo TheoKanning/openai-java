@@ -40,43 +40,13 @@ public class ResponseBodyCallback implements Callback<ResponseBody> {
 
         try {
             if (!response.isSuccessful()) {
-                HttpException e = new HttpException(response);
-                ResponseBody errorBody = response.errorBody();
-
-                if (errorBody == null) {
-                    throw e;
-                } else {
-                    OpenAiError error = mapper.readValue(
-                            errorBody.string(),
-                            OpenAiError.class
-                    );
-                    throw new OpenAiHttpException(error, e, e.code());
-                }
+                handleUnsuccessfulResponse(response);
+                return;
             }
 
             InputStream in = response.body().byteStream();
             reader = new BufferedReader(new InputStreamReader(in, StandardCharsets.UTF_8));
-            String line;
-            SSE sse = null;
-
-            while (!emitter.isCancelled() && (line = reader.readLine()) != null) {
-                if (line.startsWith("data:")) {
-                    String data = line.substring(5).trim();
-                    sse = new SSE(data);
-                } else if (line.equals("") && sse != null) {
-                    if (sse.isDone()) {
-                        if (emitDone) {
-                            emitter.onNext(sse);
-                        }
-                        break;
-                    }
-
-                    emitter.onNext(sse);
-                    sse = null;
-                } else {
-                    throw new SSEFormatException("Invalid sse format! " + line);
-                }
-            }
+            parseSSE(reader);
 
             emitter.onComplete();
 
@@ -87,10 +57,58 @@ public class ResponseBodyCallback implements Callback<ResponseBody> {
                 try {
                     reader.close();
                 } catch (IOException e) {
-					          // do nothing
+                    // do nothing
                 }
             }
         }
+    }
+
+    private void handleUnsuccessfulResponse(Response<ResponseBody> response) throws IOException {
+        HttpException e = new HttpException(response);
+        ResponseBody errorBody = response.errorBody();
+
+        if (errorBody == null) {
+            throw e;
+        } else {
+            OpenAiError error = mapper.readValue(
+                    errorBody.string(),
+                    OpenAiError.class
+            );
+            throw new OpenAiHttpException(error, e, e.code());
+        }
+    }
+
+    private void parseSSE(BufferedReader reader) throws IOException {
+        String line;
+        SSE sse = null;
+
+        try {
+            while (!emitter.isCancelled() && (line = reader.readLine()) != null) {
+                if (line.startsWith("data:")) {
+                    String data = line.substring(5).trim();
+                    sse = new SSE(data);
+                } else if (line.equals("") && sse != null) {
+                    handleSSELine(sse);
+                    sse = null;
+                } else {
+                    throw new SSEFormatException("Invalid sse format! " + line);
+                }
+            }
+        } catch (SSEFormatException e) {
+            throw new IOException("Error parsing SSE", e);
+        }
+    }
+
+
+    private void handleSSELine(SSE sse) {
+        if (sse.isDone()) {
+            if (emitDone) {
+                emitter.onNext(sse);
+            }
+            return;
+        }
+
+        emitter.onNext(sse);
     }
 
     @Override

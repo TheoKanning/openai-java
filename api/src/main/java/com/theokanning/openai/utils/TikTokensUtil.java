@@ -173,29 +173,41 @@ public class TikTokensUtil {
         Encoding encoding = getEncoding(modelName);
         int tokensPerMessage = 0;
         int tokensPerName = 0;
-        //3.5统一处理
+
+        // Constants for token counts per message and name
+        final int TOKENS_PER_MESSAGE_GPT_3_5_TURBO = 4;
+        final int TOKENS_PER_MESSAGE_GPT_4 = 3;
+        final int TOKENS_PER_NAME = 1;
+
+        // Determine token counts based on model
         if (modelName.equals("gpt-3.5-turbo-0301") || modelName.equals("gpt-3.5-turbo")) {
-            tokensPerMessage = 4;
+            tokensPerMessage = TOKENS_PER_MESSAGE_GPT_3_5_TURBO;
             tokensPerName = -1;
         }
-        //4.0统一处理
         if (modelName.equals("gpt-4") || modelName.equals("gpt-4-0314")) {
-            tokensPerMessage = 3;
-            tokensPerName = 1;
+            tokensPerMessage = TOKENS_PER_MESSAGE_GPT_4;
+            tokensPerName = TOKENS_PER_NAME;
         }
-        int sum = 0;
+
+        int totalTokens = 0; // Variable to hold total tokens
+
         for (ChatMessage msg : messages) {
-            sum += tokensPerMessage;
-            sum += tokens(encoding, msg.getContent());
-            sum += tokens(encoding, msg.getRole());
-            sum += tokens(encoding, msg.getName());
+            int messageTokens = tokens(encoding, msg.getContent()) +
+                    tokens(encoding, msg.getRole()) +
+                    tokens(encoding, msg.getName());
+
             if (isNotBlank(msg.getName())) {
-                sum += tokensPerName;
+                messageTokens += tokensPerName;
             }
+
+            totalTokens += tokensPerMessage + messageTokens;
         }
-        sum += 3;
-        return sum;
+
+        totalTokens += 3; // Additional tokens for processing
+
+        return totalTokens;
     }
+
 
     /**
      * Reverse the string text through the model name and the encoded array.
