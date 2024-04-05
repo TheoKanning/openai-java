@@ -16,6 +16,12 @@ import java.util.Map;
 public class ChatCompletionRequest {
 
     /**
+     * Specify "json" to ensure the response content is valid json. You must also specify json in the chat instructions.
+     * See https://platform.openai.com/docs/guides/text-generation/json-mode
+     */
+    String format;
+    
+    /**
      * ID of the model to use.
      */
     String model;
