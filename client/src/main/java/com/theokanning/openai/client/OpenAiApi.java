@@ -7,6 +7,9 @@ import com.theokanning.openai.assistants.*;
 import com.theokanning.openai.audio.CreateSpeechRequest;
 import com.theokanning.openai.audio.TranscriptionResult;
 import com.theokanning.openai.audio.TranslationResult;
+import com.theokanning.openai.batch.Batch;
+import com.theokanning.openai.batch.BatchListResult;
+import com.theokanning.openai.batch.CreateBatchRequest;
 import com.theokanning.openai.billing.BillingUsage;
 import com.theokanning.openai.billing.Subscription;
 import com.theokanning.openai.completion.CompletionRequest;
@@ -321,4 +324,16 @@ public interface OpenAiApi {
     @Headers("OpenAI-Beta: assistants=v1")
     @GET("/v1/threads/{thread_id}/runs/{run_id}/steps")
     Single<OpenAiResponse<RunStep>> listRunSteps(@Path("thread_id") String threadId, @Path("run_id") String runId, @QueryMap Map<String, String> listSearchParameters);
+
+    @POST("/v1/batches")
+    Single<Batch> createBatch(@Body CreateBatchRequest createBatchRequest);
+
+    @GET("/v1/batches/{batch_id}")
+    Single<Batch> retrieveBatch(@Path("batch_id") String batchId);
+
+    @GET("/v1/batches")
+    Single<BatchListResult> listBatches(@QueryMap Map<String, String> listSearchParameters);
+
+    @POST("/v1/batches/{batch_id}/cancel")
+    Single<Batch> cancelBatch(@Path("batch_id") String batchId);
 }

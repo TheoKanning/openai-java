@@ -9,6 +9,10 @@ import com.fasterxml.jackson.databind.node.TextNode;
 import com.theokanning.openai.*;
 import com.theokanning.openai.assistants.*;
 import com.theokanning.openai.audio.*;
+import com.theokanning.openai.batch.Batch;
+import com.theokanning.openai.batch.BatchListRequest;
+import com.theokanning.openai.batch.BatchListResult;
+import com.theokanning.openai.batch.CreateBatchRequest;
 import com.theokanning.openai.billing.BillingUsage;
 import com.theokanning.openai.billing.Subscription;
 import com.theokanning.openai.client.OpenAiApi;
@@ -659,4 +663,40 @@ public class OpenAiService {
         return billingUsage.blockingGet();
     }
 
+    /**
+     * Creates and executes a batch from an uploaded file of requests
+     */
+    public Batch createBatch(@NotNull CreateBatchRequest request) {
+        Single<Batch> batch = api.createBatch(request);
+        return batch.blockingGet();
+    }
+
+    /**
+     * Retrieves a batch.
+     */
+    public Batch retrieveBatch(@NotNull String batchId) {
+        Single<Batch> batch = api.retrieveBatch(batchId);
+        return batch.blockingGet();
+    }
+
+    /**
+     * List your organization's batches.
+     */
+    public BatchListResult listBatch(BatchListRequest batchListParameters) {
+        Map<String, String> search = new HashMap<>();
+        if (batchListParameters != null) {
+            ObjectMapper mapper = defaultObjectMapper();
+            search = mapper.convertValue(batchListParameters, Map.class);
+        }
+        Single<BatchListResult> batches = api.listBatches(search);
+        return batches.blockingGet();
+    }
+
+    /**
+     * Cancels an in-progress batch.
+     */
+    public Batch cancel(@NotNull String batchId) {
+        Single<Batch> batch = api.cancelBatch(batchId);
+        return batch.blockingGet();
+    }
 }
