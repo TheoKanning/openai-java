@@ -43,13 +43,13 @@ public class Run {
 
     @JsonProperty("started_at")
     private Integer startedAt;
-    
+
     @JsonProperty("cancelled_at")
     private Integer cancelledAt;
 
     @JsonProperty("failed_at")
     private Integer failedAt;
-    
+
     @JsonProperty("completed_at")
     private Integer completedAt;
 
@@ -58,9 +58,6 @@ public class Run {
     private String instructions;
 
     private List<Tool> tools;
-    
-    @JsonProperty("file_ids")
-    private List<String> fileIds;
 
     private Map<String, String> metadata;
 }
