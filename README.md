@@ -1,5 +1,8 @@
 ![Maven Central](https://img.shields.io/maven-central/v/com.theokanning.openai-gpt3-java/client?color=blue)
 
+> ⚠️ Notice: This project is no longer maintained and has been archived as of June 6th, 2024.
+Thank you to everyone who has contributed and supported this project. While the repository will remain available in its current state, no further updates or support will be provided. Please feel free to fork and modify the code as needed.
+
 > ⚠️OpenAI has deprecated all Engine-based APIs. See [Deprecated Endpoints](https://github.com/TheoKanning/openai-java#deprecated-endpoints) below for more info.
 
 # OpenAI-Java
