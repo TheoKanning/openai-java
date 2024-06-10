@@ -55,6 +55,13 @@ public class ChatCompletionRequest {
     Boolean stream;
 
     /**
+     * Options for streaming response. Only set this when you set stream: true
+     * <a href="https://platform.openai.com/docs/api-reference/chat/create#chat-create-stream_options">OpenAI Docs</a>
+     */
+    @JsonProperty("stream_options")
+    StreamOptions streamOptions;
+
+    /**
      * Up to 4 sequences where the API will stop generating further tokens.
      */
     List<String> stop;

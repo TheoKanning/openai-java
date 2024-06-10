@@ -1,4 +1,5 @@
 package com.theokanning.openai.completion.chat;
+import com.theokanning.openai.Usage;
 import lombok.Data;
 
 import java.util.List;
@@ -32,4 +33,9 @@ public class ChatCompletionChunk {
      * A list of all generated completions.
      */
     List<ChatCompletionChoice> choices;
+
+    /**
+     * The API usage for this request
+     */
+    Usage usage;
 }

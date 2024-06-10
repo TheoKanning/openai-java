@@ -85,6 +85,31 @@ class ChatCompletionTest {
     }
 
     @Test
+    void streamChatCompletionWithStreamOptions() {
+        final List<ChatMessage> messages = new ArrayList<>();
+        final ChatMessage systemMessage = new ChatMessage(ChatMessageRole.SYSTEM.value(), "You are a dog and will speak as such.");
+        messages.add(systemMessage);
+
+        ChatCompletionRequest chatCompletionRequest = ChatCompletionRequest
+                .builder()
+                .model("gpt-3.5-turbo")
+                .messages(messages)
+                .n(1)
+                .maxTokens(50)
+                .logitBias(new HashMap<>())
+                .stream(true)
+                .streamOptions(new StreamOptions(true))
+                .build();
+
+        List<ChatCompletionChunk> chunks = new ArrayList<>();
+        service.streamChatCompletion(chatCompletionRequest).blockingForEach(chunks::add);
+        assertTrue(chunks.size() > 0);
+        assertNotNull(chunks.get(0).getChoices().get(0));
+        chunks.stream().limit(chunks.size() - 1).forEach(chunk -> assertNull(chunk.getUsage()));
+        assertNotNull(chunks.get(chunks.size()-1).getUsage());
+    }
+
+    @Test
     void createChatCompletionWithFunctions() {
         final List<ChatFunction> functions = Collections.singletonList(ChatFunction.builder()
                 .name("get_weather")
