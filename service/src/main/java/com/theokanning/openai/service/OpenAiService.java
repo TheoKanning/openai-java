@@ -87,13 +87,34 @@ public class OpenAiService {
     /**
      * Creates a new OpenAiService that wraps OpenAiApi
      *
+     * @param token OpenAi token string "sk-XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
+     * @param baseUrl OpenAi baseUrl, default is "https://api.openai.com/"
+     */
+    public OpenAiService(final String token, String baseUrl) {
+        this(token, DEFAULT_TIMEOUT, baseUrl);
+    }
+
+    /**
+     * Creates a new OpenAiService that wraps OpenAiApi
+     *
      * @param token   OpenAi token string "sk-XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
      * @param timeout http read timeout, Duration.ZERO means no timeout
      */
     public OpenAiService(final String token, final Duration timeout) {
+        this(token, timeout, null);
+    }
+
+    /**
+     * Creates a new OpenAiService that wraps OpenAiApi
+     *
+     * @param token   OpenAi token string "sk-XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
+     * @param timeout http read timeout, Duration.ZERO means no timeout
+     * @param baseUrl OpenAi baseUrl, default is "https://api.openai.com/"
+     */
+    public OpenAiService(final String token, final Duration timeout, String baseUrl) {
         ObjectMapper mapper = defaultObjectMapper();
         OkHttpClient client = defaultClient(token, timeout);
-        Retrofit retrofit = defaultRetrofit(client, mapper);
+        Retrofit retrofit = defaultRetrofit(client, mapper, baseUrl);
 
         this.api = retrofit.create(OpenAiApi.class);
         this.executorService = client.dispatcher().executorService();
@@ -572,7 +593,7 @@ public class OpenAiService {
     public static OpenAiApi buildApi(String token, Duration timeout) {
         ObjectMapper mapper = defaultObjectMapper();
         OkHttpClient client = defaultClient(token, timeout);
-        Retrofit retrofit = defaultRetrofit(client, mapper);
+        Retrofit retrofit = defaultRetrofit(client, mapper, null);
 
         return retrofit.create(OpenAiApi.class);
     }
@@ -596,14 +617,18 @@ public class OpenAiService {
                 .build();
     }
 
-    public static Retrofit defaultRetrofit(OkHttpClient client, ObjectMapper mapper) {
+    public static Retrofit defaultRetrofit(OkHttpClient client, ObjectMapper mapper, String baseUrl) {
+        if (baseUrl == null || "".equals(baseUrl)) {
+            baseUrl = BASE_URL;
+        }
         return new Retrofit.Builder()
-                .baseUrl(BASE_URL)
+                .baseUrl(baseUrl)
                 .client(client)
                 .addConverterFactory(JacksonConverterFactory.create(mapper))
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .build();
     }
+    
 
     public Flowable<ChatMessageAccumulator> mapStreamToAccumulator(Flowable<ChatCompletionChunk> flowable) {
         ChatFunctionCall functionCall = new ChatFunctionCall(null, null);
