@@ -6,14 +6,14 @@ Thank you to everyone who has contributed and supported this project. While the 
 > ⚠️OpenAI has deprecated all Engine-based APIs. See [Deprecated Endpoints](https://github.com/TheoKanning/openai-java#deprecated-endpoints) below for more info.
 
 # OpenAI-Java
-Java libraries for using OpenAI's GPT apis. Supports GPT-3, ChatGPT, and GPT-4.
+Java libraries for using OpenAI's APIs. Supports GPT-3.5, GPT-4, and more.
 
 Includes the following artifacts:
 - `api` : request/response POJOs for the GPT APIs.
-- `client` : a basic retrofit client for the GPT endpoints, includes the `api` module
-- `service` : A basic service class that creates and calls the client. This is the easiest way to get started.
+- `client` : a basic Retrofit client for the GPT endpoints, includes the `api` module
+- `service` : a basic service class that creates and calls the client. This is the easiest way to get started.
 
-as well as an example project using the service.
+As well as an example project using the service.
 
 ## Supported APIs
 - [Models](https://platform.openai.com/docs/api-reference/models)
@@ -52,7 +52,7 @@ If you want to make your own client, just import the POJOs from the `api` module
 Your client will need to use snake case to work with the OpenAI API.
 
 ### Retrofit client
-If you're using retrofit, you can import the `client` module and use the [OpenAiApi](client/src/main/java/com/theokanning/openai/OpenAiApi.java).  
+If you're using Retrofit, you can import the `client` module and use the [OpenAiApi](client/src/main/java/com/theokanning/openai/OpenAiApi.java).  
 You'll have to add your auth token as a header (see [AuthenticationInterceptor](client/src/main/java/com/theokanning/openai/AuthenticationInterceptor.java))
 and set your converter factory to use snake case and only include non-null fields.
 
@@ -169,7 +169,7 @@ If you want to shut down your process immediately after streaming responses, cal
 This is not necessary for non-streaming calls.
 
 ## Running the example project
-All the [example](example/src/main/java/example/OpenAiApiExample.java) project requires is your OpenAI api token
+All the [example](example/src/main/java/example/OpenAiApiExample.java) project requires is your OpenAI API token
 ```bash
 export OPENAI_TOKEN="sk-XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
 ```
@@ -188,8 +188,8 @@ Or functions with 'stream' mode enabled:
 
 ## FAQ
 ### Does this support GPT-4?
-Yes! GPT-4 uses the ChatCompletion Api, and you can see the latest model options [here](https://platform.openai.com/docs/models/gpt-4).  
-GPT-4 is currently in a limited beta (as of 4/1/23), so make sure you have access before trying to use it.
+Yes! GPT-4 uses the ChatCompletion API, and you can see the latest model options [here](https://platform.openai.com/docs/models/gpt-4).
+As of September 20th, 2023, GPT-4 access is granted to all API users who have made a successful payment of $1 or more. 
 
 ### Does this support functions?
 Absolutely! It is very easy to use your own functions without worrying about doing the dirty work.
