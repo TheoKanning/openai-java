@@ -2,7 +2,9 @@ package com.theokanning.openai.completion.chat;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * <p>Each object has a role (either "system", "user", or "assistant") and content (the content of the message). Conversations can be as short as 1 message or fill many pages.</p>
@@ -16,32 +18,34 @@ import lombok.*;
  */
 @Data
 @NoArgsConstructor(force = true)
-@RequiredArgsConstructor
 @AllArgsConstructor
-public class ChatMessage {
+public class ChatMessage<T> {
 
 	/**
 	 * Must be either 'system', 'user', 'assistant' or 'function'.<br>
 	 * You may use {@link ChatMessageRole} enum.
 	 */
-	@NonNull
 	String role;
+	/**
+	 * An array of content parts with a defined type, each can be of type text or image_url when passing in images. You
+	 * can pass multiple images by adding multiple image_url content parts. Image input is only supported when using the
+	 * gpt-4-visual-preview model.
+	 */
 	@JsonInclude() // content should always exist in the call, even if it is null
-	String content;
+	T content;
 	//name is optional, The name of the author of this message. May contain a-z, A-Z, 0-9, and underscores, with a maximum length of 64 characters.
 	String name;
 	@JsonProperty("function_call")
 	ChatFunctionCall functionCall;
 
-	public ChatMessage(String role, String content) {
+	public ChatMessage(String role, T content) {
 		this.role = role;
 		this.content = content;
 	}
 
-	public ChatMessage(String role, String content, String name) {
+	public ChatMessage(String role, T content, String name) {
 		this.role = role;
 		this.content = content;
 		this.name = name;
 	}
-
 }
