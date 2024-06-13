@@ -1,4 +1,5 @@
 package com.theokanning.openai.completion.chat;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.theokanning.openai.Usage;
 import lombok.Data;
 
@@ -29,6 +30,13 @@ public class ChatCompletionResult {
      * The GPT model used.
      */
     String model;
+
+    /**
+     * The fingerprint denotes the backend configuration used by the model.
+     * Learn more at: https://platform.openai.com/docs/api-reference/chat/object#chat/object-system_fingerprint
+     */
+    @JsonProperty("system_fingerprint")
+    String fingerprint;
 
     /**
      * A list of all generated completions.
