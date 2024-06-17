@@ -3,7 +3,7 @@
 ## How to Add a New API
 
 ### Add POJOs to API library
-I usually have ChatGPT write them for me by copying and pasting from teh OpenAI API reference ([example chat](https://chat.openai.com/share/af48ef11-0354-40b2-a8e2-3bf8e93a94a3)), but double check everything because Chat always makes mistakes, especially around adding `@JsonProperty` annotations.
+I usually have ChatGPT write them for me by copying and pasting from the OpenAI API reference ([example chat](https://chat.openai.com/share/af48ef11-0354-40b2-a8e2-3bf8e93a94a3)), but double check everything because Chat always makes mistakes, especially around adding `@JsonProperty` annotations.
 
 - Make all java variables camel case, and use `@JsonProperty` for fields that OpenAI returns as snake case
 - Include comments for each variable, I take these directly from the OpenAI website

@@ -188,8 +188,8 @@ Or functions with 'stream' mode enabled:
 
 ## FAQ
 ### Does this support GPT-4?
-Yes! GPT-4 uses the ChatCompletion Api, and you can see the latest model options [here](https://platform.openai.com/docs/models/gpt-4).  
-GPT-4 is currently in a limited beta (as of 4/1/23), so make sure you have access before trying to use it.
+Yes! GPT-4 uses the ChatCompletion Api, and you can see the latest model options [here](https://platform.openai.com/docs/models/gpt-4-turbo-and-gpt-4).  
+Please note that GPT-4 is available to paying customers only! This [article](https://help.openai.com/en/articles/7102672-how-can-i-access-gpt-4) has details on how to access GPT-4.
 
 ### Does this support functions?
 Absolutely! It is very easy to use your own functions without worrying about doing the dirty work.
