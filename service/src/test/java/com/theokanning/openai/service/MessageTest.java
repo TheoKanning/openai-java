@@ -6,7 +6,6 @@ import com.theokanning.openai.messages.Message;
 import com.theokanning.openai.messages.MessageFile;
 import com.theokanning.openai.messages.MessageRequest;
 import com.theokanning.openai.messages.ModifyMessageRequest;
-import com.theokanning.openai.threads.Thread;
 import com.theokanning.openai.threads.ThreadRequest;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
@@ -21,7 +20,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 
-public class MessageTest {
+class MessageTest {
 
     static OpenAiService service;
 

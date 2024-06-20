@@ -13,7 +13,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 
-public class CompletionTest {
+class CompletionTest {
 
     String token = System.getenv("OPENAI_TOKEN");
     OpenAiService service = new OpenAiService(token);

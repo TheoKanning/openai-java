@@ -16,7 +16,7 @@ import okhttp3.ResponseBody;
 import static org.junit.jupiter.api.Assertions.*;
 
 
-public class AudioTest {
+class AudioTest {
 
     static String englishAudioFilePath = "src/test/resources/hello-world.mp3";
 

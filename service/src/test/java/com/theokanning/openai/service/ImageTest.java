@@ -13,7 +13,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 
-public class ImageTest {
+class ImageTest {
 
     static String filePath = "src/test/resources/penguin.png";
     static String fileWithAlphaPath = "src/test/resources/penguin_with_alpha.png";

@@ -10,7 +10,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
 
-public class EmbeddingTest {
+class EmbeddingTest {
 
     String token = System.getenv("OPENAI_TOKEN");
     com.theokanning.openai.service.OpenAiService service = new OpenAiService(token);
