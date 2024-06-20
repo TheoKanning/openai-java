@@ -1,6 +1,6 @@
 [versions]
 jackson = "2.14.2"
-retrofit = "2.9.0"
+retrofit = "2.7.2"
 
 [libraries]
 jacksonDatabind = { module = "com.fasterxml.jackson.core:jackson-databind", version.ref = "jackson" }
