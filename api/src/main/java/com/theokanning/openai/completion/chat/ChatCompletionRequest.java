@@ -28,6 +28,14 @@ public class ChatCompletionRequest {
     List<ChatMessage> messages;
 
     /**
+     * Must be either 'text' or 'json_object'. <br>
+     * When specifying 'json_object' as the request format it's still necessary to instruct the model to return JSON.
+     * You may use {@link ChatResponseFormat.ResponseFormat} enum.
+     */
+    @JsonProperty("response_format")
+    ChatResponseFormat responseFormat;
+
+    /**
      * What sampling temperature to use, between 0 and 2. Higher values like 0.8 will make the output more random, while lower
      * values like 0.2 will make it more focused and deterministic.<br>
      * We generally recommend altering this or top_p but not both.
