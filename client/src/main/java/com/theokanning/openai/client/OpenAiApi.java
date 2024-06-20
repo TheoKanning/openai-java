@@ -77,6 +77,7 @@ public interface OpenAiApi {
     @POST("/v1/engines/{engine_id}/completions")
     Single<CompletionResult> createCompletion(@Path("engine_id") String engineId, @Body CompletionRequest request);
 
+    @Deprecated
     @POST("/v1/edits")
     Single<EditResult> createEdit(@Body EditRequest request);
 

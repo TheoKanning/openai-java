@@ -36,4 +36,27 @@ public class EmbeddingRequest {
      * A unique identifier representing your end-user, which will help OpenAI to monitor and detect abuse.
      */
     String user;
+
+    /**
+     * The number of dimensions to be used by the model to represent each input text as the feature
+     * vector.
+     */
+    @Setter(AccessLevel.NONE)
+    Integer dimensions = null;
+
+    /**
+     * Set the number of dimensions to be used by the model to represent each input text as the feature vector.
+     *
+     * @param dimensions The number of dimensions to be used by the model. Only supported for models from or after
+     *                   third generation.
+     */
+    public void setDimensions(Integer dimensions) {
+        EmbeddingModel embeddingModel = EmbeddingModel.fromValue(this.model);
+
+        if (embeddingModel.getGeneration() > 2) {
+            this.dimensions = dimensions;
+        } else {
+            this.dimensions = null;
+        }
+    }
 }
