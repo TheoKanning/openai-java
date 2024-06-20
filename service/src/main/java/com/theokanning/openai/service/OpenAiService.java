@@ -605,6 +605,15 @@ public class OpenAiService {
                 .build();
     }
 
+    public static Retrofit customRetrofit(String baseUrl, OkHttpClient client, ObjectMapper mapper) {
+        return new Retrofit.Builder()
+                .baseUrl(baseUrl)
+                .client(client)
+                .addConverterFactory(JacksonConverterFactory.create(mapper))
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                .build();
+    }
+
     public Flowable<ChatMessageAccumulator> mapStreamToAccumulator(Flowable<ChatCompletionChunk> flowable) {
         ChatFunctionCall functionCall = new ChatFunctionCall(null, null);
         ChatMessage accumulatedMessage = new ChatMessage(ChatMessageRole.ASSISTANT.value(), null);
