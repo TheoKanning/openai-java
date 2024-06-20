@@ -28,7 +28,7 @@ public class FunctionExecutor {
 
     public Optional<ChatMessage> executeAndConvertToMessageSafely(ChatFunctionCall call) {
         try {
-            return Optional.ofNullable(executeAndConvertToMessage(call));
+            return Optional.ofNullable(MessageConverter.executeAndConvertToMessage(this, call));
         } catch (Exception ignored) {
             return Optional.empty();
         }
@@ -36,7 +36,7 @@ public class FunctionExecutor {
 
     public ChatMessage executeAndConvertToMessageHandlingExceptions(ChatFunctionCall call) {
         try {
-            return executeAndConvertToMessage(call);
+            return MessageConverter.executeAndConvertToMessage(this, call);
         } catch (Exception exception) {
             exception.printStackTrace();
             return convertExceptionToMessage(exception);
@@ -46,34 +46,6 @@ public class FunctionExecutor {
     public ChatMessage convertExceptionToMessage(Exception exception) {
         String error = exception.getMessage() == null ? exception.toString() : exception.getMessage();
         return new ChatMessage(ChatMessageRole.FUNCTION.value(), "{\"error\": \"" + error + "\"}", "error");
-    }
-
-    public ChatMessage executeAndConvertToMessage(ChatFunctionCall call) {
-        return new ChatMessage(ChatMessageRole.FUNCTION.value(), executeAndConvertToJson(call).toPrettyString(), call.getName());
-    }
-
-    public JsonNode executeAndConvertToJson(ChatFunctionCall call) {
-        try {
-            Object execution = execute(call);
-            if (execution instanceof TextNode) {
-                JsonNode objectNode = MAPPER.readTree(((TextNode) execution).asText());
-                if (objectNode.isMissingNode())
-                    return (JsonNode) execution;
-                return objectNode;
-            }
-            if (execution instanceof ObjectNode) {
-                return (JsonNode) execution;
-            }
-            if (execution instanceof String) {
-                JsonNode objectNode = MAPPER.readTree((String) execution);
-                if (objectNode.isMissingNode())
-                    throw new RuntimeException("Parsing exception");
-                return objectNode;
-            }
-            return MAPPER.readValue(MAPPER.writeValueAsString(execution), JsonNode.class);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
     }
 
     @SuppressWarnings("unchecked")
@@ -102,4 +74,34 @@ public class FunctionExecutor {
         this.MAPPER = objectMapper;
     }
 
+    // Inner class to handle message conversion
+    private static class MessageConverter {
+        public static ChatMessage executeAndConvertToMessage(FunctionExecutor executor, ChatFunctionCall call) {
+            return new ChatMessage(ChatMessageRole.FUNCTION.value(), executeAndConvertToJson(executor, call).toPrettyString(), call.getName());
+        }
+
+        public static JsonNode executeAndConvertToJson(FunctionExecutor executor, ChatFunctionCall call) {
+            try {
+                Object execution = executor.execute(call);
+                if (execution instanceof TextNode) {
+                    JsonNode objectNode = executor.MAPPER.readTree(((TextNode) execution).asText());
+                    if (objectNode.isMissingNode())
+                        return (JsonNode) execution;
+                    return objectNode;
+                }
+                if (execution instanceof ObjectNode) {
+                    return (JsonNode) execution;
+                }
+                if (execution instanceof String) {
+                    JsonNode objectNode = executor.MAPPER.readTree((String) execution);
+                    if (objectNode.isMissingNode())
+                        throw new RuntimeException("Parsing exception");
+                    return objectNode;
+                }
+                return executor.MAPPER.readValue(executor.MAPPER.writeValueAsString(execution), JsonNode.class);
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        }
+    }
 }

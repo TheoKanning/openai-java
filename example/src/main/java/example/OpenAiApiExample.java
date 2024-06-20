@@ -29,7 +29,7 @@ class OpenAiApiExample {
 
         System.out.println("\nCreating Image...");
         CreateImageRequest request = CreateImageRequest.builder()
-                .prompt("A cow breakdancing with a turtle")
+                .prompt("A+ in coding assignment")
                 .build();
 
         System.out.println("\nImage is located at:");
@@ -47,10 +47,6 @@ class OpenAiApiExample {
                 .maxTokens(50)
                 .logitBias(new HashMap<>())
                 .build();
-
-        service.streamChatCompletion(chatCompletionRequest)
-                .doOnError(Throwable::printStackTrace)
-                .blockingForEach(System.out::println);
 
         service.shutdownExecutor();
     }
